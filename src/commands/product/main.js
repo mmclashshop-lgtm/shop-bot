@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, AttachmentBuilder } = require('discord.js');
+const { SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, AttachmentBuilder, MessageFlags } = require('discord.js');
 const mongoose = require('mongoose');
 const { Store, Product, User, Order, Review, Coupon, Transaction, MarketplaceSettings } = require('../../database/models');
 const { EmbedBuilderUtil } = require('../../utils/embeds');
@@ -969,5 +969,8 @@ module.exports = {
 
       await interaction.editReply({ embeds: [embed], components });
     }
+
+    await interaction.deferUpdate().catch(() => {});
+    return interaction.editReply({ content: '❌ إجراء غير معروف.', flags: MessageFlags.Ephemeral });
   },
 };

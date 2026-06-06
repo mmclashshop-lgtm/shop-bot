@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, MessageFlags } = require('discord.js');
 const { Store, Product, Service, User } = require('../../database/models');
 const { EmbedBuilderUtil } = require('../../utils/embeds');
 const { formatCurrency } = require('../../utils/helpers');
@@ -340,5 +340,8 @@ module.exports = {
 
       return this.execute(newInteraction, client);
     }
+
+    await interaction.deferUpdate().catch(() => {});
+    return interaction.editReply({ content: '❌ إجراء غير معروف.', flags: MessageFlags.Ephemeral });
   },
 };

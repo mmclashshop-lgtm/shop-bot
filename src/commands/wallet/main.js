@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, MessageFlags } = require('discord.js');
 const mongoose = require('mongoose');
 const { User, Transaction, PendingAction } = require('../../database/models');
 const { EmbedBuilderUtil } = require('../../utils/embeds');
@@ -487,10 +487,11 @@ module.exports = {
     }
 
     if (action.startsWith('withdraw_confirm_')) {
+      await interaction.deferReply({ flags: MessageFlags.Ephemeral }).catch(() => {});
       const nonce = action.replace('withdraw_confirm_', '');
       const pending = await PendingAction.findOneAndDelete({ nonce, type: 'withdraw', userId: interaction.user.id });
       if (!pending) {
-        return interaction.update({ content: '❌ طلب منتهي الصلاحية. حاول مرة أخرى.', embeds: [], components: [] }).catch(() => {});
+        return interaction.editReply({ content: '❌ طلب منتهي الصلاحية. حاول مرة أخرى.', embeds: [], components: [] }).catch(() => {});
       }
 
       const { amount, method } = pending;
@@ -500,7 +501,7 @@ module.exports = {
         if (fraudCheck.alert) {
           await fraudDetection.sendAdminAlert(interaction, fraudCheck.alert, client);
         }
-        return interaction.update({
+        return interaction.editReply({
           content: `🚫 تم حظر السحب لأسباب أمنية. (رمز: ${fraudCheck.alert?.alertId || 'FRAUD_BLOCK'})`,
           embeds: [], components: [],
         }).catch(() => {});
@@ -508,8 +509,6 @@ module.exports = {
       if (fraudCheck.alert) {
         await fraudDetection.sendAdminAlert(interaction, fraudCheck.alert, client);
       }
-
-      await interaction.deferReply({ ephemeral: true }).catch(() => {});
 
       const session = await mongoose.startSession();
       session.startTransaction({
@@ -564,10 +563,11 @@ module.exports = {
     }
 
     if (action.startsWith('pay_confirm_')) {
+      await interaction.deferReply({ flags: MessageFlags.Ephemeral }).catch(() => {});
       const nonce = action.replace('pay_confirm_', '');
       const pending = await PendingAction.findOneAndDelete({ nonce, type: 'pay', userId: interaction.user.id });
       if (!pending) {
-        return interaction.update({ content: '❌ طلب منتهي الصلاحية. حاول مرة أخرى.', embeds: [], components: [] }).catch(() => {});
+        return interaction.editReply({ content: '❌ طلب منتهي الصلاحية. حاول مرة أخرى.', embeds: [], components: [] }).catch(() => {});
       }
 
       const { targetUserId, amount, note } = pending;
@@ -577,7 +577,7 @@ module.exports = {
         if (fraudCheck.alert) {
           await fraudDetection.sendAdminAlert(interaction, fraudCheck.alert, client);
         }
-        return interaction.update({
+        return interaction.editReply({
           content: `🚫 تم حظر التحويل لأسباب أمنية. (رمز: ${fraudCheck.alert?.alertId || 'FRAUD_BLOCK'})`,
           embeds: [], components: [],
         }).catch(() => {});
@@ -585,8 +585,6 @@ module.exports = {
       if (fraudCheck.alert) {
         await fraudDetection.sendAdminAlert(interaction, fraudCheck.alert, client);
       }
-
-      await interaction.deferReply({ ephemeral: true }).catch(() => {});
 
       const session = await mongoose.startSession();
       session.startTransaction({
@@ -661,6 +659,9 @@ module.exports = {
       await PendingAction.findOneAndDelete({ nonce, userId: interaction.user.id });
       return interaction.update({ content: '❌ تم إلغاء التحويل.', embeds: [], components: [] }).catch(() => {});
     }
+
+    await interaction.deferUpdate().catch(() => {});
+    return interaction.editReply({ content: '❌ إجراء غير معروف.', flags: MessageFlags.Ephemeral });
   },
 
   async handleModalSubmit(interaction, client) {

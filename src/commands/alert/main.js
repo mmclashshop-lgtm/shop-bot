@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require('discord.js');
 const AlertService = require('../../services/AlertService');
 const { logger } = require('../../utils/logger');
 const { EmbedBuilderUtil } = require('../../utils/embeds');
@@ -238,9 +238,12 @@ module.exports = {
       return interaction.reply({ content: '🚫 للمشرفين فقط.', ephemeral: true });
     }
 
-    if (action === 'alert_refresh') return this.handleDashboard(interaction);
-    if (action === 'alert_history') return this.handleHistory(interaction);
-    if (action === 'alert_stats') return this.handleStats(interaction);
+    if (action === 'refresh') return this.handleDashboard(interaction);
+    if (action === 'history') return this.handleHistory(interaction);
+    if (action === 'stats') return this.handleStats(interaction);
+
+    await interaction.deferUpdate().catch(() => {});
+    return interaction.editReply({ content: '❌ إجراء غير معروف.', flags: MessageFlags.Ephemeral });
   },
 
   _formatDuration(seconds) {

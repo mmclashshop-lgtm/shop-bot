@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, MessageFlags } = require('discord.js');
 const { PanelManager, NAV } = require('../../utils/PanelManager');
 const config = require('../../config');
 const { formatCurrency, formatNumber, calculateCommission } = require('../../utils/helpers');
@@ -198,8 +198,11 @@ module.exports = {
 
   async handleStoreAction(interaction, client, action) {
     if (action === 'store_create') {
+      if (interaction.deferred || interaction.replied) {
+        return interaction.editReply({ content: '📝 لإنشاء متجر جديد، استخدم الأمر /store create', flags: MessageFlags.Ephemeral });
+      }
       const storeCmd = require('../store/create');
-      return storeCmd.execute(interaction, client);
+      return storeCmd.handleCreate(interaction, client);
     }
     if (action === 'my_stores') {
       const stores = await Store.find({ ownerId: interaction.user.id }).lean();

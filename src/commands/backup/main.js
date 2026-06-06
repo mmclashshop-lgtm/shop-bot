@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require('discord.js');
 const BackupService = require('../../services/BackupService');
 const { logger } = require('../../utils/logger');
 
@@ -258,5 +258,8 @@ module.exports = {
         await interaction.editReply({ embeds: [embed] });
       }
     }
+
+    await interaction.deferUpdate().catch(() => {});
+    return interaction.editReply({ content: '❌ إجراء غير معروف.', flags: MessageFlags.Ephemeral });
   },
 };

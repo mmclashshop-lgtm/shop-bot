@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, MessageFlags } = require('discord.js');
 const SettingsService = require('../../services/SettingsService');
 const { logger } = require('../../utils/logger');
 
@@ -336,12 +336,12 @@ module.exports = {
       return interaction.reply({ content: '🚫 للمشرفين فقط.', ephemeral: true });
     }
 
-    if (action === 'settings_cancel') {
+    if (action === 'cancel') {
       return interaction.update({ content: '❌ تم إلغاء العملية.', embeds: [], components: [] });
     }
 
-    if (action.startsWith('settings_confirm_')) {
-      const rest = action.replace('settings_confirm_', '');
+    if (action.startsWith('confirm_')) {
+      const rest = action.replace('confirm_', '');
       const sepIdx = rest.indexOf('_');
       if (sepIdx === -1) return;
       const section = rest.substring(0, sepIdx);
@@ -380,8 +380,8 @@ module.exports = {
       return;
     }
 
-    if (action.startsWith('settings_rollback_confirm_')) {
-      const changeId = action.replace('settings_rollback_confirm_', '');
+    if (action.startsWith('rollback_confirm_')) {
+      const changeId = action.replace('rollback_confirm_', '');
       await interaction.deferUpdate();
 
       try {
@@ -403,13 +403,16 @@ module.exports = {
       return;
     }
 
-    if (action.startsWith('settings_prev_') || action.startsWith('settings_next_')) {
+    if (action.startsWith('prev_') || action.startsWith('next_')) {
       const parts = action.split('_');
-      const dir = parts[1];
-      const section = parts[2];
-      const page = parseInt(parts[3], 10) || 1;
+      const dir = parts[0];
+      const section = parts[1];
+      const page = parseInt(parts[2], 10) || 1;
       return this._paginateSection(interaction, section, dir === 'next' ? page + 1 : page - 1);
     }
+
+    await interaction.deferUpdate().catch(() => {});
+    return interaction.editReply({ content: '❌ إجراء غير معروف.', flags: MessageFlags.Ephemeral });
   },
 
   async handleSelectMenu(interaction) {

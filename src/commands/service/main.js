@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require('discord.js');
 const { Store, Service, User, Order, MarketplaceSettings } = require('../../database/models');
 const { EmbedBuilderUtil } = require('../../utils/embeds');
 const { generateOrderNumber, calculateCommission, formatCurrency } = require('../../utils/helpers');
@@ -590,10 +590,8 @@ module.exports = {
   },
 
   async handleButton(interaction, client, action) {
-    const parts = interaction.customId.split('_');
-    const serviceId = parts.length > 2 ? parts[2] : '';
-
-    if (action === 'order') {
+    if (action.startsWith('order_')) {
+      const serviceId = action.replace('order_', '');
       const modal = new ModalBuilder()
         .setCustomId(`service_order_modal_${serviceId}`)
         .setTitle('طلب خدمة');
@@ -622,16 +620,20 @@ module.exports = {
       return interaction.showModal(modal).catch(() => {});
     }
 
-    if (action === 'info') {
+    if (action.startsWith('info_')) {
       await interaction.deferUpdate();
+      const serviceId = action.replace('info_', '');
       const service = await Service.findById(serviceId).populate('storeId').lean();
-      if (!service) return interaction.editReply({ content: '❌ الخدمة غير موجودة.', ephemeral: true });
+      if (!service) return interaction.editReply({ content: '❌ الخدمة غير موجودة.', flags: MessageFlags.Ephemeral });
 
       const embed = EmbedBuilderUtil.serviceCard(service, { storeName: service.storeId.name });
       embed.addFields({ name: '📝 الوصف الكامل', value: service.description.substring(0, 1000), inline: false });
 
-      return interaction.editReply({ embeds: [embed], ephemeral: true });
+      return interaction.editReply({ embeds: [embed], flags: MessageFlags.Ephemeral });
     }
+
+    await interaction.deferUpdate().catch(() => {});
+    return interaction.editReply({ content: '❌ إجراء غير معروف.', flags: MessageFlags.Ephemeral });
   },
 
   async handleModalSubmit(interaction, client) {

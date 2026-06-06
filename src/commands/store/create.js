@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const { SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, EmbedBuilder, PermissionFlagsBits, ChannelType } = require('discord.js');
+const { SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, EmbedBuilder, PermissionFlagsBits, ChannelType, MessageFlags } = require('discord.js');
 const { Store, User, MarketplaceSettings } = require('../../database/models');
 const { EmbedBuilderUtil } = require('../../utils/embeds');
 const { validateStoreCreate } = require('../../utils/validation');
-const { generateReferralCode } = require('../../utils/helpers');
+const { generateReferralCode, formatCurrency } = require('../../utils/helpers');
 const config = require('../../config');
 const { logger } = require('../../utils/logger');
 
@@ -527,16 +527,67 @@ module.exports = {
   },
 
   async handleButton(interaction, client, action) {
-    if (action === 'visit') {
+    if (action.startsWith('visit_')) {
       await interaction.deferUpdate();
-      const storeId = interaction.customId.split('_')[2];
-      const store = await Store.findById(storeId.lean());
-      if (store) {
-        return interaction.editReply({
-          content: `🏪 متجر **${store.name}**: <#${store.channels.info}>`,
-          ephemeral: true,
-        });
-      }
+      const storeId = action.replace('visit_', '');
+      const store = await Store.findById(storeId).lean();
+      if (!store) return interaction.editReply({ content: '❌ المتجر غير موجود.', flags: MessageFlags.Ephemeral });
+      return interaction.editReply({
+        content: `🏪 متجر **${store.name}**: <#${store.channels.info}>`,
+        flags: MessageFlags.Ephemeral,
+      });
     }
+
+    if (action.startsWith('products_')) {
+      await interaction.deferUpdate();
+      const storeId = action.replace('products_', '');
+      const store = await Store.findById(storeId).lean();
+      if (!store) return interaction.editReply({ content: '❌ المتجر غير موجود.', flags: MessageFlags.Ephemeral });
+      const { Product } = require('../../database/models');
+      const products = await Product.find({ storeId: store._id, isActive: true }).sort({ createdAt: -1 }).limit(10).lean();
+      const embed = new EmbedBuilder()
+        .setTitle(`📦 منتجات ${store.name}`)
+        .setColor(config.colors.primary)
+        .setDescription(products.length > 0
+          ? products.map((p, i) => `${i + 1}. **${p.name}** — ${formatCurrency(p.price)}`).join('\n')
+          : '📭 لا توجد منتجات متاحة.')
+        .setTimestamp();
+      return interaction.editReply({ embeds: [embed], flags: MessageFlags.Ephemeral });
+    }
+
+    if (action.startsWith('reviews_')) {
+      await interaction.deferUpdate();
+      const storeId = action.replace('reviews_', '');
+      const store = await Store.findById(storeId).lean();
+      if (!store) return interaction.editReply({ content: '❌ المتجر غير موجود.', flags: MessageFlags.Ephemeral });
+      const { Review } = require('../../database/models');
+      const reviews = await Review.find({ storeId: store._id, isHidden: false }).sort({ createdAt: -1 }).limit(10).lean();
+      const rating = store.rating?.average ? `⭐ ${store.rating.average.toFixed(1)} (${store.rating.count} تقييم)` : '⭐ لا توجد تقييمات بعد';
+      const embed = new EmbedBuilder()
+        .setTitle(`⭐ تقييمات ${store.name}`)
+        .setColor(config.colors.primary)
+        .addFields(
+          { name: '📊 متوسط التقييم', value: rating, inline: false },
+          { name: '📝 أحدث التقييمات', value: reviews.length > 0
+            ? reviews.map((r, i) => `${i + 1}. {"⭐".repeat(r.rating)} — ${r.comment?.substring(0, 100) || 'لا يوجد تعليق'}`).join('\n')
+            : 'لا توجد تقييمات بعد.', inline: false }
+        )
+        .setTimestamp();
+      return interaction.editReply({ embeds: [embed], flags: MessageFlags.Ephemeral });
+    }
+
+    if (action.startsWith('support_')) {
+      await interaction.deferUpdate();
+      const storeId = action.replace('support_', '');
+      const store = await Store.findById(storeId).lean();
+      if (!store) return interaction.editReply({ content: '❌ المتجر غير موجود.', flags: MessageFlags.Ephemeral });
+      if (store.channels?.support) {
+        return interaction.editReply({ content: `🎫 للدعم الفني، تواصل مع: <#${store.channels.support}>`, flags: MessageFlags.Ephemeral });
+      }
+      return interaction.editReply({ content: '📩 يرجى مراسلة صاحب المتجر مباشرة للحصول على الدعم.', flags: MessageFlags.Ephemeral });
+    }
+
+    await interaction.deferUpdate().catch(() => {});
+    return interaction.editReply({ content: '❌ إجراء غير معروف.', flags: MessageFlags.Ephemeral });
   },
 };
