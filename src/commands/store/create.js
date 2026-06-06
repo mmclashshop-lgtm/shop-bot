@@ -132,7 +132,16 @@ module.exports = {
   },
 
   async handleModalSubmit(interaction, client) {
-    if (interaction.customId !== 'store_create_modal') return;
+    if (interaction.customId !== 'store_create_modal') {
+      try {
+        if (interaction.deferred || interaction.replied) {
+          await interaction.editReply({ content: '❌ خطأ: النموذج غير معروف', components: [] }).catch(() => {});
+        } else {
+          await interaction.reply({ content: '❌ خطأ: النموذج غير معروف', flags: MessageFlags.Ephemeral }).catch(() => {});
+        }
+      } catch (e) { /* ignore */ }
+      return;
+    }
 
     await interaction.deferReply({ ephemeral: true });
 

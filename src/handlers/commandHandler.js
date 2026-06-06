@@ -320,7 +320,6 @@ class CommandHandler {
       } catch (err) {
         if (err.message?.includes('already acknowledged') || err.code === 40060) {
           logger.info('[CMD]', { traceId, event: 'BUTTON_ALREADY_ACKNOWLEDGED', customId: interaction.customId });
-          interaction.deferred = true;
         } else {
           logger.error('[CMD]', { traceId, event: 'BUTTON_DEFER_FAILED', error: err.message, customId: interaction.customId });
           try {
@@ -347,11 +346,13 @@ class CommandHandler {
           if (!command || !command.handleButton) {
             logger.warn('[CMD]', { traceId, event: 'BUTTON_HANDLER_NOT_FOUND', customId: interaction.customId, commandName });
             if (deferTimer) clearTimeout(deferTimer);
-            if (!interaction.deferred && !interaction.replied) {
-              try {
-                await interaction.reply({ content: '❌ هذا الزر غير متاح حالياً.', flags: MessageFlags.Ephemeral });
-              } catch (e) { /* interaction expired */ }
-            }
+            try {
+              if (interaction.deferred || interaction.replied) {
+                await interaction.editReply({ content: '❌ هذا الزر غير متاح حالياً.', components: [] }).catch(() => {});
+              } else {
+                await interaction.reply({ content: '❌ هذا الزر غير متاح حالياً.', flags: MessageFlags.Ephemeral }).catch(() => {});
+              }
+            } catch (e) { /* interaction expired */ }
             return;
           }
 
@@ -386,7 +387,6 @@ class CommandHandler {
       } catch (err) {
         if (err.message?.includes('already acknowledged') || err.code === 40060) {
           logger.info('[CMD]', { traceId, event: 'SELECT_ALREADY_ACKNOWLEDGED', customId: interaction.customId });
-          interaction.deferred = true;
         } else {
           logger.error('[CMD]', { traceId, event: 'SELECT_DEFER_FAILED', error: err.message, customId: interaction.customId });
           try {
@@ -413,11 +413,13 @@ class CommandHandler {
           if (!command || !command.handleSelectMenu) {
             logger.warn('[CMD]', { traceId, event: 'SELECT_HANDLER_NOT_FOUND', customId: interaction.customId, commandName });
             if (deferTimer) clearTimeout(deferTimer);
-            if (!interaction.deferred && !interaction.replied) {
-              try {
-                await interaction.reply({ content: '❌ هذه القائمة غير متاحة حالياً.', flags: MessageFlags.Ephemeral });
-              } catch (e) { /* interaction expired */ }
-            }
+            try {
+              if (interaction.deferred || interaction.replied) {
+                await interaction.editReply({ content: '❌ هذه القائمة غير متاحة حالياً.', components: [] }).catch(() => {});
+              } else {
+                await interaction.reply({ content: '❌ هذه القائمة غير متاحة حالياً.', flags: MessageFlags.Ephemeral }).catch(() => {});
+              }
+            } catch (e) { /* interaction expired */ }
             return;
           }
 

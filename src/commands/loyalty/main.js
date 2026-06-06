@@ -269,7 +269,6 @@ module.exports = {
   async handleSelectMenu(interaction, client, action) {
     if (action === 'claim_select') {
       const rewardId = interaction.values[0];
-      await interaction.deferUpdate();
       const mockInteraction = Object.create(interaction);
       mockInteraction.options = { getString: () => rewardId };
       mockInteraction.deferred = true;

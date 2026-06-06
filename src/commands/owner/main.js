@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { PanelManager, NAV } = require('../../utils/PanelManager');
 const config = require('../../config');
 const { logger } = require('../../utils/logger');
@@ -12,7 +12,7 @@ const COLORS = {
   system: 0x3498DB, logs: 0x2ECC71, metrics: 0x9B59B6, ai: 0xF1C40F,
   db: 0xE67E22, errors: 0xE74C3C, performance: 0x1ABC9C, settings: 0x95A5A6,
 };
-const OWNER_ID = process.env.OWNER_ID || '';
+const OWNER_ID = process.env.OWNER_ID;
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -21,6 +21,9 @@ module.exports = {
 
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
+    if (!OWNER_ID) {
+      return PanelManager.update(interaction, { embeds: [PanelManager.embed('⚠️ غير مفعل', 'OWNER_ID غير محدد في متغيرات البيئة. هذا الأمر معطل.', config.colors.warning)] });
+    }
     if (interaction.user.id !== OWNER_ID) {
       return PanelManager.update(interaction, { embeds: [PanelManager.embed('🚫 غير مصرح', 'هذا الأمر لمالك البوت فقط.', config.colors.error)] });
     }
@@ -67,7 +70,7 @@ module.exports = {
 
   async handleButton(interaction, client, action) {
     await PanelManager.defer(interaction);
-    if (interaction.user.id !== OWNER_ID) {
+    if (!OWNER_ID || interaction.user.id !== OWNER_ID) {
       return PanelManager.update(interaction, { embeds: [PanelManager.embed('🚫 غير مصرح', '', config.colors.error)] });
     }
     switch (action) {

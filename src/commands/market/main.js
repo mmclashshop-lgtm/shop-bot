@@ -97,7 +97,6 @@ module.exports = {
     if (action === 'product_list') return this.showProductDetail(interaction, client, value);
     if (action === 'service_list') return this.showServiceDetail(interaction, client, value);
     if (action === 'wallet_history') return this.showWalletHistory(interaction, client, value);
-    await PanelManager.defer(interaction);
     return this.showHome(interaction);
   },
 

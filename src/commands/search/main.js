@@ -4,6 +4,7 @@ const { EmbedBuilderUtil } = require('../../utils/embeds');
 const { formatCurrency } = require('../../utils/helpers');
 const config = require('../../config');
 const { logger } = require('../../utils/logger');
+const { withTimeout, TimeoutError } = require('../../utils/Timeout');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -52,15 +53,20 @@ module.exports = {
       const onSale = interaction.options.getBoolean('on_sale') || false;
       const storeType = interaction.options.getString('store_type');
 
-      const results = await this.performSearch(query, type, {
-        category,
-        minPrice,
-        maxPrice,
-        sort,
-        inStock,
-        onSale,
-        storeType,
-      });
+      const { promise } = withTimeout(
+        this.performSearch(query, type, {
+          category,
+          minPrice,
+          maxPrice,
+          sort,
+          inStock,
+          onSale,
+          storeType,
+        }),
+        10000,
+        'search'
+      );
+      const results = await promise;
 
       if (results.total === 0) {
         return interaction.editReply({ content: '🔍 لا توجد نتائج مطابقة للبحث.' });
@@ -71,6 +77,9 @@ module.exports = {
 
       return interaction.editReply({ embeds: [embed], components });
     } catch (error) {
+      if (error instanceof TimeoutError) {
+        return interaction.editReply({ content: '⏱️ انتهت مهلة البحث. يرجى المحاولة مرة أخرى.' });
+      }
       logger.error('Search error', { error: error.message });
       return interaction.editReply({ content: '❌ حدث خطأ أثناء البحث.' });
     }
@@ -287,8 +296,6 @@ module.exports = {
       const query = decodeURIComponent(action.replace('sort_', ''));
       const sort = interaction.values[0];
 
-      await interaction.deferUpdate();
-
       const newInteraction = Object.create(interaction);
       newInteraction.options = {
         getString: (k) => k === 'query' ? query : (k === 'sort' ? sort : null),
@@ -305,8 +312,6 @@ module.exports = {
       const parts = action.split('_');
       const filterType = parts[1];
       const query = decodeURIComponent(parts.slice(2).join('_'));
-
-      await interaction.deferUpdate();
 
       const newInteraction = Object.create(interaction);
       newInteraction.options = {

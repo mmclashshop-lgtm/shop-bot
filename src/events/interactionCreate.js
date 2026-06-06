@@ -45,9 +45,18 @@ module.exports = {
     try {
       if (interaction.isChatInputCommand()) {
         if (!interaction.deferred && !interaction.replied) {
-          await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-          logger.info('[TRACE]', { traceId, event: 'CHAT_INPUT_DEFERRED', identifier });
-          interaction.deferReply = async () => {};
+          try {
+            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+            logger.info('[TRACE]', { traceId, event: 'CHAT_INPUT_DEFERRED', identifier });
+            interaction.deferReply = async () => {};
+          } catch (deferErr) {
+            if (deferErr.message?.includes('already acknowledged') || deferErr.code === 40060) {
+              logger.info('[TRACE]', { traceId, event: 'CHAT_INPUT_ALREADY_ACKNOWLEDGED', identifier });
+              interaction.deferReply = async () => {};
+            } else {
+              throw deferErr;
+            }
+          }
         }
       } else if (interaction.isButton() || interaction.isStringSelectMenu()) {
         if (!interaction.deferred && !interaction.replied) {
@@ -55,11 +64,8 @@ module.exports = {
             await interaction.deferUpdate();
             logger.info('[TRACE]', { traceId, event: 'COMPONENT_DEFERRED', identifier });
           } catch (deferErr) {
-            // Discord may reject deferUpdate with "already acknowledged" on fresh interactions
-            // Treat as success if Discord considers it acknowledged
             if (deferErr.message?.includes('already acknowledged') || deferErr.code === 40060) {
               logger.info('[TRACE]', { traceId, event: 'COMPONENT_ALREADY_ACKNOWLEDGED', identifier });
-              interaction.deferred = true;
             } else {
               throw deferErr;
             }
@@ -67,12 +73,29 @@ module.exports = {
         }
       } else if (interaction.isModalSubmit()) {
         if (!interaction.deferred && !interaction.replied) {
-          await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-          logger.info('[TRACE]', { traceId, event: 'MODAL_DEFERRED', identifier });
+          try {
+            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+            logger.info('[TRACE]', { traceId, event: 'MODAL_DEFERRED', identifier });
+            interaction.deferReply = async () => {};
+          } catch (deferErr) {
+            if (deferErr.message?.includes('already acknowledged') || deferErr.code === 40060) {
+              logger.info('[TRACE]', { traceId, event: 'MODAL_ALREADY_ACKNOWLEDGED', identifier });
+              interaction.deferred = true;
+              interaction.deferReply = async () => {};
+            } else {
+              throw deferErr;
+            }
+          }
         }
       }
     } catch (err) {
       logger.error('[TRACE]', { traceId, event: 'EARLY_DEFER_FAILED', error: err.message, identifier });
+      if (!interaction.deferred && !interaction.replied) {
+        try {
+          await interaction.reply({ content: '❌ حدث خطأ في الاستجابة.', flags: MessageFlags.Ephemeral }).catch(() => {});
+        } catch (e) { /* ignore */ }
+      }
+      return;
     }
 
     // Route to the appropriate handler

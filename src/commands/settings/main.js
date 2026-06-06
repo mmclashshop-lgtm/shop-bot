@@ -422,7 +422,6 @@ module.exports = {
 
     if (interaction.customId === 'settings_view_section') {
       const section = interaction.values[0];
-      await interaction.deferUpdate();
       return this._renderSection(interaction, interaction.guildId, section);
     }
   },

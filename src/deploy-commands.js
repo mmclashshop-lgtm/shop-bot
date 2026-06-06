@@ -8,15 +8,17 @@ const commands = [];
 const commandsPath = path.join(__dirname, 'commands');
 const categories = fs.readdirSync(commandsPath).filter(f => fs.statSync(path.join(commandsPath, f)).isDirectory());
 
-const PUBLIC_COMMANDS = ['market', 'ai', 'ticket', 'profile', 'admin', 'owner', 'backup', 'alert', 'settings'];
-
 for (const category of categories) {
   const categoryPath = path.join(commandsPath, category);
   const commandFiles = fs.readdirSync(categoryPath).filter(f => f.endsWith('.js'));
 
   for (const file of commandFiles) {
     const command = require(path.join(categoryPath, file));
-    if (command.data && PUBLIC_COMMANDS.includes(command.data.name)) {
+    if (command.data && command.execute) {
+      if (command.data.name === 'owner' && !process.env.OWNER_ID) {
+        console.log(`Skipping owner command - OWNER_ID not set`);
+        continue;
+      }
       commands.push(command.data.toJSON());
     }
   }

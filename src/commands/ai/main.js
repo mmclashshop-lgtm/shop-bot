@@ -106,6 +106,37 @@ module.exports = {
     }
   },
 
+  async handleSelectMenu(interaction, client, action) {
+    if (action === 'create_chat_category') {
+      const type = interaction.values[0];
+      await interaction.deferUpdate();
+      try {
+        const channel = await client.aiChatSessionManager.getOrCreateChannel(interaction.user, interaction.guild);
+        const { AIChat } = require('../../database/models');
+        await AIChat.updateOne({ channelId: channel.id }, { type });
+        await interaction.editReply({
+          content: `✅ تم فتح قناة المحادثة (${type}): <#${channel.id}>`,
+          embeds: [],
+          components: [],
+        });
+      } catch (error) {
+        logger.error('AI chat creation error', { error: error.message });
+        await interaction.editReply({ content: `❌ خطأ: ${error.message}` });
+      }
+      return;
+    }
+
+    if (action === 'export_format') {
+      const format = interaction.values[0];
+      await interaction.deferUpdate();
+      return client.aiChatSessionManager._handleExport(interaction, interaction.channel, format);
+    }
+
+    logger.warn('AI select menu not implemented', { action, customId: interaction.customId });
+    await interaction.deferUpdate().catch(() => {});
+    await interaction.editReply({ content: '❌ هذه القائمة غير مدعومة.', components: [] }).catch(() => {});
+  },
+
   async showHelp(interaction) {
     const embed = new EmbedBuilder()
       .setTitle('📚 AI Chat — المساعدة')

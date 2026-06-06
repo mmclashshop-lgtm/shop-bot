@@ -114,14 +114,14 @@ module.exports = {
       store.type = level;
       await store.save({ session });
 
-      const seller = await User.findOne({ discordId: store.ownerId }).session(session.lean());
+      const seller = await User.findOne({ discordId: store.ownerId }).session(session).lean();
       if (seller) {
         seller.trustLevel = level;
         seller.trustBadge = level;
         await seller.save({ session });
       }
 
-      const settings = await MarketplaceSettings.findOne().session(session.lean());
+      const settings = await MarketplaceSettings.findOne().session(session).lean();
       const verificationFee = settings?.verificationFee || 25000;
 
       if (verificationFee > 0 && seller) {
@@ -313,6 +313,7 @@ module.exports = {
   },
 
   async handleRequirements(interaction, client) {
+    await interaction.deferReply({ ephemeral: true });
     const embed = new EmbedBuilder()
       .setTitle(`${config.emojis.settings} متطلبات مستويات الثقة`)
       .setColor(config.colors.primary)
@@ -324,7 +325,7 @@ module.exports = {
       .setFooter({ text: 'يتم المراجعة يدوياً من قبل الإدارة' })
       .setTimestamp();
 
-    return interaction.reply({ embeds: [embed], ephemeral: true });
+    return interaction.editReply({ embeds: [embed] });
   },
 
   getTrustColor(level) {
