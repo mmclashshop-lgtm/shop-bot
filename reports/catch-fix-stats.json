@@ -1,0 +1,69 @@
+{
+  "total": 27,
+  "files": [
+    {
+      "file": "commands/payment/main.js",
+      "count": 1
+    },
+    {
+      "file": "commands/service/main.js",
+      "count": 1
+    },
+    {
+      "file": "commands/ticket/main.js",
+      "count": 1
+    },
+    {
+      "file": "commands/wallet/main.js",
+      "count": 1
+    },
+    {
+      "file": "commands/withdraw/main.js",
+      "count": 2
+    },
+    {
+      "file": "events/interactionCreate.js",
+      "count": 1
+    },
+    {
+      "file": "index.js",
+      "count": 1
+    },
+    {
+      "file": "middleware/security.js",
+      "count": 1
+    },
+    {
+      "file": "services/AIChatSessionManager.js",
+      "count": 5
+    },
+    {
+      "file": "services/AISecurityService.js",
+      "count": 1
+    },
+    {
+      "file": "services/AIService.js",
+      "count": 2
+    },
+    {
+      "file": "services/BackupService.js",
+      "count": 3
+    },
+    {
+      "file": "services/FraudDetectionService.js",
+      "count": 2
+    },
+    {
+      "file": "services/MemoryService.js",
+      "count": 1
+    },
+    {
+      "file": "services/MonitorService.js",
+      "count": 3
+    },
+    {
+      "file": "utils/PanelManager.js",
+      "count": 1
+    }
+  ]
+}

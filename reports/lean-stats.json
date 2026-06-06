@@ -1,0 +1,109 @@
+{
+  "total": 130,
+  "files": [
+    {
+      "file": "commands/ai/main.js",
+      "add": 1
+    },
+    {
+      "file": "commands/coupon/main.js",
+      "add": 5
+    },
+    {
+      "file": "commands/dashboard/main.js",
+      "add": 4
+    },
+    {
+      "file": "commands/loyalty/main.js",
+      "add": 4
+    },
+    {
+      "file": "commands/marketplace/main.js",
+      "add": 8
+    },
+    {
+      "file": "commands/product/main.js",
+      "add": 11
+    },
+    {
+      "file": "commands/review/main.js",
+      "add": 14
+    },
+    {
+      "file": "commands/search/main.js",
+      "add": 4
+    },
+    {
+      "file": "commands/service/main.js",
+      "add": 9
+    },
+    {
+      "file": "commands/store/create.js",
+      "add": 10
+    },
+    {
+      "file": "commands/tax/main.js",
+      "add": 9
+    },
+    {
+      "file": "commands/trust/main.js",
+      "add": 6
+    },
+    {
+      "file": "commands/wallet/main.js",
+      "add": 2
+    },
+    {
+      "file": "middleware/security.js",
+      "add": 2
+    },
+    {
+      "file": "services/AIChatSessionManager.js",
+      "add": 2
+    },
+    {
+      "file": "services/AIService.js",
+      "add": 1
+    },
+    {
+      "file": "services/AlertService.js",
+      "add": 4
+    },
+    {
+      "file": "services/AuditService.js",
+      "add": 1
+    },
+    {
+      "file": "services/BackupService.js",
+      "add": 1
+    },
+    {
+      "file": "services/BalanceService.js",
+      "add": 6
+    },
+    {
+      "file": "services/CommissionService.js",
+      "add": 2
+    },
+    {
+      "file": "services/FraudDetectionService.js",
+      "add": 2
+    },
+    {
+      "file": "services/MarketplaceService.js",
+      "add": 10
+    },
+    {
+      "file": "services/MemoryService.js",
+      "add": 3
+    },
+    {
+      "file": "services/PaymentService.js",
+      "add": 5
+    },
+    {
+      "file": "services/SettingsService.js",
+      "add": 4
+    }
+  ]
+}

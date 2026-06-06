@@ -1,0 +1,3292 @@
+{
+  "timestamp": "2026-06-06T09:21:52.462Z",
+  "totalFiles": 95,
+  "filesWithIssues": 63,
+  "topHotspots": [
+    {
+      "file": "services\\BackupService.js",
+      "totalLines": 595,
+      "totalScore": 112,
+      "findings": [
+        {
+          "pattern": "Synchronous fs operation",
+          "count": 16,
+          "severity": "high",
+          "weight": 5,
+          "score": 80
+        },
+        {
+          "pattern": "execFileSync / execSync",
+          "count": 2,
+          "severity": "high",
+          "weight": 5,
+          "score": 10
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 4,
+          "severity": "medium",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 4,
+          "severity": "medium",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Nested promise (anti-pattern)",
+          "count": 4,
+          "severity": "low",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.reduce in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "commands\\dashboard\\main.js",
+      "totalLines": 678,
+      "totalScore": 67,
+      "findings": [
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 16,
+          "severity": "medium",
+          "weight": 3,
+          "score": 48
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 14,
+          "severity": "medium",
+          "weight": 1,
+          "score": 14
+        },
+        {
+          "pattern": "Array.reduce in hot path",
+          "count": 4,
+          "severity": "medium",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "services\\MonitorService.js",
+      "totalLines": 380,
+      "totalScore": 50,
+      "findings": [
+        {
+          "pattern": "Spread operator in loop",
+          "count": 19,
+          "severity": "low",
+          "weight": 1,
+          "score": 19
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 7,
+          "severity": "medium",
+          "weight": 1,
+          "score": 7
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 6,
+          "severity": "low",
+          "weight": 1,
+          "score": 6
+        },
+        {
+          "pattern": "Deep object traversal",
+          "count": 6,
+          "severity": "low",
+          "weight": 1,
+          "score": 6
+        },
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 3,
+          "score": 6
+        },
+        {
+          "pattern": "Array.reduce in hot path",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "services\\AIChatSessionManager.js",
+      "totalLines": 796,
+      "totalScore": 46,
+      "findings": [
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 17,
+          "severity": "medium",
+          "weight": 1,
+          "score": 17
+        },
+        {
+          "pattern": "Synchronous fs operation",
+          "count": 3,
+          "severity": "high",
+          "weight": 5,
+          "score": 15
+        },
+        {
+          "pattern": "Nested promise (anti-pattern)",
+          "count": 5,
+          "severity": "low",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 2,
+          "severity": "low",
+          "weight": 2,
+          "score": 4
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Deep object traversal",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.forEach in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "handlers\\commandHandler.js",
+      "totalLines": 363,
+      "totalScore": 34,
+      "findings": [
+        {
+          "pattern": "Synchronous fs operation",
+          "count": 5,
+          "severity": "high",
+          "weight": 5,
+          "score": 25
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 4,
+          "severity": "medium",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        }
+      ]
+    },
+    {
+      "file": "services\\AIService.js",
+      "totalLines": 714,
+      "totalScore": 31,
+      "findings": [
+        {
+          "pattern": "Spread operator in loop",
+          "count": 7,
+          "severity": "low",
+          "weight": 1,
+          "score": 7
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 7,
+          "severity": "low",
+          "weight": 1,
+          "score": 7
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Array.reduce in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Nested promise (anti-pattern)",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Deep object traversal",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "deploy-commands.js",
+      "totalLines": 48,
+      "totalScore": 23,
+      "findings": [
+        {
+          "pattern": "Synchronous fs operation",
+          "count": 3,
+          "severity": "high",
+          "weight": 5,
+          "score": 15
+        },
+        {
+          "pattern": "console.log (blocking)",
+          "count": 4,
+          "severity": "low",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        }
+      ]
+    },
+    {
+      "file": "cache\\CacheService.js",
+      "totalLines": 346,
+      "totalScore": 21,
+      "findings": [
+        {
+          "pattern": "Spread operator in loop",
+          "count": 8,
+          "severity": "low",
+          "weight": 1,
+          "score": 8
+        },
+        {
+          "pattern": "JSON.parse in hot path",
+          "count": 3,
+          "severity": "low",
+          "weight": 2,
+          "score": 6
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 2,
+          "severity": "low",
+          "weight": 2,
+          "score": 4
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        }
+      ]
+    },
+    {
+      "file": "services\\FraudDetectionService.js",
+      "totalLines": 713,
+      "totalScore": 21,
+      "findings": [
+        {
+          "pattern": "Spread operator in loop",
+          "count": 7,
+          "severity": "low",
+          "weight": 1,
+          "score": 7
+        },
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 3,
+          "score": 6
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 4,
+          "severity": "medium",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Array.reduce in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.forEach in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "utils\\helpers.js",
+      "totalLines": 257,
+      "totalScore": 21,
+      "findings": [
+        {
+          "pattern": "Spread operator in loop",
+          "count": 7,
+          "severity": "low",
+          "weight": 1,
+          "score": 7
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "JSON.parse in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.reduce in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.forEach in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Nested promise (anti-pattern)",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "commands\\admin\\main.js",
+      "totalLines": 353,
+      "totalScore": 20,
+      "findings": [
+        {
+          "pattern": "Array.map in hot path",
+          "count": 9,
+          "severity": "medium",
+          "weight": 1,
+          "score": 9
+        },
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 3,
+          "score": 6
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "commands\\search\\main.js",
+      "totalLines": 345,
+      "totalScore": 18,
+      "findings": [
+        {
+          "pattern": "Array.slice in loop",
+          "count": 7,
+          "severity": "low",
+          "weight": 1,
+          "score": 7
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 6,
+          "severity": "low",
+          "weight": 1,
+          "score": 6
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5
+        }
+      ]
+    },
+    {
+      "file": "commands\\wallet\\main.js",
+      "totalLines": 788,
+      "totalScore": 16,
+      "findings": [
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 5,
+          "severity": "medium",
+          "weight": 3,
+          "score": 15
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "services\\AlertService.js",
+      "totalLines": 494,
+      "totalScore": 16,
+      "findings": [
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 3,
+          "severity": "medium",
+          "weight": 3,
+          "score": 9
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "services\\MemoryService.js",
+      "totalLines": 224,
+      "totalScore": 16,
+      "findings": [
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 6,
+          "severity": "medium",
+          "weight": 1,
+          "score": 6
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 6,
+          "severity": "low",
+          "weight": 1,
+          "score": 6
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.reduce in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        }
+      ]
+    },
+    {
+      "file": "utils\\logger.js",
+      "totalLines": 84,
+      "totalScore": 16,
+      "findings": [
+        {
+          "pattern": "Synchronous fs operation",
+          "count": 2,
+          "severity": "high",
+          "weight": 5,
+          "score": 10
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 2,
+          "severity": "low",
+          "weight": 2,
+          "score": 4
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        }
+      ]
+    },
+    {
+      "file": "commands\\settings\\main.js",
+      "totalLines": 478,
+      "totalScore": 15,
+      "findings": [
+        {
+          "pattern": "Array.map in hot path",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 4,
+          "severity": "medium",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 4,
+          "severity": "low",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        }
+      ]
+    },
+    {
+      "file": "services\\CommissionService.js",
+      "totalLines": 128,
+      "totalScore": 15,
+      "findings": [
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 5,
+          "severity": "medium",
+          "weight": 3,
+          "score": 15
+        }
+      ]
+    },
+    {
+      "file": "commands\\tax\\main.js",
+      "totalLines": 334,
+      "totalScore": 14,
+      "findings": [
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 3,
+          "severity": "medium",
+          "weight": 3,
+          "score": 9
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "commands\\marketplace\\main.js",
+      "totalLines": 339,
+      "totalScore": 12,
+      "findings": [
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 3,
+          "severity": "medium",
+          "weight": 3,
+          "score": 9
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        }
+      ]
+    },
+    {
+      "file": "commands\\store\\create.js",
+      "totalLines": 543,
+      "totalScore": 12,
+      "findings": [
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 3,
+          "score": 6
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Object.assign in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Deep object traversal",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "services\\BalanceService.js",
+      "totalLines": 455,
+      "totalScore": 12,
+      "findings": [
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 4,
+          "severity": "medium",
+          "weight": 3,
+          "score": 12
+        }
+      ]
+    },
+    {
+      "file": "services\\MarketplaceService.js",
+      "totalLines": 347,
+      "totalScore": 12,
+      "findings": [
+        {
+          "pattern": "Array.map in hot path",
+          "count": 6,
+          "severity": "medium",
+          "weight": 1,
+          "score": 6
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 4,
+          "severity": "low",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "commands\\review\\main.js",
+      "totalLines": 555,
+      "totalScore": 11,
+      "findings": [
+        {
+          "pattern": "Array.reduce in hot path",
+          "count": 4,
+          "severity": "medium",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Array.forEach in hot path",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "handlers\\eventHandler.js",
+      "totalLines": 37,
+      "totalScore": 11,
+      "findings": [
+        {
+          "pattern": "Synchronous fs operation",
+          "count": 1,
+          "severity": "high",
+          "weight": 5,
+          "score": 5
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 4,
+          "severity": "low",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "services\\PaymentService.js",
+      "totalLines": 626,
+      "totalScore": 11,
+      "findings": [
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 3,
+          "severity": "medium",
+          "weight": 3,
+          "score": 9
+        },
+        {
+          "pattern": "Array.reduce in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "commands\\market\\main.js",
+      "totalLines": 343,
+      "totalScore": 10,
+      "findings": [
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 3,
+          "severity": "low",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        }
+      ]
+    },
+    {
+      "file": "commands\\product\\main.js",
+      "totalLines": 973,
+      "totalScore": 10,
+      "findings": [
+        {
+          "pattern": "JSON.parse in hot path",
+          "count": 2,
+          "severity": "low",
+          "weight": 2,
+          "score": 4
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "commands\\monitor\\main.js",
+      "totalLines": 308,
+      "totalScore": 9,
+      "findings": [
+        {
+          "pattern": "Array.map in hot path",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 3,
+          "severity": "low",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "utils\\embeds.js",
+      "totalLines": 580,
+      "totalScore": 9,
+      "findings": [
+        {
+          "pattern": "Spread operator in loop",
+          "count": 5,
+          "severity": "low",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 4,
+          "severity": "medium",
+          "weight": 1,
+          "score": 4
+        }
+      ]
+    },
+    {
+      "file": "webhook\\server.js",
+      "totalLines": 257,
+      "totalScore": 9,
+      "findings": [
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Nested promise (anti-pattern)",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "commands\\loyalty\\main.js",
+      "totalLines": 313,
+      "totalScore": 8,
+      "findings": [
+        {
+          "pattern": "Array.map in hot path",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "services\\SettingsService.js",
+      "totalLines": 318,
+      "totalScore": 8,
+      "findings": [
+        {
+          "pattern": "Array.map in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "JSON.parse in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        }
+      ]
+    },
+    {
+      "file": "commands\\alert\\main.js",
+      "totalLines": 258,
+      "totalScore": 7,
+      "findings": [
+        {
+          "pattern": "Array.map in hot path",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        }
+      ]
+    },
+    {
+      "file": "commands\\backup\\main.js",
+      "totalLines": 263,
+      "totalScore": 7,
+      "findings": [
+        {
+          "pattern": "Array.map in hot path",
+          "count": 4,
+          "severity": "medium",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Deep object traversal",
+          "count": 3,
+          "severity": "low",
+          "weight": 1,
+          "score": 3
+        }
+      ]
+    },
+    {
+      "file": "commands\\coupon\\main.js",
+      "totalLines": 400,
+      "totalScore": 6,
+      "findings": [
+        {
+          "pattern": "Array.map in hot path",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "services\\ProBotApiService.js",
+      "totalLines": 76,
+      "totalScore": 6,
+      "findings": [
+        {
+          "pattern": "JSON.parse in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Nested promise (anti-pattern)",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "utils\\export.js",
+      "totalLines": 69,
+      "totalScore": 6,
+      "findings": [
+        {
+          "pattern": "Array.map in hot path",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "utils\\validation.js",
+      "totalLines": 343,
+      "totalScore": 6,
+      "findings": [
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.forEach in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "commands\\service\\main.js",
+      "totalLines": 657,
+      "totalScore": 5,
+      "findings": [
+        {
+          "pattern": "Array.map in hot path",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Object.assign in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        }
+      ]
+    },
+    {
+      "file": "commands\\trust\\main.js",
+      "totalLines": 387,
+      "totalScore": 5,
+      "findings": [
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 3,
+          "score": 3
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        }
+      ]
+    },
+    {
+      "file": "middleware\\mongoMonitor.js",
+      "totalLines": 44,
+      "totalScore": 5,
+      "findings": [
+        {
+          "pattern": "Spread operator in loop",
+          "count": 5,
+          "severity": "low",
+          "weight": 1,
+          "score": 5
+        }
+      ]
+    },
+    {
+      "file": "middleware\\security.js",
+      "totalLines": 272,
+      "totalScore": 5,
+      "findings": [
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Array.forEach in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "services\\AISecurityService.js",
+      "totalLines": 183,
+      "totalScore": 5,
+      "findings": [
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "commands\\ai\\main.js",
+      "totalLines": 202,
+      "totalScore": 4,
+      "findings": [
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 3,
+          "score": 3
+        },
+        {
+          "pattern": "Array.forEach in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "cache\\cacheHelper.js",
+      "totalLines": 39,
+      "totalScore": 3,
+      "findings": [
+        {
+          "pattern": "Spread operator in loop",
+          "count": 3,
+          "severity": "low",
+          "weight": 1,
+          "score": 3
+        }
+      ]
+    },
+    {
+      "file": "commands\\payment\\main.js",
+      "totalLines": 250,
+      "totalScore": 3,
+      "findings": [
+        {
+          "pattern": "Array.map in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "commands\\withdraw\\main.js",
+      "totalLines": 265,
+      "totalScore": 3,
+      "findings": [
+        {
+          "pattern": "Array.map in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "services\\HealthService.js",
+      "totalLines": 153,
+      "totalScore": 3,
+      "findings": [
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Deep object traversal",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "file": "utils\\PanelManager.js",
+      "totalLines": 90,
+      "totalScore": 3,
+      "findings": [
+        {
+          "pattern": "Spread operator in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    }
+  ],
+  "serviceSummary": [
+    {
+      "service": "commands",
+      "files": 24,
+      "totalScore": 265,
+      "findings": [
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 16,
+          "severity": "medium",
+          "weight": 3,
+          "score": 48
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 14,
+          "severity": "medium",
+          "weight": 1,
+          "score": 14
+        },
+        {
+          "pattern": "Array.reduce in hot path",
+          "count": 4,
+          "severity": "medium",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 9,
+          "severity": "medium",
+          "weight": 1,
+          "score": 9
+        },
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 3,
+          "score": 6
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 7,
+          "severity": "low",
+          "weight": 1,
+          "score": 7
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 6,
+          "severity": "low",
+          "weight": 1,
+          "score": 6
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 5,
+          "severity": "medium",
+          "weight": 3,
+          "score": 15
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 4,
+          "severity": "medium",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 4,
+          "severity": "low",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 3,
+          "severity": "medium",
+          "weight": 3,
+          "score": 9
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 3,
+          "severity": "medium",
+          "weight": 3,
+          "score": 9
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 3,
+          "score": 6
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Object.assign in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Deep object traversal",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.reduce in hot path",
+          "count": 4,
+          "severity": "medium",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Array.forEach in hot path",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 3,
+          "severity": "low",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "JSON.parse in hot path",
+          "count": 2,
+          "severity": "low",
+          "weight": 2,
+          "score": 4
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 3,
+          "severity": "low",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 4,
+          "severity": "medium",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Deep object traversal",
+          "count": 3,
+          "severity": "low",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Object.assign in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 3,
+          "score": 3
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 3,
+          "score": 3
+        },
+        {
+          "pattern": "Array.forEach in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "BackupService",
+      "files": 1,
+      "totalScore": 112,
+      "findings": [
+        {
+          "pattern": "Synchronous fs operation",
+          "count": 16,
+          "severity": "high",
+          "weight": 5,
+          "score": 80
+        },
+        {
+          "pattern": "execFileSync / execSync",
+          "count": 2,
+          "severity": "high",
+          "weight": 5,
+          "score": 10
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 4,
+          "severity": "medium",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 4,
+          "severity": "medium",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Nested promise (anti-pattern)",
+          "count": 4,
+          "severity": "low",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.reduce in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "utils",
+      "files": 8,
+      "totalScore": 64,
+      "findings": [
+        {
+          "pattern": "Spread operator in loop",
+          "count": 7,
+          "severity": "low",
+          "weight": 1,
+          "score": 7
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "JSON.parse in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.reduce in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.forEach in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Nested promise (anti-pattern)",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Synchronous fs operation",
+          "count": 2,
+          "severity": "high",
+          "weight": 5,
+          "score": 10
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 2,
+          "severity": "low",
+          "weight": 2,
+          "score": 4
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 5,
+          "severity": "low",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 4,
+          "severity": "medium",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.forEach in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Nested promise (anti-pattern)",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "MonitorService",
+      "files": 1,
+      "totalScore": 50,
+      "findings": [
+        {
+          "pattern": "Spread operator in loop",
+          "count": 19,
+          "severity": "low",
+          "weight": 1,
+          "score": 19
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 7,
+          "severity": "medium",
+          "weight": 1,
+          "score": 7
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 6,
+          "severity": "low",
+          "weight": 1,
+          "score": 6
+        },
+        {
+          "pattern": "Deep object traversal",
+          "count": 6,
+          "severity": "low",
+          "weight": 1,
+          "score": 6
+        },
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 3,
+          "score": 6
+        },
+        {
+          "pattern": "Array.reduce in hot path",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "AIChatSessionManager",
+      "files": 1,
+      "totalScore": 46,
+      "findings": [
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 17,
+          "severity": "medium",
+          "weight": 1,
+          "score": 17
+        },
+        {
+          "pattern": "Synchronous fs operation",
+          "count": 3,
+          "severity": "high",
+          "weight": 5,
+          "score": 15
+        },
+        {
+          "pattern": "Nested promise (anti-pattern)",
+          "count": 5,
+          "severity": "low",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 2,
+          "severity": "low",
+          "weight": 2,
+          "score": 4
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Deep object traversal",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.forEach in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "handlers",
+      "files": 2,
+      "totalScore": 45,
+      "findings": [
+        {
+          "pattern": "Synchronous fs operation",
+          "count": 5,
+          "severity": "high",
+          "weight": 5,
+          "score": 25
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 4,
+          "severity": "medium",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Synchronous fs operation",
+          "count": 1,
+          "severity": "high",
+          "weight": 5,
+          "score": 5
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 4,
+          "severity": "low",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "AIService",
+      "files": 1,
+      "totalScore": 31,
+      "findings": [
+        {
+          "pattern": "Spread operator in loop",
+          "count": 7,
+          "severity": "low",
+          "weight": 1,
+          "score": 7
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 7,
+          "severity": "low",
+          "weight": 1,
+          "score": 7
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Array.reduce in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Nested promise (anti-pattern)",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Deep object traversal",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "cache",
+      "files": 3,
+      "totalScore": 25,
+      "findings": [
+        {
+          "pattern": "Spread operator in loop",
+          "count": 8,
+          "severity": "low",
+          "weight": 1,
+          "score": 8
+        },
+        {
+          "pattern": "JSON.parse in hot path",
+          "count": 3,
+          "severity": "low",
+          "weight": 2,
+          "score": 6
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 2,
+          "severity": "low",
+          "weight": 2,
+          "score": 4
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 3,
+          "severity": "low",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "deploy-commands.js",
+      "files": 1,
+      "totalScore": 23,
+      "findings": [
+        {
+          "pattern": "Synchronous fs operation",
+          "count": 3,
+          "severity": "high",
+          "weight": 5,
+          "score": 15
+        },
+        {
+          "pattern": "console.log (blocking)",
+          "count": 4,
+          "severity": "low",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        }
+      ]
+    },
+    {
+      "service": "FraudDetectionService",
+      "files": 1,
+      "totalScore": 21,
+      "findings": [
+        {
+          "pattern": "Spread operator in loop",
+          "count": 7,
+          "severity": "low",
+          "weight": 1,
+          "score": 7
+        },
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 3,
+          "score": 6
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 4,
+          "severity": "medium",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Array.reduce in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.forEach in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "AlertService",
+      "files": 1,
+      "totalScore": 16,
+      "findings": [
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 3,
+          "severity": "medium",
+          "weight": 3,
+          "score": 9
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "MemoryService",
+      "files": 1,
+      "totalScore": 16,
+      "findings": [
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 6,
+          "severity": "medium",
+          "weight": 1,
+          "score": 6
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 6,
+          "severity": "low",
+          "weight": 1,
+          "score": 6
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.reduce in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        }
+      ]
+    },
+    {
+      "service": "CommissionService",
+      "files": 1,
+      "totalScore": 15,
+      "findings": [
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 5,
+          "severity": "medium",
+          "weight": 3,
+          "score": 15
+        }
+      ]
+    },
+    {
+      "service": "BalanceService",
+      "files": 1,
+      "totalScore": 12,
+      "findings": [
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 4,
+          "severity": "medium",
+          "weight": 3,
+          "score": 12
+        }
+      ]
+    },
+    {
+      "service": "MarketplaceService",
+      "files": 1,
+      "totalScore": 12,
+      "findings": [
+        {
+          "pattern": "Array.map in hot path",
+          "count": 6,
+          "severity": "medium",
+          "weight": 1,
+          "score": 6
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 4,
+          "severity": "low",
+          "weight": 1,
+          "score": 4
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "PaymentService",
+      "files": 1,
+      "totalScore": 11,
+      "findings": [
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 3,
+          "severity": "medium",
+          "weight": 3,
+          "score": 9
+        },
+        {
+          "pattern": "Array.reduce in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "middleware",
+      "files": 2,
+      "totalScore": 10,
+      "findings": [
+        {
+          "pattern": "Spread operator in loop",
+          "count": 5,
+          "severity": "low",
+          "weight": 1,
+          "score": 5
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Array.forEach in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "webhook",
+      "files": 1,
+      "totalScore": 9,
+      "findings": [
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Nested promise (anti-pattern)",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "SettingsService",
+      "files": 1,
+      "totalScore": 8,
+      "findings": [
+        {
+          "pattern": "Array.map in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "JSON.parse in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        }
+      ]
+    },
+    {
+      "service": "ProBotApiService",
+      "files": 1,
+      "totalScore": 6,
+      "findings": [
+        {
+          "pattern": "JSON.parse in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Nested promise (anti-pattern)",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "AISecurityService",
+      "files": 1,
+      "totalScore": 5,
+      "findings": [
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 3,
+          "severity": "medium",
+          "weight": 1,
+          "score": 3
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "HealthService",
+      "files": 1,
+      "totalScore": 3,
+      "findings": [
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2
+        },
+        {
+          "pattern": "Deep object traversal",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "database",
+      "files": 2,
+      "totalScore": 3,
+      "findings": [
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "console.log (blocking)",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "index.js",
+      "files": 1,
+      "totalScore": 2,
+      "findings": [
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "ProBotMonitorService",
+      "files": 1,
+      "totalScore": 2,
+      "findings": [
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "WebhookService",
+      "files": 1,
+      "totalScore": 2,
+      "findings": [
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2
+        }
+      ]
+    },
+    {
+      "service": "config",
+      "files": 1,
+      "totalScore": 1,
+      "findings": [
+        {
+          "pattern": "console.log (blocking)",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    },
+    {
+      "service": "events",
+      "files": 1,
+      "totalScore": 1,
+      "findings": [
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1
+        }
+      ]
+    }
+  ]
+}

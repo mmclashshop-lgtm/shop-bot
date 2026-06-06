@@ -1,0 +1,1812 @@
+{
+  "timestamp": "2026-06-06T09:21:57.940Z",
+  "totalFiles": 95,
+  "filesWithQueries": 37,
+  "totalQueries": 608,
+  "totalMissingLean": 217,
+  "patternSummary": [
+    {
+      "pattern": ".findOne() — missing lean()",
+      "count": 113,
+      "files": 26
+    },
+    {
+      "pattern": ".find() — missing lean()",
+      "count": 104,
+      "files": 29
+    },
+    {
+      "pattern": ".countDocuments()",
+      "count": 70,
+      "files": 18
+    },
+    {
+      "pattern": "find().sort()",
+      "count": 68,
+      "files": 26
+    },
+    {
+      "pattern": "find().sort().limit() pagination",
+      "count": 62,
+      "files": 21
+    },
+    {
+      "pattern": ".findById()",
+      "count": 54,
+      "files": 10
+    },
+    {
+      "pattern": ".aggregate()",
+      "count": 52,
+      "files": 14
+    },
+    {
+      "pattern": "$in operator",
+      "count": 21,
+      "files": 9
+    },
+    {
+      "pattern": ".updateOne()",
+      "count": 15,
+      "files": 6
+    },
+    {
+      "pattern": "$ne / $nin (poor index)",
+      "count": 11,
+      "files": 9
+    },
+    {
+      "pattern": ".createIndex()",
+      "count": 11,
+      "files": 1
+    },
+    {
+      "pattern": "$or (no index support)",
+      "count": 7,
+      "files": 6
+    },
+    {
+      "pattern": "sort().skip() (expensive)",
+      "count": 7,
+      "files": 6
+    },
+    {
+      "pattern": ".updateMany()",
+      "count": 4,
+      "files": 3
+    },
+    {
+      "pattern": ".deleteMany()",
+      "count": 3,
+      "files": 3
+    },
+    {
+      "pattern": "$regex operator",
+      "count": 2,
+      "files": 1
+    },
+    {
+      "pattern": ".deleteOne()",
+      "count": 2,
+      "files": 2
+    },
+    {
+      "pattern": "find().populate()",
+      "count": 2,
+      "files": 1
+    }
+  ],
+  "criticalFindings": [
+    {
+      "file": "commands\\dashboard\\main.js",
+      "missingLean": 14,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 146,
+          "snippet": "Order.find({}).sort({ createdAt: -1 }).limit(5).lean(),",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 147,
+          "snippet": "Review.find({ isHidden: false }).sort({ createdAt: -1 }).limit(5).populate('itemId', 'name').lean(),",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 263,
+          "snippet": "Product.find({ storeId: store._id, isActive: true }).sort({ soldCount: -1 }).limit(5).lean(),",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 264,
+          "snippet": "Order.find({ storeId: store._id }).sort({ createdAt: -1 }).limit(5).lean(),",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 317,
+          "snippet": "const stores = await Store.find({ ownerId: targetUser.id, isActive: true }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 324,
+          "snippet": "Order.find({ sellerId: targetUser.id }).sort({ createdAt: -1 }).limit(5).lean(),",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 546,
+          "snippet": "data = await Store.find({ isActive: true, isSuspended: false })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 554,
+          "snippet": "data = await Product.find({ isActive: true })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 563,
+          "snippet": "data = await Service.find({ isActive: true })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 572,
+          "snippet": "data = await User.find({ 'stats.totalSales': { $gt: 0 } })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 621,
+          "snippet": "data = await Order.find({}).sort({ createdAt: -1 }).limit(1000).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 626,
+          "snippet": "data = await Transaction.find({}).sort({ createdAt: -1 }).limit(1000).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 631,
+          "snippet": "data = await Product.find({}).sort({ soldCount: -1 }).limit(1000).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 311,
+          "snippet": "const user = await User.findOne({ discordId: targetUser.id }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "services\\PaymentService.js",
+      "missingLean": 13,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 576,
+          "snippet": "return Payment.find({ buyerId: userId }).sort({ createdAt: -1 }).limit(limit).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 580,
+          "snippet": "return Payment.find({ sellerId }).sort({ createdAt: -1 }).limit(limit).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 584,
+          "snippet": "return Payment.find({ storeId }).sort({ createdAt: -1 }).limit(limit).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 588,
+          "snippet": "return Payment.find({ buyerId: userId, status: { $in: ['pending', 'awaiting_verification'] } })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 618,
+          "snippet": "return Payment.find({ status: 'awaiting_verification' })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 46,
+          "snippet": "const existing = await Payment.findOne({ idempotencyKey: data.idempotencyKey });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 115,
+          "snippet": "const duplicateCheck = await Payment.findOne({",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 117,
+          "snippet": "_id: { $ne: await Payment.findOne({ paymentId }).select('_id') },",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 162,
+          "snippet": "const payment = await Payment.findOne({ paymentId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 234,
+          "snippet": "const existing = await Payment.findOne({ paymentId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 290,
+          "snippet": "const existing = await Payment.findOne({ paymentId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 528,
+          "snippet": "const existing = await Payment.findOne({ paymentId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 572,
+          "snippet": "return Payment.findOne({ paymentId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "services\\BalanceService.js",
+      "missingLean": 14,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 46,
+          "snippet": "return User.find({ platformEarnings: { $gt: 0 } })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 55,
+          "snippet": "return Store.find({ isActive: true })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 64,
+          "snippet": "return Product.find({ isActive: true })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 421,
+          "snippet": "return Withdrawal.find({ userId }).sort({ createdAt: -1 }).limit(limit).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 425,
+          "snippet": "return Withdrawal.find({ status: 'pending' }).sort({ requestedAt: -1 }).limit(50).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 25,
+          "snippet": "const user = await User.findOne({ discordId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 76,
+          "snippet": "const user = await User.findOne({ discordId });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 82,
+          "snippet": "const settings = await MarketplaceSettings.findOne().lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 87,
+          "snippet": "const existing = await Withdrawal.findOne({ idempotencyKey: paymentDetails.idempotencyKey });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 101,
+          "snippet": "const lastWithdrawal = await Withdrawal.findOne({ userId: discordId, status: { $in: ['approved', 'completed'] } })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 224,
+          "snippet": "const existing = await Withdrawal.findOne({ withdrawalId }).session(session).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 317,
+          "snippet": "const existing = await Withdrawal.findOne({ withdrawalId }).session(session).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 401,
+          "snippet": "const existing = await Withdrawal.findOne({ withdrawalId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 417,
+          "snippet": "return Withdrawal.findOne({ withdrawalId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "services\\FraudDetectionService.js",
+      "missingLean": 17,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 128,
+          "snippet": "const recentAlerts = await FraudAlert.find({",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 252,
+          "snippet": "return FraudAlert.find({ userId }).sort({ createdAt: -1 }).limit(limit).hint({ userId: 1, createdAt: -1 }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 258,
+          "snippet": "FraudAlert.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).hint({ createdAt: -1 }).lean(),",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 314,
+          "snippet": "const pendingPays = await PendingAction.find({",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 642,
+          "snippet": "const sameIpUsers = await User.find({ 'metadata.lastIp': ipAddress, discordId: { $ne: userId } })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 105,
+          "snippet": "const recent = await FraudAlert.findOne({",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 221,
+          "snippet": "return FraudAlert.findOne({ alertId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 225,
+          "snippet": "const alert = await FraudAlert.findOne({ alertId });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 320,
+          "snippet": "const user = await User.findOne({ discordId: userId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 363,
+          "snippet": "const user = await User.findOne({ discordId: userId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 412,
+          "snippet": "const user = await User.findOne({ discordId: userId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 431,
+          "snippet": "const existingPayment = await Payment.findOne({ probotTransactionId: transactionId }).lean().catch(() => null);",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 484,
+          "snippet": "const user = await User.findOne({ discordId: userId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 518,
+          "snippet": "const user = await User.findOne({ discordId: userId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 557,
+          "snippet": "const user = await User.findOne({ discordId: userId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 590,
+          "snippet": "const user = await User.findOne({ discordId: userId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 682,
+          "snippet": "const user = await User.findOne({ discordId: userId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "services\\MarketplaceService.js",
+      "missingLean": 12,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 122,
+          "snippet": "return Store.find({",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 138,
+          "snippet": "return Product.find({",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 149,
+          "snippet": "return Product.find({ isActive: true })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 157,
+          "snippet": "const stores = await Store.find({",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 166,
+          "snippet": "const products = await Product.find({",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 255,
+          "snippet": "const stores = await Store.find({ isActive: true, isSuspended: false })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 273,
+          "snippet": "const products = await Product.find({ isActive: true })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 292,
+          "snippet": "const services = await Service.find({ isActive: true })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 315,
+          "snippet": "products = await Product.find({ isActive: true }).sort({ soldCount: -1 }).limit(10).populate('storeId', 'name').lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 317,
+          "snippet": "products = await Product.find({ isActive: true, category }).sort({ soldCount: -1 }).limit(10).populate('storeId', 'name'",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 16,
+          "snippet": "const settings = await MarketplaceSettings.findOne();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 235,
+          "snippet": "const settings = await MarketplaceSettings.findOne({ guildId: interaction.guildId });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "commands\\review\\main.js",
+      "missingLean": 11,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 259,
+          "snippet": "const allReviews = await Review.find({ storeId: store._id, isHidden: false });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 272,
+          "snippet": "const allReviews = await Review.find({ itemId: product._id, type: 'product', isHidden: false });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 284,
+          "snippet": "const allReviews = await Review.find({ itemId: service._id, type: 'service', isHidden: false });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 297,
+          "snippet": "const allSellerReviews = await Review.find({ sellerId: seller.discordId, isHidden: false });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 435,
+          "snippet": "Review.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 504,
+          "snippet": "const existingVote = review.votes.find(v => v.userId === interaction.user.id);",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 113,
+          "snippet": "const existingReview = await Review.findOne({ orderId: order._id }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 192,
+          "snippet": "const existingReview = await Review.findOne({ orderId: order._id }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 236,
+          "snippet": "const buyer = await User.findOne({ discordId: interaction.user.id });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 295,
+          "snippet": "const seller = await User.findOne({ discordId: order.sellerId });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 369,
+          "snippet": "const user = await User.findOne({ discordId: interaction.user.id }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "commands\\product\\main.js",
+      "missingLean": 7,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 374,
+          "snippet": "const products = await Product.find({ storeId, isActive: true })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 946,
+          "snippet": "const products = await Product.find({ storeId, isActive: true })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 116,
+          "snippet": "const settings = await MarketplaceSettings.findOne();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 482,
+          "snippet": "const buyer = await User.findOne({ discordId: interaction.user.id }).session(session);",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 490,
+          "snippet": "const seller = await User.findOne({ discordId: store.ownerId }).session(session);",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 510,
+          "snippet": "const coupon = await Coupon.findOne({",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 547,
+          "snippet": "const settings = await MarketplaceSettings.findOne().session(session);",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "commands\\store\\create.js",
+      "missingLean": 14,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 309,
+          "snippet": "targetChannel = guild.channels.cache.find(c => c.name === 'marketplace' || c.name === 'السوق');",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 313,
+          "snippet": "targetChannel = guild.channels.cache.find(c => c.type === ChannelType.GuildText && c.permissionsFor(client.user).has('Se",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 458,
+          "snippet": "const stores = await Store.find({ ownerId: interaction.user.id, isActive: true })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 502,
+          "snippet": "Order.find({ storeId: store._id }).sort({ createdAt: -1 }).limit(5).lean(),",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 73,
+          "snippet": "const user = await User.findOne({ discordId: interaction.user.id });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 78,
+          "snippet": "const settings = await MarketplaceSettings.findOne();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 149,
+          "snippet": "const settings = await MarketplaceSettings.findOne();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 159,
+          "snippet": "user = await User.findOne({ discordId: interaction.user.id }).session(session);",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 220,
+          "snippet": "const settings = await MarketplaceSettings.findOne();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 301,
+          "snippet": "const settings = await MarketplaceSettings.findOne();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 321,
+          "snippet": "const ownerUser = await User.findOne({ discordId: store.ownerId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 385,
+          "snippet": "const ownerUser = await User.findOne({ discordId: store.ownerId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 427,
+          "snippet": "const store = await Store.findOne({ ownerId: interaction.user.id });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 440,
+          "snippet": "const ownerUser = await User.findOne({ discordId: store.ownerId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "commands\\marketplace\\main.js",
+      "missingLean": 5,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 273,
+          "snippet": "const stores = await Store.find({ isActive: true, isSuspended: false })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 296,
+          "snippet": "const products = await Product.find({ isActive: true })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 320,
+          "snippet": "const services = await Service.find({ isActive: true })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 112,
+          "snippet": "let settings = await MarketplaceSettings.findOne({ guildId: interaction.guildId });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 139,
+          "snippet": "const settings = await MarketplaceSettings.findOne({ guildId: interaction.guildId });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "services\\AlertService.js",
+      "missingLean": 5,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 410,
+          "snippet": "const openAlerts = await AlertLog.find({ status: { $in: ['open', 'acknowledged'] } })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 427,
+          "snippet": "return AlertLog.find(query)",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 290,
+          "snippet": "const existing = await AlertLog.findOne(",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 338,
+          "snippet": "const existing = await AlertLog.findOne(",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 360,
+          "snippet": "const alert = await AlertLog.findOne({ alertId });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "commands\\market\\main.js",
+      "missingLean": 8,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 95,
+          "snippet": "const stores = await Store.find({ isActive: true, isSuspended: false }).sort({ 'stats.totalSales': -1 }).limit(25).lean(",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 96,
+          "snippet": "const myStores = await Store.find({ ownerId: interaction.user.id }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 117,
+          "snippet": "const recent = await Product.find({ isActive: true }).sort({ createdAt: -1 }).limit(10).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 205,
+          "snippet": "const stores = await Store.find({ ownerId: interaction.user.id }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 228,
+          "snippet": "const products = await Product.find({ isActive: true }).sort({ soldCount: -1 }).limit(25).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 242,
+          "snippet": "const products = await Product.find({ isActive: true, isFeatured: true }).sort({ soldCount: -1 }).limit(10).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 263,
+          "snippet": "const services = await Service.find({ isActive: true }).sort({ soldCount: -1 }).limit(25).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 154,
+          "snippet": "const user = await User.findOne({ discordId: interaction.user.id }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "services\\BackupService.js",
+      "missingLean": 8,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 142,
+          "snippet": "const backups = await BackupLog.find({ status: { $ne: 'running' } }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 434,
+          "snippet": "return BackupLog.find(query)",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 71,
+          "snippet": "const recent = await BackupLog.findOne().sort({ createdAt: -1 }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 73,
+          "snippet": "const oldestHealthy = await BackupLog.findOne({ status: { $in: ['completed', 'verified'] } }).sort({ createdAt: 1 }).lea",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 286,
+          "snippet": "const log = await BackupLog.findOne({ backupId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 342,
+          "snippet": "const log = await BackupLog.findOne({ backupId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 441,
+          "snippet": "return BackupLog.findOne({ backupId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 451,
+          "snippet": "const lastBackup = await BackupLog.findOne().sort({ createdAt: -1 }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "commands\\service\\main.js",
+      "missingLean": 5,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 319,
+          "snippet": "Service.find({ storeId: store._id, isActive: true })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 423,
+          "snippet": "let selectedPackage = service.packages.find(p => p.name === packageName) || null;",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 98,
+          "snippet": "const settings = await MarketplaceSettings.findOne();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 418,
+          "snippet": "const buyer = await User.findOne({ discordId: interaction.user.id });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 555,
+          "snippet": "const settings = await MarketplaceSettings.findOne();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "commands\\tax\\main.js",
+      "missingLean": 10,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 230,
+          "snippet": "Store.find({ isActive: true, isSuspended: false })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 235,
+          "snippet": "Transaction.find({ type: 'commission', status: 'completed', createdAt: { $gte: startDate } })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 292,
+          "snippet": "const pendingSales = await Transaction.find(query).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 85,
+          "snippet": "let settings = await MarketplaceSettings.findOne();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 118,
+          "snippet": "let settings = await MarketplaceSettings.findOne();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 138,
+          "snippet": "let settings = await MarketplaceSettings.findOne();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 146,
+          "snippet": "const taxUser = await User.findOne({ discordId: user.id });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 170,
+          "snippet": "let settings = await MarketplaceSettings.findOne();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 283,
+          "snippet": "const settings = await MarketplaceSettings.findOne();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 302,
+          "snippet": "const existingCommission = await Transaction.findOne({",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "commands\\wallet\\main.js",
+      "missingLean": 9,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 320,
+          "snippet": "Transaction.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 100,
+          "snippet": "const user = await User.findOne({ discordId: targetUser.id }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 148,
+          "snippet": "const user = await User.findOne({ discordId: interaction.user.id }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 184,
+          "snippet": "const user = await User.findOne({ discordId: interaction.user.id }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 257,
+          "snippet": "const sender = await User.findOne({ discordId: interaction.user.id }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 268,
+          "snippet": "const receiver = await User.findOne({ discordId: targetUser.id }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 347,
+          "snippet": "const user = await User.findOne({ discordId: interaction.user.id }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 598,
+          "snippet": "const receiver = await User.findOne({ discordId: targetUserId }).session(session);",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 685,
+          "snippet": "const user = await User.findOne({ discordId: interaction.user.id });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "services\\AIChatSessionManager.js",
+      "missingLean": 9,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 37,
+          "snippet": "const category = guild.channels.cache.find(c => c.type === ChannelType.GuildCategory && c.name === config.aiChat.categor",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 79,
+          "snippet": "let channel = guild.channels.cache.find(c => c.name.startsWith(`ai-`) && c.parent?.name === config.aiChat.categoryName &",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 109,
+          "snippet": "const retry = guild.channels.cache.find(c => c.name.startsWith(`ai-`) && c.parent?.name === config.aiChat.categoryName &",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 177,
+          "snippet": "let category = guild.channels.cache.find(c => c.type === ChannelType.GuildCategory && c.name === config.aiChat.categoryN",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 735,
+          "snippet": "const category = guild.channels.cache.find(c => c.type === ChannelType.GuildCategory && c.name === config.aiChat.categor",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 99,
+          "snippet": "const existingDoc = await AIChat.findOne({ userId: user.id, guildId: guild.id, channelId: { $ne: null } }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 462,
+          "snippet": "const dbChat = await AIChat.findOne({ channelId: channel.id });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 524,
+          "snippet": "const chat = await AIChat.findOne({ channelId: channel.id }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 747,
+          "snippet": "const dbChat = await AIChat.findOne({ channelId: channel.id });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "commands\\coupon\\main.js",
+      "missingLean": 11,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 77,
+          "snippet": "const userStores = await Store.find({ ownerId: interaction.user.id }).select('_id').lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 193,
+          "snippet": "const userStores = await Store.find({ ownerId: interaction.user.id }).select('_id').lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 221,
+          "snippet": "const userStores = await Store.find({ ownerId: interaction.user.id }).select('_id').lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 250,
+          "snippet": "const userStores = await Store.find({ ownerId: interaction.user.id }).select('_id').lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 262,
+          "snippet": "Coupon.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 128,
+          "snippet": "while (await Coupon.findOne({ code })) {",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 133,
+          "snippet": "if (await Coupon.findOne({ code })) {",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 187,
+          "snippet": "const coupon = await Coupon.findOne({ code });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 215,
+          "snippet": "const coupon = await Coupon.findOne({ code });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 290,
+          "snippet": "const coupon = await Coupon.findOne({ code }).populate('storeId', 'name').lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 325,
+          "snippet": "const coupon = await Coupon.findOne({ code });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "commands\\search\\main.js",
+      "missingLean": 5,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 130,
+          "snippet": "const matchedStores = await Store.find({ type: filters.storeType }).select('_id').lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 151,
+          "snippet": "const stores = await Store.find({ ...storeQuery, ...nameFilter })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 160,
+          "snippet": "const products = await Product.find({ ...productQuery, ...nameFilter })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 170,
+          "snippet": "const services = await Service.find({ ...serviceQuery, ...nameFilter })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 180,
+          "snippet": "const sellers = await User.find({ username: nameRegex, trustLevel: { $ne: 'none' } })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "commands\\trust\\main.js",
+      "missingLean": 7,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 253,
+          "snippet": "const stores = await Store.find({ ownerId: targetUser.id, isActive: true }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 294,
+          "snippet": "const users = await User.find({ trustLevel: { $ne: 'none' } })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 117,
+          "snippet": "const seller = await User.findOne({ discordId: store.ownerId }).session(session);",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 124,
+          "snippet": "const settings = await MarketplaceSettings.findOne().session(session);",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 205,
+          "snippet": "const seller = await User.findOne({ discordId: store.ownerId }).session(session);",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 247,
+          "snippet": "const user = await User.findOne({ discordId: targetUser.id }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 379,
+          "snippet": "const user = await User.findOne({ discordId: userId }).select('createdAt').lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "services\\CommissionService.js",
+      "missingLean": 3,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 62,
+          "snippet": "return Commission.find({ sellerId, status: 'completed' })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 69,
+          "snippet": "return Commission.find({ storeId, status: 'completed' })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 12,
+          "snippet": "const settings = await MarketplaceSettings.findOne().lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "commands\\loyalty\\main.js",
+      "missingLean": 6,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 224,
+          "snippet": "const rewards = await LoyaltyReward.find({ userId: interaction.user.id })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 251,
+          "snippet": "const users = await User.find({ loyaltyPoints: { $gt: 0 } })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 64,
+          "snippet": "const user = await User.findOne({ discordId: targetUser.id }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 112,
+          "snippet": "const user = await User.findOne({ discordId: interaction.user.id }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 161,
+          "snippet": "const user = await User.findOne({ discordId: interaction.user.id });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 177,
+          "snippet": "const existingReward = await LoyaltyReward.findOne({ userId: interaction.user.id, rewardId, status: 'claimed' });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "services\\MemoryService.js",
+      "missingLean": 3,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 40,
+          "snippet": "const sessions = await AIChat.find({ userId, guildId })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 71,
+          "snippet": "const sessions = await AIChat.find({ guildId })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 141,
+          "snippet": "const settings = await MarketplaceSettings.findOne({ guildId });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "services\\AIService.js",
+      "missingLean": 4,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 219,
+          "snippet": "const lastUserMsg = [...messages].reverse().find(m => m.role === 'user')?.content || '';",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 242,
+          "snippet": "const sysMsg = sanitizedMessages.find(m => m.role === 'system');",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 250,
+          "snippet": "const lastUserMsg = [...sanitizedMessages].reverse().find(m => m.role === 'user')?.content || '';",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 546,
+          "snippet": "return await AIChat.find({ userId, guildId })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "services\\SettingsService.js",
+      "missingLean": 5,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 221,
+          "snippet": "return SettingsHistory.find(query)",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 64,
+          "snippet": "let settings = await ServerSettings.findOne({ guildId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 136,
+          "snippet": "const settings = await ServerSettings.findOne({ guildId });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 141,
+          "snippet": "const currentSettings = await ServerSettings.findOne({ guildId });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 205,
+          "snippet": "const change = await SettingsHistory.findOne({ changeId, guildId });",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "commands\\ai\\main.js",
+      "missingLean": 1,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 176,
+          "snippet": "const favorites = await AIChat.find({ userId: interaction.user.id, $or: [{ isPinned: true }, { isFavorite: true }] })",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "commands\\ticket\\main.js",
+      "missingLean": 1,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 152,
+          "snippet": "const tickets = await Ticket.find({ userId: interaction.user.id }).sort({ createdAt: -1 }).limit(10).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "commands\\profile\\main.js",
+      "missingLean": 2,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 22,
+          "snippet": "const stores = await Store.find({ ownerId: interaction.user.id, isActive: true }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 18,
+          "snippet": "const user = await User.findOne({ discordId: interaction.user.id }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "services\\AuditService.js",
+      "missingLean": 1,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 27,
+          "snippet": "return AuditLog.find(query)",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "commands\\withdraw\\main.js",
+      "missingLean": 3,
+      "queries": [
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 77,
+          "snippet": "const user = await User.findOne({ discordId: interaction.user.id }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 115,
+          "snippet": "const settings = await MarketplaceSettings.findOne().lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 153,
+          "snippet": "const user = await User.findOne({ discordId: targetUser.id }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "middleware\\security.js",
+      "missingLean": 1,
+      "queries": [
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 39,
+          "snippet": "const user = await User.findOne({ discordId }).lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "commands\\settings\\main.js",
+      "missingLean": 2,
+      "queries": [
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 145,
+          "snippet": "const sInfo = SECTIONS.find(s => s.key === section);",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        },
+        {
+          "pattern": ".find() — missing lean()",
+          "line": 431,
+          "snippet": "const sInfo = SECTIONS.find(s => s.key === section);",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    },
+    {
+      "file": "commands\\payment\\main.js",
+      "missingLean": 1,
+      "queries": [
+        {
+          "pattern": ".findOne() — missing lean()",
+          "line": 97,
+          "snippet": "const settings = await MarketplaceSettings.findOne().lean();",
+          "severity": "high",
+          "issue": "Missing .lean() — returns full Mongoose documents with all getters/setters"
+        }
+      ]
+    }
+  ]
+}

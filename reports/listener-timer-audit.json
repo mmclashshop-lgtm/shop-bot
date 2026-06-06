@@ -1,0 +1,45 @@
+{
+  "timestamp": "2026-06-06T09:22:29.427Z",
+  "totalFiles": 95,
+  "timerSummary": {
+    "setInterval": 18,
+    "setTimeout": 12,
+    "clearInterval": 17,
+    "clearTimeout": 8,
+    "uncleaned": 1
+  },
+  "listenerSummary": {
+    "processOn": 6,
+    "clientOn": 6,
+    "mongooseOn": 4,
+    "once": 1,
+    "duplicateEvents": 3
+  },
+  "uncleanedTimers": [
+    {
+      "file": "services\\AIChatSessionManager.js",
+      "uncleaned": 1,
+      "timers": {
+        "setInterval": 4,
+        "setTimeout": 5,
+        "clearInterval": 4,
+        "clearTimeout": 0,
+        "total": 9,
+        "cleared": 4,
+        "timerVars": 1,
+        "cleanedVars": 0,
+        "uncleaned": 1
+      }
+    }
+  ],
+  "duplicateListeners": [
+    {
+      "file": "services\\BackupService.js",
+      "events": [
+        "error (4x)",
+        "data (2x)",
+        "end (2x)"
+      ]
+    }
+  ]
+}
