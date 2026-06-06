@@ -112,7 +112,7 @@ module.exports = {
       Payment.countDocuments({ status: 'awaiting_verification' }),
       Withdrawal.countDocuments({ status: 'pending' }),
       Transaction.aggregate([{ $match: { type: 'commission' } }, { $group: { _id: null, total: { $sum: '$amount' } } }]),
-      MonitorService.getSnapshot().catch(() => ({})),
+      MonitorService.getSnapshot(),
       FraudAlert.countDocuments({ resolved: false }),
     ]);
     const fraudStats = MonitorService.getFraudStats();

@@ -18,7 +18,6 @@ module.exports = {
     const _origDeferReply = interaction.deferReply.bind(interaction);
     const _origEditReply = interaction.editReply.bind(interaction);
     const _origFollowUp = interaction.followUp.bind(interaction);
-    const _origDeferUpdate = interaction.deferUpdate.bind(interaction);
 
     let responded = false;
     const track = (fn, label) => async (...args) => {
@@ -35,7 +34,12 @@ module.exports = {
     interaction.deferReply = track(_origDeferReply, 'deferReply');
     interaction.editReply = track(_origEditReply, 'editReply');
     interaction.followUp = track(_origFollowUp, 'followUp');
-    interaction.deferUpdate = track(_origDeferUpdate, 'deferUpdate');
+
+    // deferUpdate only exists on component interactions (buttons, select menus)
+    if (interaction.isButton() || interaction.isStringSelectMenu()) {
+      const _origDeferUpdate = interaction.deferUpdate?.bind(interaction);
+      interaction.deferUpdate = track(_origDeferUpdate, 'deferUpdate');
+    }
 
     // Force early defer for ALL interaction types before routing to handler
     try {
@@ -47,8 +51,19 @@ module.exports = {
         }
       } else if (interaction.isButton() || interaction.isStringSelectMenu()) {
         if (!interaction.deferred && !interaction.replied) {
-          await interaction.deferUpdate();
-          logger.info('[TRACE]', { traceId, event: 'COMPONENT_DEFERRED', identifier });
+          try {
+            await interaction.deferUpdate();
+            logger.info('[TRACE]', { traceId, event: 'COMPONENT_DEFERRED', identifier });
+          } catch (deferErr) {
+            // Discord may reject deferUpdate with "already acknowledged" on fresh interactions
+            // Treat as success if Discord considers it acknowledged
+            if (deferErr.message?.includes('already acknowledged') || deferErr.code === 40060) {
+              logger.info('[TRACE]', { traceId, event: 'COMPONENT_ALREADY_ACKNOWLEDGED', identifier });
+              interaction.deferred = true;
+            } else {
+              throw deferErr;
+            }
+          }
         }
       } else if (interaction.isModalSubmit()) {
         if (!interaction.deferred && !interaction.replied) {
@@ -58,14 +73,6 @@ module.exports = {
       }
     } catch (err) {
       logger.error('[TRACE]', { traceId, event: 'EARLY_DEFER_FAILED', error: err.message, identifier });
-      try {
-        if (!interaction.deferred && !interaction.replied) {
-          await interaction.reply({ content: '❌ حدث خطأ، يرجى المحاولة مرة أخرى.', flags: MessageFlags.Ephemeral });
-          logger.info('[TRACE]', { traceId, event: 'DEFER_FALLBACK_OK' });
-        }
-      } catch (e2) {
-        logger.error('[TRACE]', { traceId, event: 'DEFER_FALLBACK_FAILED', error: e2.message });
-      }
     }
 
     // Route to the appropriate handler

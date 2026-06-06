@@ -227,9 +227,9 @@ class WebhookServer {
   }
 
   async start() {
-    const port = config.webhook.port || config.server.port;
-    if (port == null) {
-      logger.info('Webhook server not started (no port configured)');
+    const port = config.webhook.port;
+    if (!port || port === 0) {
+      logger.info('Webhook server not started (WEBHOOK_PORT not configured or 0)');
       return;
     }
 

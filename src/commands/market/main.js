@@ -68,6 +68,15 @@ module.exports = {
       case 'wallet': return this.showWalletMenu(interaction, client);
       case 'review': return this.showReviewMenu(interaction, client);
       case 'loyalty': return this.showLoyaltyMenu(interaction, client);
+      case 'marketplace_create_store':
+        await PanelManager.defer(interaction);
+        const storeCmd = require('../store/create');
+        return storeCmd.handleCreate(interaction, client);
+      case 'marketplace_services': return this.showServicesMenu(interaction, client);
+      case 'marketplace_products': return this.showProductsMenu(interaction, client);
+      case 'marketplace_stores': return this.showStoresMenu(interaction, client);
+      case 'marketplace_refresh': return this.showHome(interaction);
+      case 'marketplace_category_filter': return this.showHome(interaction);
       default: {
         if (action.startsWith('store_')) return this.handleStoreAction(interaction, client, action);
         if (action.startsWith('prod_')) return this.handleProductAction(interaction, client, action);
@@ -76,6 +85,7 @@ module.exports = {
         if (action.startsWith('wallet_')) return this.handleWalletAction(interaction, client, action);
         if (action.startsWith('review_')) return this.handleReviewAction(interaction, client, action);
         if (action.startsWith('loyalty_')) return this.handleLoyaltyAction(interaction, client, action);
+        if (action.startsWith('marketplace_')) return this.showHome(interaction);
         return this.showHome(interaction);
       }
     }

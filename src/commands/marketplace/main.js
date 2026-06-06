@@ -109,7 +109,7 @@ module.exports = {
       return interaction.editReply({ content: '❌ يجب أن تكون قناة نصية.' });
     }
 
-    let settings = await MarketplaceSettings.findOne({ guildId: interaction.guildId }).lean();
+    let settings = await MarketplaceSettings.findOne({ guildId: interaction.guildId });
     if (!settings) {
       settings = await MarketplaceSettings.create({ guildId: interaction.guildId });
     }

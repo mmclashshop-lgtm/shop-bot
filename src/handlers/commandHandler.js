@@ -318,11 +318,16 @@ class CommandHandler {
         await interaction.deferUpdate();
         logger.info('[CMD]', { traceId, event: 'BUTTON_DEFERRED', customId: interaction.customId });
       } catch (err) {
-        logger.error('[CMD]', { traceId, event: 'BUTTON_DEFER_FAILED', error: err.message, customId: interaction.customId });
-        try {
-          await interaction.reply({ content: '❌ حدث خطأ أثناء معالجة الزر.', flags: MessageFlags.Ephemeral });
-        } catch (e) { /* interaction expired */ }
-        return;
+        if (err.message?.includes('already acknowledged') || err.code === 40060) {
+          logger.info('[CMD]', { traceId, event: 'BUTTON_ALREADY_ACKNOWLEDGED', customId: interaction.customId });
+          interaction.deferred = true;
+        } else {
+          logger.error('[CMD]', { traceId, event: 'BUTTON_DEFER_FAILED', error: err.message, customId: interaction.customId });
+          try {
+            await interaction.reply({ content: '❌ حدث خطأ أثناء معالجة الزر.', flags: MessageFlags.Ephemeral });
+          } catch (e) { /* interaction expired */ }
+          return;
+        }
       }
     }
 
@@ -379,11 +384,16 @@ class CommandHandler {
         await interaction.deferUpdate();
         logger.info('[CMD]', { traceId, event: 'SELECT_DEFERRED', customId: interaction.customId });
       } catch (err) {
-        logger.error('[CMD]', { traceId, event: 'SELECT_DEFER_FAILED', error: err.message, customId: interaction.customId });
-        try {
-          await interaction.reply({ content: '❌ حدث خطأ أثناء معالجة القائمة.', flags: MessageFlags.Ephemeral });
-        } catch (e) { /* interaction expired */ }
-        return;
+        if (err.message?.includes('already acknowledged') || err.code === 40060) {
+          logger.info('[CMD]', { traceId, event: 'SELECT_ALREADY_ACKNOWLEDGED', customId: interaction.customId });
+          interaction.deferred = true;
+        } else {
+          logger.error('[CMD]', { traceId, event: 'SELECT_DEFER_FAILED', error: err.message, customId: interaction.customId });
+          try {
+            await interaction.reply({ content: '❌ حدث خطأ أثناء معالجة القائمة.', flags: MessageFlags.Ephemeral });
+          } catch (e) { /* interaction expired */ }
+          return;
+        }
       }
     }
 
