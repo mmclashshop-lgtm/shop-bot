@@ -5,7 +5,7 @@ const AIService = require('../services/AIService');
 const cache = require('../cache/CacheService');
 
 module.exports = {
-  name: 'clientReady',
+  name: 'ready',
   once: true,
   async execute(client) {
     logger.info(`Bot ready: ${client.user.tag}`);
