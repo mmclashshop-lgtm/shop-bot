@@ -248,7 +248,8 @@ class CommandHandler {
   }
 
   async handleModalSubmit(interaction, traceId = '?') {
-    if (!interaction.isModalSubmit()) return;
+    console.log('[DIAG] handleModalSubmit ENTERED customId:', interaction.customId, 'deferred:', interaction.deferred);
+    if (!interaction.isModalSubmit()) { console.log('[DIAG] Not a modal, returning'); return; }
 
     const { antiSpam, antiScam } = require('../middleware/security');
 
@@ -266,7 +267,7 @@ class CommandHandler {
     }
 
     const limited = await this._rateLimitInteraction(interaction, 'modal');
-    if (limited) return;
+    if (limited) { console.log('[DIAG] Rate limited, returning'); return; }
 
     try {
       await antiSpam(interaction, async () => {
@@ -275,10 +276,12 @@ class CommandHandler {
           const commandName = cmdEnd > -1 ? interaction.customId.substring(0, cmdEnd) : interaction.customId;
           const action = cmdEnd > -1 ? interaction.customId.substring(cmdEnd + 1) : '';
           const command = this.commands.get(commandName);
+          console.log('[DIAG] Parsed: commandName:', commandName, 'action:', action, 'found:', !!command, 'hasHandleModalSubmit:', command ? !!command.handleModalSubmit : 'N/A');
 
           const deferTimer = scheduleAutoDefer(interaction);
 
           if (!command || !command.handleModalSubmit) {
+            console.log('[DIAG] Command/handleModalSubmit NOT FOUND');
             logger.warn('[CMD]', { traceId, event: 'MODAL_HANDLER_NOT_FOUND', customId: interaction.customId, commandName });
             if (deferTimer) clearTimeout(deferTimer);
             if (!interaction.deferred && !interaction.replied) {
@@ -290,26 +293,31 @@ class CommandHandler {
           }
 
           try {
+            console.log('[DIAG] Calling command.handleModalSubmit');
             const { promise } = withTimeout(
               command.handleModalSubmit(interaction, this.client, action),
               COMMAND_TIMEOUT,
               `${commandName} modal`
             );
             await promise;
+            console.log('[DIAG] command.handleModalSubmit completed successfully');
           } finally {
             if (deferTimer) clearTimeout(deferTimer);
           }
         });
       });
       MonitorService.trackInteraction('modal');
+      console.log('[DIAG] handleModalSubmit completed successfully');
     } catch (error) {
+      console.log('[DIAG] handleModalSubmit outer catch:', error.message);
       MonitorService.trackError(`${interaction.customId} modal`, error);
       this._handleError(interaction, error, `${interaction.customId} modal`, traceId);
     }
   }
 
   async handleButtonClick(interaction, traceId = '?') {
-    if (!interaction.isButton()) return;
+    console.log('[DIAG] handleButtonClick ENTERED customId:', interaction.customId, 'deferred:', interaction.deferred);
+    if (!interaction.isButton()) { console.log('[DIAG] Not a button, returning'); return; }
 
     const { antiSpam, antiScam } = require('../middleware/security');
 
@@ -331,7 +339,7 @@ class CommandHandler {
     }
 
     const limited = await this._rateLimitInteraction(interaction, 'button');
-    if (limited) return;
+    if (limited) { console.log('[DIAG] Rate limited, returning'); return; }
 
     try {
       await antiSpam(interaction, async () => {
@@ -340,10 +348,12 @@ class CommandHandler {
           const commandName = cmdEnd > -1 ? interaction.customId.substring(0, cmdEnd) : interaction.customId;
           const action = cmdEnd > -1 ? interaction.customId.substring(cmdEnd + 1) : '';
           const command = this.commands.get(commandName);
+          console.log('[DIAG] Parsed: commandName:', commandName, 'action:', action, 'found:', !!command, 'hasHandleButton:', command ? !!command.handleButton : 'N/A');
 
           const deferTimer = scheduleAutoDefer(interaction);
 
           if (!command || !command.handleButton) {
+            console.log('[DIAG] Command/handleButton NOT FOUND');
             logger.warn('[CMD]', { traceId, event: 'BUTTON_HANDLER_NOT_FOUND', customId: interaction.customId, commandName });
             if (deferTimer) clearTimeout(deferTimer);
             try {
@@ -357,26 +367,31 @@ class CommandHandler {
           }
 
           try {
+            console.log('[DIAG] Calling command.handleButton');
             const { promise } = withTimeout(
               command.handleButton(interaction, this.client, action),
               COMMAND_TIMEOUT,
               `${commandName} button`
             );
             await promise;
+            console.log('[DIAG] command.handleButton completed successfully');
           } finally {
             if (deferTimer) clearTimeout(deferTimer);
           }
         });
       });
       MonitorService.trackInteraction('button');
+      console.log('[DIAG] handleButtonClick completed successfully');
     } catch (error) {
+      console.log('[DIAG] handleButtonClick outer catch:', error.message);
       MonitorService.trackError(`${interaction.customId} button`, error);
       this._handleError(interaction, error, `${interaction.customId} button`, traceId);
     }
   }
 
   async handleSelectMenu(interaction, traceId = '?') {
-    if (!interaction.isStringSelectMenu()) return;
+    console.log('[DIAG] handleSelectMenu ENTERED customId:', interaction.customId, 'deferred:', interaction.deferred);
+    if (!interaction.isStringSelectMenu()) { console.log('[DIAG] Not a select menu, returning'); return; }
 
     const { antiSpam, antiScam } = require('../middleware/security');
 
@@ -398,7 +413,7 @@ class CommandHandler {
     }
 
     const limited = await this._rateLimitInteraction(interaction, 'select');
-    if (limited) return;
+    if (limited) { console.log('[DIAG] Rate limited, returning'); return; }
 
     try {
       await antiSpam(interaction, async () => {
@@ -407,10 +422,12 @@ class CommandHandler {
           const commandName = cmdEnd > -1 ? interaction.customId.substring(0, cmdEnd) : interaction.customId;
           const action = cmdEnd > -1 ? interaction.customId.substring(cmdEnd + 1) : '';
           const command = this.commands.get(commandName);
+          console.log('[DIAG] Parsed: commandName:', commandName, 'action:', action, 'found:', !!command, 'hasHandleSelectMenu:', command ? !!command.handleSelectMenu : 'N/A');
 
           const deferTimer = scheduleAutoDefer(interaction);
 
           if (!command || !command.handleSelectMenu) {
+            console.log('[DIAG] Command/handleSelectMenu NOT FOUND');
             logger.warn('[CMD]', { traceId, event: 'SELECT_HANDLER_NOT_FOUND', customId: interaction.customId, commandName });
             if (deferTimer) clearTimeout(deferTimer);
             try {
@@ -424,19 +441,23 @@ class CommandHandler {
           }
 
           try {
+            console.log('[DIAG] Calling command.handleSelectMenu');
             const { promise } = withTimeout(
               command.handleSelectMenu(interaction, this.client, action),
               COMMAND_TIMEOUT,
               `${commandName} select`
             );
             await promise;
+            console.log('[DIAG] command.handleSelectMenu completed successfully');
           } finally {
             if (deferTimer) clearTimeout(deferTimer);
           }
         });
       });
       MonitorService.trackInteraction('select');
+      console.log('[DIAG] handleSelectMenu completed successfully');
     } catch (error) {
+      console.log('[DIAG] handleSelectMenu outer catch:', error.message);
       MonitorService.trackError(`${interaction.customId} select`, error);
       this._handleError(interaction, error, `${interaction.customId} select`, traceId);
     }

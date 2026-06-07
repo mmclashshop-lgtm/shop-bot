@@ -42,8 +42,10 @@ module.exports = {
     }
 
     // Force early defer for ALL interaction types before routing to handler
+    console.log('[DIAG] interactionCreate type:', type, 'identifier:', identifier, 'isButton:', interaction.isButton?.(), 'isSelect:', interaction.isStringSelectMenu?.(), 'isModal:', interaction.isModalSubmit?.(), 'isCommand:', interaction.isChatInputCommand?.());
     try {
       if (interaction.isChatInputCommand()) {
+        console.log('[DIAG] CHAT_COMMAND path');
         if (!interaction.deferred && !interaction.replied) {
           try {
             await interaction.deferReply({ flags: MessageFlags.Ephemeral });
@@ -59,19 +61,25 @@ module.exports = {
           }
         }
       } else if (interaction.isButton() || interaction.isStringSelectMenu()) {
+        console.log('[DIAG] COMPONENT path');
         if (!interaction.deferred && !interaction.replied) {
           try {
             await interaction.deferUpdate();
+            console.log('[DIAG] deferUpdate succeeded, deferred:', interaction.deferred);
             logger.info('[TRACE]', { traceId, event: 'COMPONENT_DEFERRED', identifier });
           } catch (deferErr) {
+            console.log('[DIAG] deferUpdate FAILED:', deferErr.message, 'code:', deferErr.code);
             if (deferErr.message?.includes('already acknowledged') || deferErr.code === 40060) {
               logger.info('[TRACE]', { traceId, event: 'COMPONENT_ALREADY_ACKNOWLEDGED', identifier });
             } else {
               throw deferErr;
             }
           }
+        } else {
+          console.log('[DIAG] Already deferred/replied, skipping');
         }
       } else if (interaction.isModalSubmit()) {
+        console.log('[DIAG] MODAL path');
         if (!interaction.deferred && !interaction.replied) {
           try {
             await interaction.deferReply({ flags: MessageFlags.Ephemeral });
@@ -89,6 +97,7 @@ module.exports = {
         }
       }
     } catch (err) {
+      console.log('[DIAG] EARLY_DEFER_FAILED:', err.message);
       logger.error('[TRACE]', { traceId, event: 'EARLY_DEFER_FAILED', error: err.message, identifier });
       if (!interaction.deferred && !interaction.replied) {
         try {
@@ -99,17 +108,31 @@ module.exports = {
     }
 
     // Route to the appropriate handler
+    console.log('[DIAG] ROUTING type:', type, 'client.commands:', !!client.commands);
     try {
       if (interaction.isChatInputCommand()) {
+        console.log('[DIAG] Routing to handleInteraction');
         await client.commands.handleInteraction(interaction, traceId);
       } else if (interaction.isModalSubmit()) {
+        console.log('[DIAG] Routing to handleModalSubmit');
         await client.commands.handleModalSubmit(interaction, traceId);
       } else if (interaction.isButton()) {
-        await client.commands.handleButtonClick(interaction, traceId);
+        console.log('[DIAG] Routing to handleButtonClick');
+        try {
+          await client.commands.handleButtonClick(interaction, traceId);
+          console.log('[DIAG] handleButtonClick completed');
+        } catch (e) {
+          console.log('[DIAG] handleButtonClick THREW:', e.message);
+          throw e;
+        }
       } else if (interaction.isStringSelectMenu()) {
+        console.log('[DIAG] Routing to handleSelectMenu');
         await client.commands.handleSelectMenu(interaction, traceId);
       } else if (interaction.isAutocomplete()) {
+        console.log('[DIAG] Routing to handleAutocomplete');
         await client.commands.handleAutocomplete(interaction, traceId);
+      } else {
+        console.log('[DIAG] UNKNOWN interaction type:', type);
       }
     } catch (error) {
       const elapsed = Date.now() - startTime;
