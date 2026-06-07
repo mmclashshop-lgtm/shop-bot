@@ -6,6 +6,7 @@ const { Store, Product, Service, User } = require('../../database/models');
 const productCmd = require('../product/main');
 const serviceCmd = require('../service/main');
 const { EmbedBuilderUtil } = require('../../utils/embeds');
+const { withTimeout, TimeoutError } = require('../../utils/Timeout');
 
 const COLORS = { stores: 0xF1C40F, products: 0x3498DB, services: 0x9B59B6, search: 0x2ECC71, wallet: 0xE67E22, reviews: 0x1ABC9C, loyalty: 0xE91E63 };
 
@@ -93,11 +94,25 @@ module.exports = {
 
   async handleSelectMenu(interaction, client, action) {
     const value = interaction.values[0];
-    if (action === 'store_list') return this.showStoreDetail(interaction, client, value);
-    if (action === 'product_list') return this.showProductDetail(interaction, client, value);
-    if (action === 'service_list') return this.showServiceDetail(interaction, client, value);
-    if (action === 'wallet_history') return this.showWalletHistory(interaction, client, value);
-    return this.showHome(interaction);
+    try {
+      const { promise } = withTimeout(
+        (async () => {
+          if (action === 'store_list') return this.showStoreDetail(interaction, client, value);
+          if (action === 'product_list') return this.showProductDetail(interaction, client, value);
+          if (action === 'service_list') return this.showServiceDetail(interaction, client, value);
+          if (action === 'wallet_history') return this.showWalletHistory(interaction, client, value);
+          return this.showHome(interaction);
+        })(),
+        10000,
+        'market_select'
+      );
+      return await promise;
+    } catch (error) {
+      if (error instanceof TimeoutError) {
+        return interaction.editReply({ content: '⏱️ انتهت مهلة تحميل التفاصيل. يرجى المحاولة مرة أخرى.' });
+      }
+      throw error;
+    }
   },
 
   async showStoresMenu(interaction, client) {

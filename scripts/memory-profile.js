@@ -6,14 +6,19 @@
  *
  * Usage: node scripts/memory-profile.js [snapshot_label]
  *   Example: node scripts/memory-profile.js "1h"
+ *
+ * Can also be imported as a module:
+ *   const { runProfile, getMemorySnapshot } = require('./scripts/memory-profile');
+ *   const result = runProfile('my_label', { silent: true });
  */
 
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
 
-process.chdir(path.resolve(__dirname, '..'));
-
+/**
+ * @returns {object} Current memory and system snapshot
+ */
 function getMemorySnapshot() {
   const mem = process.memoryUsage();
   return {
@@ -36,19 +41,46 @@ function getMemorySnapshot() {
   };
 }
 
+/**
+ * Analyzes a series of snapshots for memory leak risk.
+ *
+ * @param {Array} snapshots - Ordered or unordered snapshot objects with `timestamp` string
+ * @returns {object} Leak risk assessment
+ */
 function calculateLeakRisk(snapshots) {
-  if (snapshots.length < 2) return { risk: 'insufficient_data', details: 'Need at least 2 snapshots' };
+  if (!Array.isArray(snapshots) || snapshots.length < 2) {
+    return { risk: 'insufficient_data', details: 'Need at least 2 snapshots', elapsedHours: 0, warnings: [] };
+  }
 
-  const first = snapshots[0];
-  const last = snapshots[snapshots.length - 1];
-  const elapsed = (new Date(last.timestamp) - new Date(first.timestamp)) / 1000; // seconds
+  const sorted = [...snapshots].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
-  if (elapsed < 60) return { risk: 'insufficient_time', details: 'Elapsed time too short for leak detection' };
+  const first = sorted[0];
+  const last = sorted[sorted.length - 1];
 
-  const heapGrowth = last.heapUsed.bytes - first.heapUsed.bytes;
-  const rssGrowth = last.rss.bytes - first.rss.bytes;
-  const growthPerHour = heapGrowth / (elapsed / 3600);
-  const rssPerHour = rssGrowth / (elapsed / 3600);
+  const firstTs = new Date(first.timestamp).getTime();
+  const lastTs = new Date(last.timestamp).getTime();
+
+  if (!firstTs || !lastTs || isNaN(firstTs) || isNaN(lastTs)) {
+    return { risk: 'unknown', details: 'Snapshots contain invalid timestamps', elapsedHours: 0, warnings: [] };
+  }
+
+  const elapsed = (lastTs - firstTs) / 1000;
+
+  if (elapsed < 60) {
+    return { risk: 'insufficient_time', details: 'Elapsed time too short for leak detection', elapsedHours: 0, warnings: [] };
+  }
+
+  const firstHeap = typeof first.heapUsed?.bytes === 'number' ? first.heapUsed.bytes : 0;
+  const lastHeap = typeof last.heapUsed?.bytes === 'number' ? last.heapUsed.bytes : 0;
+  const firstRss = typeof first.rss?.bytes === 'number' ? first.rss.bytes : 0;
+  const lastRss = typeof last.rss?.bytes === 'number' ? last.rss.bytes : 0;
+
+  const heapGrowth = lastHeap - firstHeap;
+  const rssGrowth = lastRss - firstRss;
+
+  const hours = elapsed / 3600;
+  const growthPerHour = hours > 0 ? heapGrowth / hours : 0;
+  const rssPerHour = hours > 0 ? rssGrowth / hours : 0;
 
   let risk = 'low';
   const warnings = [];
@@ -66,14 +98,18 @@ function calculateLeakRisk(snapshots) {
     warnings.push(`RSS growing at ${(rssPerHour / 1024 / 1024).toFixed(2)} MB/hour — possible native leak`);
   }
 
-  if (last.heapUsed.mb > last.system.totalMem.gb * 1024 * 0.8) {
-    risk = 'high';
-    warnings.push(`Heap usage at ${last.heapUsed.mb}MB exceeds 80% of system memory`);
+  const lastTotalMemGb = last.system?.totalMem?.gb;
+  if (typeof lastTotalMemGb === 'number' && lastTotalMemGb > 0) {
+    const eightyPercentBytes = lastTotalMemGb * 1024 * 1024 * 1024 * 0.8;
+    if (lastHeap > eightyPercentBytes) {
+      risk = 'high';
+      warnings.push(`Heap usage at ${(lastHeap / 1024 / 1024).toFixed(2)}MB exceeds 80% of system memory`);
+    }
   }
 
   return {
     risk,
-    elapsed_hours: Math.round(elapsed / 3600 * 100) / 100,
+    elapsedHours: Math.round(hours * 100) / 100,
     heapGrowthBytes: heapGrowth,
     heapGrowthMB: Math.round(heapGrowth / 1024 / 1024 * 100) / 100,
     growthPerHourMB: Math.round(growthPerHour / 1024 / 1024 * 100) / 100,
@@ -83,113 +119,157 @@ function calculateLeakRisk(snapshots) {
   };
 }
 
+/**
+ * Attempts to load each major service and read its internal cache/memory statistics.
+ *
+ * @returns {object} Service memory stats per service name
+ */
 function analyzeServiceMemory() {
-  // Try to load services and check their internal caches/maps
   const results = {};
-  try {
-    const MonitorService = require('../src/services/MonitorService');
-    const snapshot = MonitorService.getSnapshot ? MonitorService.getSnapshot() : {};
-    results.monitorService = {
+
+  const loadService = (name, requirePath, extractStats) => {
+    try {
+      const mod = require(requirePath);
+      const stats = extractStats(mod);
+      results[name] = stats;
+    } catch (e) {
+      results[name] = { error: e.message };
+      if (typeof e.stack === 'string') {
+        results[name].stack = e.stack.split('\n').slice(0, 3).join(' ').trim();
+      }
+    }
+  };
+
+  loadService('monitorService', '../src/services/MonitorService', (mod) => {
+    const snapshot = typeof mod.getSnapshot === 'function' ? mod.getSnapshot() : {};
+    return {
       commandCacheSize: snapshot.commands?.total || 0,
       errorSamples: snapshot.errors?.total || 0,
       memorySamples: snapshot.memory?.samples || 0,
-      responseTimes: snapshot.memory?.samples || 0,
+      responseTimeSamples: snapshot.responseTimes?.samples || 0,
     };
-  } catch (e) { results.monitorService = { error: e.message }; }
+  });
 
-  try {
-    const AIService = require('../src/services/AIService');
-    const stats = AIService.getUsageStats ? AIService.getUsageStats() : {};
-    results.aiService = {
+  loadService('aiService', '../src/services/AIService', (mod) => {
+    const stats = typeof mod.getUsageStats === 'function' ? mod.getUsageStats() : {};
+    return {
       rateLimiterSize: stats.rateLimiterSize || 0,
       responseCacheSize: stats.responseCacheSize || 0,
       memoryUsers: stats.memory?.userCacheSize || 0,
       memoryServers: stats.memory?.serverCacheSize || 0,
     };
-  } catch (e) { results.aiService = { error: e.message }; }
+  });
 
-  try {
-    const MemoryService = require('../src/services/MemoryService');
-    const stats = MemoryService.getCacheStats ? MemoryService.getCacheStats() : {};
-    results.memoryService = {
+  loadService('memoryService', '../src/services/MemoryService', (mod) => {
+    const stats = typeof mod.getCacheStats === 'function' ? mod.getCacheStats() : {};
+    return {
       userCacheSize: stats.userCacheSize || 0,
       serverCacheSize: stats.serverCacheSize || 0,
     };
-  } catch (e) { results.memoryService = { error: e.message }; }
+  });
 
-  try {
-    const cache = require('../src/cache/CacheService');
-    results.redisCache = { connected: cache.isReady ? cache.isReady() : false };
-  } catch (e) { results.redisCache = { error: e.message }; }
+  loadService('redisCache', '../src/cache/CacheService', (mod) => {
+    return { connected: typeof mod.isReady === 'function' ? mod.isReady() : false };
+  });
 
   return results;
 }
 
-function runProfile(label = 'snapshot') {
+/**
+ * @param {string} label - Snapshot label (sanitized automatically)
+ * @param {object} [options]
+ * @param {boolean} [options.silent=false] - Suppress console output
+ * @returns {object} { snapshot, services, leakRisk }
+ */
+function runProfile(label = 'snapshot', options = {}) {
+  const sanitizedLabel = label.replace(/[^\w-]/g, '_').substring(0, 200);
   const snapshot = getMemorySnapshot();
   const services = analyzeServiceMemory();
 
-  const reportDir = path.join(__dirname, '..', 'reports', 'memory');
-  if (!fs.existsSync(reportDir)) fs.mkdirSync(reportDir, { recursive: true });
+  const reportDir = path.resolve(__dirname, '..', 'reports', 'memory');
+  fs.mkdirSync(reportDir, { recursive: true });
 
   // Load existing history
   const historyFile = path.join(reportDir, 'history.json');
   let history = [];
-  if (fs.existsSync(historyFile)) {
-    try { history = JSON.parse(fs.readFileSync(historyFile, 'utf8')); } catch {}
-  }
-
-  history.push({ label, ...snapshot, services });
-
-  // Keep last 100 snapshots
-  if (history.length > 100) history = history.slice(-100);
-  fs.writeFileSync(historyFile, JSON.stringify(history, null, 2));
-
-  // Save individual snapshot
-  const outPath = path.join(reportDir, `${label}.json`);
-  fs.writeFileSync(outPath, JSON.stringify({ label, ...snapshot, services }, null, 2));
-
-  // Leak analysis
-  const leakRisk = calculateLeakRisk(history);
-
-  console.log('');
-  console.log('█'.repeat(70));
-  console.log(`  MEMORY PROFILE: ${label}`);
-  console.log('█'.repeat(70));
-  console.log(`  RSS           : ${snapshot.rss.mb} MB`);
-  console.log(`  Heap Used     : ${snapshot.heapUsed.mb} MB`);
-  console.log(`  Heap Total    : ${snapshot.heapTotal.mb} MB`);
-  console.log(`  External      : ${snapshot.external.mb} MB`);
-  console.log(`  Array Buffers : ${snapshot.arrayBuffers.mb} MB`);
-  console.log(`  System Memory : ${snapshot.system.freeMem.gb} GB free / ${snapshot.system.totalMem.gb} GB total`);
-  console.log(`  CPU Load      : ${snapshot.cpu.loadAvg.map(l => l.toFixed(2)).join(', ')}`);
-
-  console.log('\n── Service Cache Sizes ──');
-  for (const [svc, data] of Object.entries(services)) {
-    if (data.error) {
-      console.log(`  ${svc}: ERROR — ${data.error}`);
-    } else {
-      console.log(`  ${svc}: ${JSON.stringify(data)}`);
+  try {
+    const raw = fs.readFileSync(historyFile, 'utf8');
+    history = JSON.parse(raw);
+  } catch (readErr) {
+    if (readErr.code !== 'ENOENT') {
+      process.stderr.write(`[MEMORY-PROFILE] Warning: Could not read history: ${readErr.message}\n`);
     }
   }
 
-  console.log('\n── Leak Analysis ──');
-  console.log(`  Risk Level    : ${leakRisk.risk.toUpperCase()}`);
-  console.log(`  Elapsed       : ${leakRisk.elapsed_hours}h`);
-  if (leakRisk.heapGrowthMB) console.log(`  Heap Growth   : ${leakRisk.heapGrowthMB} MB (${leakRisk.growthPerHourMB} MB/h)`);
-  if (leakRisk.rssGrowthMB) console.log(`  RSS Growth    : ${leakRisk.rssGrowthMB} MB (${leakRisk.rssPerHourMB} MB/h)`);
-  if (leakRisk.warnings.length > 0) {
-    console.log('  Warnings:');
-    leakRisk.warnings.forEach(w => console.log(`    ⚠️  ${w}`));
+  if (!Array.isArray(history)) {
+    process.stderr.write('[MEMORY-PROFILE] Warning: history.json was not an array; resetting.\n');
+    history = [];
   }
-  console.log('');
+
+  const entry = { label: sanitizedLabel, ...snapshot, services };
+  history.push(entry);
+
+  // Keep last 100 snapshots; use splice to avoid full array clone
+  if (history.length > 100) {
+    history.splice(0, history.length - 100);
+  }
+
+  fs.writeFileSync(historyFile, JSON.stringify(history, null, 2));
+
+  // Save individual snapshot with dedup if label already exists
+  let outPath = path.join(reportDir, `${sanitizedLabel}.json`);
+  let counter = 1;
+  while (fs.existsSync(outPath)) {
+    outPath = path.join(reportDir, `${sanitizedLabel}_${counter}.json`);
+    counter++;
+  }
+  fs.writeFileSync(outPath, JSON.stringify({ label: sanitizedLabel, ...snapshot, services }, null, 2));
+
+  // Leak analysis uses only the entry count, not the full array, to keep memory minimal
+  const leakRisk = calculateLeakRisk(history);
+
+  if (!options.silent) {
+    process.stdout.write('\n');
+    process.stdout.write('█'.repeat(70) + '\n');
+    process.stdout.write(`  MEMORY PROFILE: ${sanitizedLabel}\n`);
+    process.stdout.write('█'.repeat(70) + '\n');
+    process.stdout.write(`  RSS           : ${snapshot.rss.mb} MB\n`);
+    process.stdout.write(`  Heap Used     : ${snapshot.heapUsed.mb} MB\n`);
+    process.stdout.write(`  Heap Total    : ${snapshot.heapTotal.mb} MB\n`);
+    process.stdout.write(`  External      : ${snapshot.external.mb} MB\n`);
+    process.stdout.write(`  Array Buffers : ${snapshot.arrayBuffers.mb} MB\n`);
+    process.stdout.write(`  System Memory : ${snapshot.system.freeMem.gb} GB free / ${snapshot.system.totalMem.gb} GB total\n`);
+    process.stdout.write(`  CPU Load      : ${snapshot.cpu.loadAvg.map(l => l.toFixed(2)).join(', ')}\n`);
+
+    process.stdout.write('\n── Service Cache Sizes ──\n');
+    for (const [svc, data] of Object.entries(services)) {
+      if (data.error) {
+        process.stdout.write(`  ${svc}: ERROR — ${data.error}\n`);
+      } else {
+        process.stdout.write(`  ${svc}: ${JSON.stringify(data)}\n`);
+      }
+    }
+
+    process.stdout.write('\n── Leak Analysis ──\n');
+    process.stdout.write(`  Risk Level    : ${leakRisk.risk.toUpperCase()}\n`);
+    process.stdout.write(`  Elapsed       : ${leakRisk.elapsedHours}h\n`);
+    if (leakRisk.heapGrowthMB) process.stdout.write(`  Heap Growth   : ${leakRisk.heapGrowthMB} MB (${leakRisk.growthPerHourMB} MB/h)\n`);
+    if (leakRisk.rssGrowthMB) process.stdout.write(`  RSS Growth    : ${leakRisk.rssGrowthMB} MB (${leakRisk.rssPerHourMB} MB/h)\n`);
+    if (leakRisk.warnings.length > 0) {
+      process.stdout.write('  Warnings:\n');
+      leakRisk.warnings.forEach(w => process.stdout.write(`    ⚠️  ${w}\n`));
+    }
+    process.stdout.write('\n');
+  }
 
   return { snapshot, services, leakRisk };
 }
 
 if (require.main === module) {
-  const label = process.argv[2] || 'snapshot_' + Date.now();
+  const label = process.argv[2] || 'snapshot_' + new Date().toISOString().replace(/[:.]/g, '-');
   runProfile(label);
+  // Force exit — service imports above may hold the event loop open
+  process.exit(0);
 }
 
 module.exports = { runProfile, getMemorySnapshot, calculateLeakRisk, analyzeServiceMemory };

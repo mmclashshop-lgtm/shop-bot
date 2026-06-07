@@ -1,5 +1,4 @@
-const { AIChat } = require('\.\./database/models');
-const { MarketplaceSettings } = require('\.\./database/models');
+const { AIChat, MarketplaceSettings } = require('\.\./database/models');
 const { logger } = require('../utils/logger');
 
 class MemoryService {
@@ -7,13 +6,24 @@ class MemoryService {
     this.userMemoryCache = new Map();
     this.serverMemoryCache = new Map();
     this.cacheTTL = 1000 * 60 * 30;
-    this.maxHistoryAge = 1000 * 60 * 60 * 24 * 30; // 30 days
+    this.maxCacheSize = 1000;
+    this.maxHistoryAge = 1000 * 60 * 60 * 24 * 30;
     this._historyCleanup = setInterval(() => {
       try {
         this._cleanupOldHistory();
         this._cleanupStaleCacheEntries();
       } catch (err) { logger.error('Unhandled error in services/MemoryService.js', { error: err?.message }) }
     }, 3600000);
+  }
+
+  _ensureCacheLimit(cache) {
+    if (cache.size > this.maxCacheSize) {
+      const entriesToDelete = cache.size - this.maxCacheSize;
+      const iter = cache.keys();
+      for (let i = 0; i < entriesToDelete; i++) {
+        cache.delete(iter.next().value);
+      }
+    }
   }
 
   _getUserCacheKey(userId, guildId) {
@@ -52,6 +62,7 @@ class MemoryService {
       };
 
       this.userMemoryCache.set(cacheKey, { data: memory, timestamp: Date.now() });
+      this._ensureCacheLimit(this.userMemoryCache);
       return memory;
     } catch (error) {
       logger.error('Failed to get user memory', { userId, guildId, error: error.message });
@@ -82,6 +93,7 @@ class MemoryService {
       };
 
       this.serverMemoryCache.set(cacheKey, { data: memory, timestamp: Date.now() });
+      this._ensureCacheLimit(this.serverMemoryCache);
       return memory;
     } catch (error) {
       logger.error('Failed to get server memory', { guildId, error: error.message });
@@ -152,6 +164,7 @@ class MemoryService {
       cached.data.facts = cached.data.facts || [];
       cached.data.facts.push({ fact, timestamp: new Date() });
       cached.data.facts = cached.data.facts.slice(-50);
+      cached.timestamp = Date.now();
     }
   }
 
@@ -162,6 +175,7 @@ class MemoryService {
       cached.data.facts = cached.data.facts || [];
       cached.data.facts.push({ fact, timestamp: new Date() });
       cached.data.facts = cached.data.facts.slice(-50);
+      cached.timestamp = Date.now();
     }
   }
 
@@ -190,15 +204,15 @@ class MemoryService {
 
   async _cleanupOldHistory() {
     try {
-      const { AIChat } = require('../database/models');
       const cutoffDate = new Date(Date.now() - this.maxHistoryAge);
       const result = await AIChat.deleteMany({ updatedAt: { $lt: cutoffDate } });
       if (result.deletedCount > 0) {
-        this.invalidateUserCache('*', '*'); // Invalidate all caches
+        this.clearAllCaches();
       }
       return result.deletedCount;
     } catch (error) {
-      // Ignore cleanup errors
+      logger.warn('History cleanup failed', { error: error.message });
+      return 0;
     }
   }
 

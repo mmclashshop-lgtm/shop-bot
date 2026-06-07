@@ -157,7 +157,12 @@ module.exports = {
       new ActionRowBuilder().addComponents(priceInput)
     );
 
-    await interaction.showModal(modal).catch(() => {});
+    await interaction.showModal(modal).catch((err) => {
+      logger.error('showModal failed', { error: err?.message, customId: modal.data?.custom_id });
+      if (!interaction.deferred && !interaction.replied) {
+        interaction.reply({ content: '❌ فشل في فتح النموذج. يرجى المحاولة مرة أخرى.', ephemeral: true }).catch(() => {});
+      }
+    });
   },
 
   async handleModalSubmit(interaction, client) {
@@ -176,7 +181,7 @@ module.exports = {
 
     try {
       const storeId = interaction.customId.replace('service_add_modal_', '');
-      const store = await Store.findById(storeId.lean());
+      const store = await Store.findById(storeId);
 
       if (!store || store.ownerId !== interaction.user.id) {
         return interaction.editReply({ content: '❌ غير مصرح.' });
@@ -302,7 +307,7 @@ module.exports = {
 
     await Service.findByIdAndDelete(serviceId);
 
-    const store = await Store.findById(service.storeId.lean());
+    const store = await Store.findById(service.storeId);
     if (store) {
       store.stats.totalProducts = Math.max(0, store.stats.totalProducts - 1);
       await store.save();
@@ -626,7 +631,12 @@ module.exports = {
         new ActionRowBuilder().addComponents(requirementsInput)
       );
 
-      return interaction.showModal(modal).catch(() => {});
+      return interaction.showModal(modal).catch((err) => {
+        logger.error('showModal failed', { error: err?.message, customId: modal.data?.custom_id });
+        if (!interaction.deferred && !interaction.replied) {
+          interaction.reply({ content: '❌ فشل في فتح النموذج. يرجى المحاولة مرة أخرى.', ephemeral: true }).catch(() => {});
+        }
+      });
     }
 
     if (action.startsWith('info_')) {

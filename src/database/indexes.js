@@ -22,11 +22,12 @@ async function ensureIndexes() {
     );
   }
 
-  // Order: common list queries
+  // Order: common list queries + store dashboard
   if (collectionNames.includes('orders')) {
     additions.push(
       db.collection('orders').createIndex({ buyerId: 1, createdAt: -1, type: 1 }, { background: true }).catch(() => {}),
       db.collection('orders').createIndex({ sellerId: 1, createdAt: -1, status: 1 }, { background: true }).catch(() => {}),
+      db.collection('orders').createIndex({ storeId: 1, createdAt: -1 }, { background: true }).catch(() => {}),
     );
   }
 
@@ -34,6 +35,13 @@ async function ensureIndexes() {
   if (collectionNames.includes('transactions')) {
     additions.push(
       db.collection('transactions').createIndex({ userId: 1, createdAt: -1, type: 1 }, { background: true }).catch(() => {}),
+    );
+  }
+
+  // Withdrawal: status filtering + requestedAt sorting
+  if (collectionNames.includes('withdrawals')) {
+    additions.push(
+      db.collection('withdrawals').createIndex({ status: 1, requestedAt: -1 }, { background: true }).catch(() => {}),
     );
   }
 
@@ -53,10 +61,21 @@ async function ensureIndexes() {
     );
   }
 
-  // Payment: auto-confirm + probot transaction lookups
+  // Payment: auto-confirm + probot transaction lookups + user/store pagination
   if (collectionNames.includes('payments')) {
     additions.push(
       db.collection('payments').createIndex({ probotTransactionId: 1 }, { background: true, sparse: true }).catch(() => {}),
+      db.collection('payments').createIndex({ buyerId: 1, createdAt: -1 }, { background: true }).catch(() => {}),
+      db.collection('payments').createIndex({ sellerId: 1, createdAt: -1 }, { background: true }).catch(() => {}),
+      db.collection('payments').createIndex({ storeId: 1, createdAt: -1 }, { background: true }).catch(() => {}),
+    );
+  }
+
+  // Coupon: admin pagination + store lookups
+  if (collectionNames.includes('coupons')) {
+    additions.push(
+      db.collection('coupons').createIndex({ createdAt: -1 }, { background: true }).catch(() => {}),
+      db.collection('coupons').createIndex({ storeId: 1, isActive: 1, createdAt: -1 }, { background: true }).catch(() => {}),
     );
   }
 

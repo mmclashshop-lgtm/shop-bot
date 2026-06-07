@@ -44,7 +44,8 @@ async function autoDefer(interaction) {
 
 function scheduleAutoDefer(interaction) {
   if (interaction.replied || interaction.deferred) return null;
-  return setTimeout(() => autoDefer(interaction).catch(() => {}), DEFER_TIMEOUT);
+  const timer = setTimeout(() => autoDefer(interaction).catch(() => {}), DEFER_TIMEOUT);
+  return { timer, interaction };
 }
 
 module.exports = { withTimeout, TimeoutError, autoDefer, scheduleAutoDefer, DEFER_TIMEOUT };

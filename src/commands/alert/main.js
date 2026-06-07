@@ -47,8 +47,9 @@ module.exports = {
     ),
 
   async execute(interaction) {
+    await interaction.deferReply({ ephemeral: true });
     if (!interaction.memberPermissions.has('Administrator')) {
-      return interaction.reply({ content: '🚫 نظام التنبيهات للمشرفين فقط.', ephemeral: true });
+      return interaction.editReply({ content: '🚫 نظام التنبيهات للمشرفين فقط.' });
     }
 
     const subcommand = interaction.options.getSubcommand();

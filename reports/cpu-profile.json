@@ -1,81 +1,11 @@
 {
-  "timestamp": "2026-06-06T09:21:52.462Z",
-  "totalFiles": 95,
-  "filesWithIssues": 63,
+  "timestamp": "2026-06-07T10:11:46.476Z",
+  "totalFiles": 119,
+  "filesWithIssues": 75,
   "topHotspots": [
     {
-      "file": "services\\BackupService.js",
-      "totalLines": 595,
-      "totalScore": 112,
-      "findings": [
-        {
-          "pattern": "Synchronous fs operation",
-          "count": 16,
-          "severity": "high",
-          "weight": 5,
-          "score": 80
-        },
-        {
-          "pattern": "execFileSync / execSync",
-          "count": 2,
-          "severity": "high",
-          "weight": 5,
-          "score": 10
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 5,
-          "severity": "medium",
-          "weight": 1,
-          "score": 5
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 4,
-          "severity": "medium",
-          "weight": 1,
-          "score": 4
-        },
-        {
-          "pattern": "Array.filter in hot path",
-          "count": 4,
-          "severity": "medium",
-          "weight": 1,
-          "score": 4
-        },
-        {
-          "pattern": "Nested promise (anti-pattern)",
-          "count": 4,
-          "severity": "low",
-          "weight": 1,
-          "score": 4
-        },
-        {
-          "pattern": "JSON.stringify in hot path",
-          "count": 1,
-          "severity": "low",
-          "weight": 2,
-          "score": 2
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 2,
-          "severity": "low",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Array.reduce in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        }
-      ]
-    },
-    {
       "file": "commands\\dashboard\\main.js",
-      "totalLines": 678,
+      "totalLines": 674,
       "totalScore": 67,
       "findings": [
         {
@@ -83,34 +13,182 @@
           "count": 16,
           "severity": "medium",
           "weight": 3,
-          "score": 48
+          "score": 48,
+          "occurrences": [
+            {
+              "line": 142,
+              "column": 12
+            },
+            {
+              "line": 143,
+              "column": 18
+            },
+            {
+              "line": 144,
+              "column": 13
+            },
+            {
+              "line": 147,
+              "column": 14
+            },
+            {
+              "line": 150,
+              "column": 17
+            },
+            {
+              "line": 153,
+              "column": 11
+            },
+            {
+              "line": 259,
+              "column": 12
+            },
+            {
+              "line": 260,
+              "column": 18
+            },
+            {
+              "line": 261,
+              "column": 13
+            },
+            {
+              "line": 321,
+              "column": 12
+            },
+            {
+              "line": 322,
+              "column": 13
+            },
+            {
+              "line": 395,
+              "column": 47
+            },
+            {
+              "line": 467,
+              "column": 12
+            },
+            {
+              "line": 472,
+              "column": 18
+            },
+            {
+              "line": 477,
+              "column": 12
+            },
+            {
+              "line": 482,
+              "column": 12
+            }
+          ]
         },
         {
           "pattern": "Array.map in hot path",
           "count": 14,
           "severity": "medium",
           "weight": 1,
-          "score": 14
+          "score": 14,
+          "occurrences": [
+            {
+              "line": 197,
+              "column": 28
+            },
+            {
+              "line": 205,
+              "column": 29
+            },
+            {
+              "line": 285,
+              "column": 27
+            },
+            {
+              "line": 293,
+              "column": 28
+            },
+            {
+              "line": 350,
+              "column": 22
+            },
+            {
+              "line": 358,
+              "column": 28
+            },
+            {
+              "line": 417,
+              "column": 28
+            },
+            {
+              "line": 425,
+              "column": 27
+            },
+            {
+              "line": 513,
+              "column": 42
+            },
+            {
+              "line": 521,
+              "column": 34
+            },
+            {
+              "line": 588,
+              "column": 32
+            },
+            {
+              "line": 590,
+              "column": 32
+            },
+            {
+              "line": 592,
+              "column": 32
+            },
+            {
+              "line": 594,
+              "column": 32
+            }
+          ]
         },
         {
           "pattern": "Array.reduce in hot path",
           "count": 4,
           "severity": "medium",
           "weight": 1,
-          "score": 4
+          "score": 4,
+          "occurrences": [
+            {
+              "line": 493,
+              "column": 41
+            },
+            {
+              "line": 494,
+              "column": 47
+            },
+            {
+              "line": 495,
+              "column": 39
+            },
+            {
+              "line": 496,
+              "column": 43
+            }
+          ]
         },
         {
           "pattern": "Array.slice in loop",
           "count": 1,
           "severity": "low",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 513,
+              "column": 31
+            }
+          ]
         }
       ]
     },
     {
       "file": "services\\MonitorService.js",
-      "totalLines": 380,
+      "totalLines": 402,
       "totalScore": 50,
       "findings": [
         {
@@ -118,111 +196,253 @@
           "count": 19,
           "severity": "low",
           "weight": 1,
-          "score": 19
+          "score": 19,
+          "occurrences": [
+            {
+              "line": 160,
+              "column": 14
+            },
+            {
+              "line": 164,
+              "column": 14
+            },
+            {
+              "line": 169,
+              "column": 7
+            },
+            {
+              "line": 170,
+              "column": 21
+            },
+            {
+              "line": 171,
+              "column": 17
+            },
+            {
+              "line": 217,
+              "column": 28
+            },
+            {
+              "line": 233,
+              "column": 24
+            },
+            {
+              "line": 234,
+              "column": 20
+            },
+            {
+              "line": 258,
+              "column": 21
+            },
+            {
+              "line": 259,
+              "column": 24
+            },
+            {
+              "line": 260,
+              "column": 18
+            },
+            {
+              "line": 260,
+              "column": 55
+            },
+            {
+              "line": 260,
+              "column": 100
+            },
+            {
+              "line": 285,
+              "column": 23
+            },
+            {
+              "line": 340,
+              "column": 19
+            },
+            {
+              "line": 341,
+              "column": 22
+            },
+            {
+              "line": 342,
+              "column": 16
+            },
+            {
+              "line": 342,
+              "column": 53
+            },
+            {
+              "line": 342,
+              "column": 98
+            }
+          ]
         },
         {
           "pattern": "Array.map in hot path",
           "count": 7,
           "severity": "medium",
           "weight": 1,
-          "score": 7
+          "score": 7,
+          "occurrences": [
+            {
+              "line": 218,
+              "column": 9
+            },
+            {
+              "line": 256,
+              "column": 31
+            },
+            {
+              "line": 286,
+              "column": 7
+            },
+            {
+              "line": 331,
+              "column": 47
+            },
+            {
+              "line": 360,
+              "column": 45
+            },
+            {
+              "line": 371,
+              "column": 45
+            },
+            {
+              "line": 396,
+              "column": 32
+            }
+          ]
         },
         {
           "pattern": "Array.slice in loop",
           "count": 6,
           "severity": "low",
           "weight": 1,
-          "score": 6
+          "score": 6,
+          "occurrences": [
+            {
+              "line": 220,
+              "column": 9
+            },
+            {
+              "line": 222,
+              "column": 47
+            },
+            {
+              "line": 295,
+              "column": 22
+            },
+            {
+              "line": 331,
+              "column": 36
+            },
+            {
+              "line": 360,
+              "column": 31
+            },
+            {
+              "line": 396,
+              "column": 22
+            }
+          ]
         },
         {
           "pattern": "Deep object traversal",
           "count": 6,
           "severity": "low",
           "weight": 1,
-          "score": 6
+          "score": 6,
+          "occurrences": [
+            {
+              "line": 198,
+              "column": 5
+            },
+            {
+              "line": 208,
+              "column": 9
+            },
+            {
+              "line": 208,
+              "column": 52
+            },
+            {
+              "line": 242,
+              "column": 28
+            },
+            {
+              "line": 305,
+              "column": 63
+            },
+            {
+              "line": 320,
+              "column": 18
+            }
+          ]
         },
         {
           "pattern": "Aggregation pipeline (MongoDB)",
           "count": 2,
           "severity": "medium",
           "weight": 3,
-          "score": 6
+          "score": 6,
+          "occurrences": [
+            {
+              "line": 180,
+              "column": 52
+            },
+            {
+              "line": 185,
+              "column": 52
+            }
+          ]
         },
         {
           "pattern": "Array.reduce in hot path",
           "count": 5,
           "severity": "medium",
           "weight": 1,
-          "score": 5
+          "score": 5,
+          "occurrences": [
+            {
+              "line": 233,
+              "column": 58
+            },
+            {
+              "line": 234,
+              "column": 54
+            },
+            {
+              "line": 293,
+              "column": 29
+            },
+            {
+              "line": 294,
+              "column": 25
+            },
+            {
+              "line": 374,
+              "column": 28
+            }
+          ]
         },
         {
           "pattern": "Deep loop (for/while)",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
-        }
-      ]
-    },
-    {
-      "file": "services\\AIChatSessionManager.js",
-      "totalLines": 796,
-      "totalScore": 46,
-      "findings": [
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 17,
-          "severity": "medium",
-          "weight": 1,
-          "score": 17
-        },
-        {
-          "pattern": "Synchronous fs operation",
-          "count": 3,
-          "severity": "high",
-          "weight": 5,
-          "score": 15
-        },
-        {
-          "pattern": "Nested promise (anti-pattern)",
-          "count": 5,
-          "severity": "low",
-          "weight": 1,
-          "score": 5
-        },
-        {
-          "pattern": "JSON.stringify in hot path",
-          "count": 2,
-          "severity": "low",
-          "weight": 2,
-          "score": 4
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 2,
-          "severity": "low",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Deep object traversal",
-          "count": 2,
-          "severity": "low",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Array.forEach in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 265,
+              "column": 7
+            }
+          ]
         }
       ]
     },
     {
       "file": "handlers\\commandHandler.js",
-      "totalLines": 363,
+      "totalLines": 516,
       "totalScore": 34,
       "findings": [
         {
@@ -230,34 +450,218 @@
           "count": 5,
           "severity": "high",
           "weight": 5,
-          "score": 25
+          "score": 25,
+          "occurrences": [
+            {
+              "line": 64,
+              "column": 24
+            },
+            {
+              "line": 64,
+              "column": 65
+            },
+            {
+              "line": 71,
+              "column": 28
+            },
+            {
+              "line": 104,
+              "column": 10
+            },
+            {
+              "line": 106,
+              "column": 12
+            }
+          ]
         },
         {
           "pattern": "Array.filter in hot path",
           "count": 4,
           "severity": "medium",
           "weight": 1,
-          "score": 4
+          "score": 4,
+          "occurrences": [
+            {
+              "line": 64,
+              "column": 52
+            },
+            {
+              "line": 71,
+              "column": 56
+            },
+            {
+              "line": 107,
+              "column": 7
+            },
+            {
+              "line": 115,
+              "column": 7
+            }
+          ]
         },
         {
           "pattern": "Deep loop (for/while)",
           "count": 3,
           "severity": "medium",
           "weight": 1,
-          "score": 3
+          "score": 3,
+          "occurrences": [
+            {
+              "line": 41,
+              "column": 5
+            },
+            {
+              "line": 69,
+              "column": 5
+            },
+            {
+              "line": 73,
+              "column": 7
+            }
+          ]
         },
         {
           "pattern": "Array.map in hot path",
           "count": 2,
           "severity": "medium",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 108,
+              "column": 7
+            },
+            {
+              "line": 242,
+              "column": 51
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "services\\AIChatExportService.js",
+      "totalLines": 199,
+      "totalScore": 31,
+      "findings": [
+        {
+          "pattern": "Synchronous fs operation",
+          "count": 3,
+          "severity": "high",
+          "weight": 5,
+          "score": 15,
+          "occurrences": [
+            {
+              "line": 61,
+              "column": 9
+            },
+            {
+              "line": 98,
+              "column": 22
+            },
+            {
+              "line": 110,
+              "column": 13
+            }
+          ]
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 7,
+          "severity": "medium",
+          "weight": 1,
+          "score": 7,
+          "occurrences": [
+            {
+              "line": 63,
+              "column": 9
+            },
+            {
+              "line": 72,
+              "column": 9
+            },
+            {
+              "line": 85,
+              "column": 9
+            },
+            {
+              "line": 117,
+              "column": 5
+            },
+            {
+              "line": 128,
+              "column": 5
+            },
+            {
+              "line": 160,
+              "column": 7
+            },
+            {
+              "line": 176,
+              "column": 9
+            }
+          ]
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 2,
+          "severity": "low",
+          "weight": 2,
+          "score": 4,
+          "occurrences": [
+            {
+              "line": 65,
+              "column": 35
+            },
+            {
+              "line": 154,
+              "column": 20
+            }
+          ]
+        },
+        {
+          "pattern": "Promise constructor",
+          "count": 4,
+          "severity": "low",
+          "weight": 1,
+          "score": 4,
+          "occurrences": [
+            {
+              "line": 68,
+              "column": 15
+            },
+            {
+              "line": 76,
+              "column": 15
+            },
+            {
+              "line": 92,
+              "column": 15
+            },
+            {
+              "line": 183,
+              "column": 16
+            }
+          ]
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 118,
+              "column": 32
+            }
+          ]
         }
       ]
     },
     {
       "file": "services\\AIService.js",
-      "totalLines": 714,
+      "totalLines": 707,
       "totalScore": 31,
       "findings": [
         {
@@ -265,139 +669,460 @@
           "count": 7,
           "severity": "low",
           "weight": 1,
-          "score": 7
+          "score": 7,
+          "occurrences": [
+            {
+              "line": 199,
+              "column": 18
+            },
+            {
+              "line": 218,
+              "column": 28
+            },
+            {
+              "line": 233,
+              "column": 21
+            },
+            {
+              "line": 233,
+              "column": 41
+            },
+            {
+              "line": 249,
+              "column": 26
+            },
+            {
+              "line": 295,
+              "column": 22
+            },
+            {
+              "line": 686,
+              "column": 7
+            }
+          ]
         },
         {
           "pattern": "Array.slice in loop",
           "count": 7,
           "severity": "low",
           "weight": 1,
-          "score": 7
+          "score": 7,
+          "occurrences": [
+            {
+              "line": 174,
+              "column": 22
+            },
+            {
+              "line": 179,
+              "column": 7
+            },
+            {
+              "line": 229,
+              "column": 48
+            },
+            {
+              "line": 361,
+              "column": 7
+            },
+            {
+              "line": 480,
+              "column": 11
+            },
+            {
+              "line": 673,
+              "column": 16
+            },
+            {
+              "line": 673,
+              "column": 78
+            }
+          ]
         },
         {
           "pattern": "Array.map in hot path",
           "count": 5,
           "severity": "medium",
           "weight": 1,
-          "score": 5
+          "score": 5,
+          "occurrences": [
+            {
+              "line": 197,
+              "column": 20
+            },
+            {
+              "line": 229,
+              "column": 58
+            },
+            {
+              "line": 359,
+              "column": 7
+            },
+            {
+              "line": 480,
+              "column": 24
+            },
+            {
+              "line": 673,
+              "column": 29
+            }
+          ]
         },
         {
           "pattern": "Deep loop (for/while)",
           "count": 5,
           "severity": "medium",
           "weight": 1,
-          "score": 5
+          "score": 5,
+          "occurrences": [
+            {
+              "line": 111,
+              "column": 5
+            },
+            {
+              "line": 168,
+              "column": 5
+            },
+            {
+              "line": 186,
+              "column": 5
+            },
+            {
+              "line": 266,
+              "column": 5
+            },
+            {
+              "line": 342,
+              "column": 5
+            }
+          ]
         },
         {
           "pattern": "Array.filter in hot path",
           "count": 2,
           "severity": "medium",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 343,
+              "column": 31
+            },
+            {
+              "line": 360,
+              "column": 7
+            }
+          ]
         },
         {
           "pattern": "JSON.stringify in hot path",
           "count": 1,
           "severity": "low",
           "weight": 2,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 440,
+              "column": 37
+            }
+          ]
         },
         {
           "pattern": "Array.reduce in hot path",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 215,
+              "column": 39
+            }
+          ]
         },
         {
-          "pattern": "Nested promise (anti-pattern)",
+          "pattern": "Promise constructor",
           "count": 1,
           "severity": "low",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 315,
+              "column": 17
+            }
+          ]
         },
         {
           "pattern": "Deep object traversal",
           "count": 1,
           "severity": "low",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 268,
+              "column": 32
+            }
+          ]
         }
       ]
     },
     {
       "file": "deploy-commands.js",
-      "totalLines": 48,
-      "totalScore": 23,
+      "totalLines": 50,
+      "totalScore": 24,
       "findings": [
         {
           "pattern": "Synchronous fs operation",
           "count": 3,
           "severity": "high",
           "weight": 5,
-          "score": 15
+          "score": 15,
+          "occurrences": [
+            {
+              "line": 9,
+              "column": 20
+            },
+            {
+              "line": 9,
+              "column": 61
+            },
+            {
+              "line": 13,
+              "column": 24
+            }
+          ]
         },
         {
           "pattern": "console.log (blocking)",
-          "count": 4,
+          "count": 5,
           "severity": "low",
           "weight": 1,
-          "score": 4
+          "score": 5,
+          "occurrences": [
+            {
+              "line": 19,
+              "column": 9
+            },
+            {
+              "line": 31,
+              "column": 5
+            },
+            {
+              "line": 39,
+              "column": 7
+            },
+            {
+              "line": 45,
+              "column": 7
+            },
+            {
+              "line": 48,
+              "column": 5
+            }
+          ]
         },
         {
           "pattern": "Array.filter in hot path",
           "count": 2,
           "severity": "medium",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 9,
+              "column": 48
+            },
+            {
+              "line": 13,
+              "column": 52
+            }
+          ]
         },
         {
           "pattern": "Deep loop (for/while)",
           "count": 2,
           "severity": "medium",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 11,
+              "column": 1
+            },
+            {
+              "line": 15,
+              "column": 3
+            }
+          ]
         }
       ]
     },
     {
-      "file": "cache\\CacheService.js",
-      "totalLines": 346,
-      "totalScore": 21,
+      "file": "services\\BackupService.js",
+      "totalLines": 614,
+      "totalScore": 24,
       "findings": [
         {
-          "pattern": "Spread operator in loop",
-          "count": 8,
+          "pattern": "Array.map in hot path",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5,
+          "occurrences": [
+            {
+              "line": 44,
+              "column": 40
+            },
+            {
+              "line": 423,
+              "column": 16
+            },
+            {
+              "line": 436,
+              "column": 33
+            },
+            {
+              "line": 464,
+              "column": 63
+            },
+            {
+              "line": 582,
+              "column": 53
+            }
+          ]
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 5,
+          "severity": "medium",
+          "weight": 1,
+          "score": 5,
+          "occurrences": [
+            {
+              "line": 173,
+              "column": 23
+            },
+            {
+              "line": 174,
+              "column": 24
+            },
+            {
+              "line": 175,
+              "column": 25
+            },
+            {
+              "line": 420,
+              "column": 30
+            },
+            {
+              "line": 430,
+              "column": 9
+            }
+          ]
+        },
+        {
+          "pattern": "Promise constructor",
+          "count": 5,
           "severity": "low",
           "weight": 1,
-          "score": 8
-        },
-        {
-          "pattern": "JSON.parse in hot path",
-          "count": 3,
-          "severity": "low",
-          "weight": 2,
-          "score": 6
-        },
-        {
-          "pattern": "JSON.stringify in hot path",
-          "count": 2,
-          "severity": "low",
-          "weight": 2,
-          "score": 4
+          "score": 5,
+          "occurrences": [
+            {
+              "line": 151,
+              "column": 32
+            },
+            {
+              "line": 273,
+              "column": 12
+            },
+            {
+              "line": 337,
+              "column": 12
+            },
+            {
+              "line": 391,
+              "column": 12
+            },
+            {
+              "line": 509,
+              "column": 12
+            }
+          ]
         },
         {
           "pattern": "Deep loop (for/while)",
-          "count": 3,
+          "count": 4,
           "severity": "medium",
           "weight": 1,
-          "score": 3
+          "score": 4,
+          "occurrences": [
+            {
+              "line": 50,
+              "column": 5
+            },
+            {
+              "line": 59,
+              "column": 5
+            },
+            {
+              "line": 124,
+              "column": 7
+            },
+            {
+              "line": 597,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 242,
+              "column": 37
+            }
+          ]
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 185,
+              "column": 67
+            },
+            {
+              "line": 435,
+              "column": 29
+            }
+          ]
+        },
+        {
+          "pattern": "Array.reduce in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 146,
+              "column": 30
+            }
+          ]
         }
       ]
     },
     {
       "file": "services\\FraudDetectionService.js",
-      "totalLines": 713,
+      "totalLines": 716,
       "totalScore": 21,
       "findings": [
         {
@@ -405,42 +1130,122 @@
           "count": 7,
           "severity": "low",
           "weight": 1,
-          "score": 7
+          "score": 7,
+          "occurrences": [
+            {
+              "line": 340,
+              "column": 20
+            },
+            {
+              "line": 401,
+              "column": 20
+            },
+            {
+              "line": 460,
+              "column": 20
+            },
+            {
+              "line": 504,
+              "column": 20
+            },
+            {
+              "line": 543,
+              "column": 20
+            },
+            {
+              "line": 582,
+              "column": 20
+            },
+            {
+              "line": 707,
+              "column": 20
+            }
+          ]
         },
         {
           "pattern": "Aggregation pipeline (MongoDB)",
           "count": 2,
           "severity": "medium",
           "weight": 3,
-          "score": 6
+          "score": 6,
+          "occurrences": [
+            {
+              "line": 266,
+              "column": 22
+            },
+            {
+              "line": 274,
+              "column": 22
+            }
+          ]
         },
         {
           "pattern": "Deep loop (for/while)",
           "count": 4,
           "severity": "medium",
           "weight": 1,
-          "score": 4
+          "score": 4,
+          "occurrences": [
+            {
+              "line": 64,
+              "column": 5
+            },
+            {
+              "line": 67,
+              "column": 5
+            },
+            {
+              "line": 70,
+              "column": 5
+            },
+            {
+              "line": 210,
+              "column": 9
+            }
+          ]
         },
         {
           "pattern": "Array.reduce in hot path",
           "count": 2,
           "severity": "medium",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 137,
+              "column": 36
+            },
+            {
+              "line": 320,
+              "column": 43
+            }
+          ]
         },
         {
           "pattern": "Array.filter in hot path",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 209,
+              "column": 36
+            }
+          ]
         },
         {
           "pattern": "Array.forEach in hot path",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 652,
+              "column": 20
+            }
+          ]
         }
       ]
     },
@@ -454,63 +1259,157 @@
           "count": 7,
           "severity": "low",
           "weight": 1,
-          "score": 7
+          "score": 7,
+          "occurrences": [
+            {
+              "line": 143,
+              "column": 21
+            },
+            {
+              "line": 169,
+              "column": 20
+            },
+            {
+              "line": 190,
+              "column": 20
+            },
+            {
+              "line": 197,
+              "column": 11
+            },
+            {
+              "line": 199,
+              "column": 37
+            },
+            {
+              "line": 205,
+              "column": 11
+            },
+            {
+              "line": 207,
+              "column": 10
+            }
+          ]
         },
         {
           "pattern": "Deep loop (for/while)",
           "count": 5,
           "severity": "medium",
           "weight": 1,
-          "score": 5
+          "score": 5,
+          "occurrences": [
+            {
+              "line": 23,
+              "column": 3
+            },
+            {
+              "line": 32,
+              "column": 3
+            },
+            {
+              "line": 136,
+              "column": 3
+            },
+            {
+              "line": 144,
+              "column": 3
+            },
+            {
+              "line": 170,
+              "column": 3
+            }
+          ]
         },
         {
           "pattern": "JSON.parse in hot path",
           "count": 1,
           "severity": "low",
           "weight": 2,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 165,
+              "column": 10
+            }
+          ]
         },
         {
           "pattern": "JSON.stringify in hot path",
           "count": 1,
           "severity": "low",
           "weight": 2,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 165,
+              "column": 21
+            }
+          ]
         },
         {
           "pattern": "Array.map in hot path",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 216,
+              "column": 34
+            }
+          ]
         },
         {
           "pattern": "Array.reduce in hot path",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 181,
+              "column": 14
+            }
+          ]
         },
         {
           "pattern": "Array.forEach in hot path",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 191,
+              "column": 7
+            }
+          ]
         },
         {
           "pattern": "Array.slice in loop",
           "count": 1,
           "severity": "low",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 137,
+              "column": 22
+            }
+          ]
         },
         {
-          "pattern": "Nested promise (anti-pattern)",
+          "pattern": "Promise constructor",
           "count": 1,
           "severity": "low",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 124,
+              "column": 10
+            }
+          ]
         }
       ]
     },
@@ -524,48 +1423,120 @@
           "count": 9,
           "severity": "medium",
           "weight": 1,
-          "score": 9
+          "score": 9,
+          "occurrences": [
+            {
+              "line": 219,
+              "column": 17
+            },
+            {
+              "line": 222,
+              "column": 17
+            },
+            {
+              "line": 239,
+              "column": 26
+            },
+            {
+              "line": 256,
+              "column": 30
+            },
+            {
+              "line": 273,
+              "column": 17
+            },
+            {
+              "line": 282,
+              "column": 17
+            },
+            {
+              "line": 291,
+              "column": 17
+            },
+            {
+              "line": 336,
+              "column": 99
+            },
+            {
+              "line": 346,
+              "column": 94
+            }
+          ]
         },
         {
           "pattern": "Aggregation pipeline (MongoDB)",
           "count": 2,
           "severity": "medium",
           "weight": 3,
-          "score": 6
+          "score": 6,
+          "occurrences": [
+            {
+              "line": 114,
+              "column": 18
+            },
+            {
+              "line": 208,
+              "column": 44
+            }
+          ]
         },
         {
           "pattern": "JSON.stringify in hot path",
           "count": 1,
           "severity": "low",
           "weight": 2,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 314,
+              "column": 70
+            }
+          ]
         },
         {
           "pattern": "Deep loop (for/while)",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 212,
+              "column": 5
+            }
+          ]
         },
         {
           "pattern": "Spread operator in loop",
           "count": 1,
           "severity": "low",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 256,
+              "column": 9
+            }
+          ]
         },
         {
           "pattern": "Array.slice in loop",
           "count": 1,
           "severity": "low",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 256,
+              "column": 18
+            }
+          ]
         }
       ]
     },
     {
       "file": "commands\\search\\main.js",
-      "totalLines": 345,
+      "totalLines": 353,
       "totalScore": 18,
       "findings": [
         {
@@ -573,27 +1544,105 @@
           "count": 7,
           "severity": "low",
           "weight": 1,
-          "score": 7
+          "score": 7,
+          "occurrences": [
+            {
+              "line": 95,
+              "column": 35
+            },
+            {
+              "line": 210,
+              "column": 30
+            },
+            {
+              "line": 218,
+              "column": 32
+            },
+            {
+              "line": 226,
+              "column": 32
+            },
+            {
+              "line": 234,
+              "column": 31
+            },
+            {
+              "line": 314,
+              "column": 45
+            },
+            {
+              "line": 333,
+              "column": 45
+            }
+          ]
         },
         {
           "pattern": "Spread operator in loop",
           "count": 6,
           "severity": "low",
           "weight": 1,
-          "score": 6
+          "score": 6,
+          "occurrences": [
+            {
+              "line": 160,
+              "column": 41
+            },
+            {
+              "line": 160,
+              "column": 56
+            },
+            {
+              "line": 169,
+              "column": 45
+            },
+            {
+              "line": 169,
+              "column": 62
+            },
+            {
+              "line": 179,
+              "column": 45
+            },
+            {
+              "line": 179,
+              "column": 62
+            }
+          ]
         },
         {
           "pattern": "Array.map in hot path",
           "count": 5,
           "severity": "medium",
           "weight": 1,
-          "score": 5
+          "score": 5,
+          "occurrences": [
+            {
+              "line": 140,
+              "column": 37
+            },
+            {
+              "line": 210,
+              "column": 42
+            },
+            {
+              "line": 218,
+              "column": 44
+            },
+            {
+              "line": 226,
+              "column": 44
+            },
+            {
+              "line": 234,
+              "column": 43
+            }
+          ]
         }
       ]
     },
     {
       "file": "commands\\wallet\\main.js",
-      "totalLines": 788,
+      "totalLines": 822,
       "totalScore": 16,
       "findings": [
         {
@@ -601,14 +1650,158 @@
           "count": 5,
           "severity": "medium",
           "weight": 3,
-          "score": 15
+          "score": 15,
+          "occurrences": [
+            {
+              "line": 358,
+              "column": 18
+            },
+            {
+              "line": 359,
+              "column": 18
+            },
+            {
+              "line": 360,
+              "column": 18
+            },
+            {
+              "line": 361,
+              "column": 18
+            },
+            {
+              "line": 362,
+              "column": 18
+            }
+          ]
         },
         {
           "pattern": "Array.map in hot path",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 338,
+              "column": 35
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "services\\AIChatSessionManager.js",
+      "totalLines": 626,
+      "totalScore": 16,
+      "findings": [
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 11,
+          "severity": "medium",
+          "weight": 1,
+          "score": 11,
+          "occurrences": [
+            {
+              "line": 26,
+              "column": 7
+            },
+            {
+              "line": 49,
+              "column": 7
+            },
+            {
+              "line": 52,
+              "column": 9
+            },
+            {
+              "line": 68,
+              "column": 5
+            },
+            {
+              "line": 294,
+              "column": 9
+            },
+            {
+              "line": 404,
+              "column": 5
+            },
+            {
+              "line": 416,
+              "column": 5
+            },
+            {
+              "line": 538,
+              "column": 5
+            },
+            {
+              "line": 562,
+              "column": 7
+            },
+            {
+              "line": 566,
+              "column": 9
+            },
+            {
+              "line": 616,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "pattern": "Deep object traversal",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 49,
+              "column": 27
+            },
+            {
+              "line": 562,
+              "column": 27
+            }
+          ]
+        },
+        {
+          "pattern": "Array.forEach in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 377,
+              "column": 18
+            }
+          ]
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 294,
+              "column": 42
+            }
+          ]
+        },
+        {
+          "pattern": "Promise constructor",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 121,
+              "column": 15
+            }
+          ]
         }
       ]
     },
@@ -622,42 +1815,94 @@
           "count": 3,
           "severity": "medium",
           "weight": 3,
-          "score": 9
+          "score": 9,
+          "occurrences": [
+            {
+              "line": 416,
+              "column": 41
+            },
+            {
+              "line": 443,
+              "column": 15
+            },
+            {
+              "line": 446,
+              "column": 15
+            }
+          ]
         },
         {
           "pattern": "Deep loop (for/while)",
           "count": 2,
           "severity": "medium",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 453,
+              "column": 5
+            },
+            {
+              "line": 456,
+              "column": 5
+            }
+          ]
         },
         {
           "pattern": "Spread operator in loop",
           "count": 2,
           "severity": "low",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 208,
+              "column": 24
+            },
+            {
+              "line": 473,
+              "column": 7
+            }
+          ]
         },
         {
           "pattern": "Array.map in hot path",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 208,
+              "column": 41
+            }
+          ]
         },
         {
           "pattern": "Array.filter in hot path",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 206,
+              "column": 31
+            }
+          ]
         },
         {
           "pattern": "Array.slice in loop",
           "count": 1,
           "severity": "low",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 475,
+              "column": 39
+            }
+          ]
         }
       ]
     },
@@ -671,28 +1916,100 @@
           "count": 6,
           "severity": "medium",
           "weight": 1,
-          "score": 6
+          "score": 6,
+          "occurrences": [
+            {
+              "line": 94,
+              "column": 5
+            },
+            {
+              "line": 111,
+              "column": 5
+            },
+            {
+              "line": 124,
+              "column": 5
+            },
+            {
+              "line": 125,
+              "column": 7
+            },
+            {
+              "line": 207,
+              "column": 5
+            },
+            {
+              "line": 210,
+              "column": 5
+            }
+          ]
         },
         {
           "pattern": "Array.slice in loop",
           "count": 6,
           "severity": "low",
           "weight": 1,
-          "score": 6
+          "score": 6,
+          "occurrences": [
+            {
+              "line": 46,
+              "column": 58
+            },
+            {
+              "line": 100,
+              "column": 7
+            },
+            {
+              "line": 127,
+              "column": 39
+            },
+            {
+              "line": 135,
+              "column": 7
+            },
+            {
+              "line": 154,
+              "column": 44
+            },
+            {
+              "line": 164,
+              "column": 44
+            }
+          ]
         },
         {
           "pattern": "Array.map in hot path",
           "count": 2,
           "severity": "medium",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 101,
+              "column": 7
+            },
+            {
+              "line": 136,
+              "column": 7
+            }
+          ]
         },
         {
           "pattern": "Array.reduce in hot path",
           "count": 2,
           "severity": "medium",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 50,
+              "column": 30
+            },
+            {
+              "line": 81,
+              "column": 30
+            }
+          ]
         }
       ]
     },
@@ -706,27 +2023,57 @@
           "count": 2,
           "severity": "high",
           "weight": 5,
-          "score": 10
+          "score": 10,
+          "occurrences": [
+            {
+              "line": 7,
+              "column": 6
+            },
+            {
+              "line": 8,
+              "column": 3
+            }
+          ]
         },
         {
           "pattern": "JSON.stringify in hot path",
           "count": 2,
           "severity": "low",
           "weight": 2,
-          "score": 4
+          "score": 4,
+          "occurrences": [
+            {
+              "line": 17,
+              "column": 18
+            },
+            {
+              "line": 32,
+              "column": 18
+            }
+          ]
         },
         {
           "pattern": "Spread operator in loop",
           "count": 2,
           "severity": "low",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 14,
+              "column": 62
+            },
+            {
+              "line": 29,
+              "column": 55
+            }
+          ]
         }
       ]
     },
     {
       "file": "commands\\settings\\main.js",
-      "totalLines": 478,
+      "totalLines": 494,
       "totalScore": 15,
       "findings": [
         {
@@ -734,28 +2081,96 @@
           "count": 5,
           "severity": "medium",
           "weight": 1,
-          "score": 5
+          "score": 5,
+          "occurrences": [
+            {
+              "line": 15,
+              "column": 18
+            },
+            {
+              "line": 133,
+              "column": 29
+            },
+            {
+              "line": 255,
+              "column": 32
+            },
+            {
+              "line": 325,
+              "column": 35
+            },
+            {
+              "line": 467,
+              "column": 12
+            }
+          ]
         },
         {
           "pattern": "Deep loop (for/while)",
           "count": 4,
           "severity": "medium",
           "weight": 1,
-          "score": 4
+          "score": 4,
+          "occurrences": [
+            {
+              "line": 122,
+              "column": 5
+            },
+            {
+              "line": 158,
+              "column": 5
+            },
+            {
+              "line": 176,
+              "column": 5
+            },
+            {
+              "line": 452,
+              "column": 5
+            }
+          ]
         },
         {
           "pattern": "Spread operator in loop",
           "count": 4,
           "severity": "low",
           "weight": 1,
-          "score": 4
+          "score": 4,
+          "occurrences": [
+            {
+              "line": 31,
+              "column": 25
+            },
+            {
+              "line": 40,
+              "column": 25
+            },
+            {
+              "line": 57,
+              "column": 25
+            },
+            {
+              "line": 74,
+              "column": 25
+            }
+          ]
         },
         {
           "pattern": "Array.slice in loop",
           "count": 2,
           "severity": "low",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 177,
+              "column": 25
+            },
+            {
+              "line": 453,
+              "column": 27
+            }
+          ]
         }
       ]
     },
@@ -769,7 +2184,117 @@
           "count": 5,
           "severity": "medium",
           "weight": 3,
-          "score": 15
+          "score": 15,
+          "occurrences": [
+            {
+              "line": 76,
+              "column": 36
+            },
+            {
+              "line": 84,
+              "column": 36
+            },
+            {
+              "line": 92,
+              "column": 22
+            },
+            {
+              "line": 102,
+              "column": 22
+            },
+            {
+              "line": 118,
+              "column": 38
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "commands\\store\\create.js",
+      "totalLines": 608,
+      "totalScore": 14,
+      "findings": [
+        {
+          "pattern": "Aggregation pipeline (MongoDB)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 3,
+          "score": 6,
+          "occurrences": [
+            {
+              "line": 508,
+              "column": 12
+            },
+            {
+              "line": 512,
+              "column": 13
+            }
+          ]
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 4,
+          "severity": "medium",
+          "weight": 1,
+          "score": 4,
+          "occurrences": [
+            {
+              "line": 483,
+              "column": 29
+            },
+            {
+              "line": 535,
+              "column": 28
+            },
+            {
+              "line": 566,
+              "column": 21
+            },
+            {
+              "line": 586,
+              "column": 22
+            }
+          ]
+        },
+        {
+          "pattern": "Object.assign in hot path",
+          "count": 1,
+          "severity": "low",
+          "weight": 2,
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 391,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 425,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "pattern": "Deep object traversal",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 423,
+              "column": 41
+            }
+          ]
         }
       ]
     },
@@ -783,28 +2308,68 @@
           "count": 3,
           "severity": "medium",
           "weight": 3,
-          "score": 9
+          "score": 9,
+          "occurrences": [
+            {
+              "line": 209,
+              "column": 18
+            },
+            {
+              "line": 213,
+              "column": 18
+            },
+            {
+              "line": 221,
+              "column": 18
+            }
+          ]
         },
         {
           "pattern": "Array.map in hot path",
           "count": 3,
           "severity": "medium",
           "weight": 1,
-          "score": 3
+          "score": 3,
+          "occurrences": [
+            {
+              "line": 253,
+              "column": 35
+            },
+            {
+              "line": 261,
+              "column": 25
+            },
+            {
+              "line": 269,
+              "column": 34
+            }
+          ]
         },
         {
           "pattern": "Deep loop (for/while)",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 297,
+              "column": 5
+            }
+          ]
         },
         {
           "pattern": "Array.slice in loop",
           "count": 1,
           "severity": "low",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 253,
+              "column": 23
+            }
+          ]
         }
       ]
     },
@@ -818,56 +2383,42 @@
           "count": 3,
           "severity": "medium",
           "weight": 3,
-          "score": 9
+          "score": 9,
+          "occurrences": [
+            {
+              "line": 233,
+              "column": 12
+            },
+            {
+              "line": 237,
+              "column": 18
+            },
+            {
+              "line": 241,
+              "column": 13
+            }
+          ]
         },
         {
           "pattern": "Array.map in hot path",
           "count": 3,
           "severity": "medium",
           "weight": 1,
-          "score": 3
-        }
-      ]
-    },
-    {
-      "file": "commands\\store\\create.js",
-      "totalLines": 543,
-      "totalScore": 12,
-      "findings": [
-        {
-          "pattern": "Aggregation pipeline (MongoDB)",
-          "count": 2,
-          "severity": "medium",
-          "weight": 3,
-          "score": 6
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Object.assign in hot path",
-          "count": 1,
-          "severity": "low",
-          "weight": 2,
-          "score": 2
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Deep object traversal",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
+          "score": 3,
+          "occurrences": [
+            {
+              "line": 285,
+              "column": 29
+            },
+            {
+              "line": 309,
+              "column": 31
+            },
+            {
+              "line": 333,
+              "column": 31
+            }
+          ]
         }
       ]
     },
@@ -881,13 +2432,31 @@
           "count": 4,
           "severity": "medium",
           "weight": 3,
-          "score": 12
+          "score": 12,
+          "occurrences": [
+            {
+              "line": 31,
+              "column": 37
+            },
+            {
+              "line": 39,
+              "column": 30
+            },
+            {
+              "line": 434,
+              "column": 17
+            },
+            {
+              "line": 446,
+              "column": 20
+            }
+          ]
         }
       ]
     },
     {
       "file": "services\\MarketplaceService.js",
-      "totalLines": 347,
+      "totalLines": 342,
       "totalScore": 12,
       "findings": [
         {
@@ -895,34 +2464,90 @@
           "count": 6,
           "severity": "medium",
           "weight": 1,
-          "score": 6
+          "score": 6,
+          "occurrences": [
+            {
+              "line": 170,
+              "column": 22
+            },
+            {
+              "line": 170,
+              "column": 71
+            },
+            {
+              "line": 261,
+              "column": 29
+            },
+            {
+              "line": 280,
+              "column": 31
+            },
+            {
+              "line": 299,
+              "column": 31
+            },
+            {
+              "line": 321,
+              "column": 31
+            }
+          ]
         },
         {
           "pattern": "Spread operator in loop",
           "count": 4,
           "severity": "low",
           "weight": 1,
-          "score": 4
+          "score": 4,
+          "occurrences": [
+            {
+              "line": 170,
+              "column": 13
+            },
+            {
+              "line": 170,
+              "column": 35
+            },
+            {
+              "line": 170,
+              "column": 60
+            },
+            {
+              "line": 170,
+              "column": 84
+            }
+          ]
         },
         {
           "pattern": "Deep loop (for/while)",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 328,
+              "column": 5
+            }
+          ]
         },
         {
           "pattern": "Array.slice in loop",
           "count": 1,
           "severity": "low",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 172,
+              "column": 7
+            }
+          ]
         }
       ]
     },
     {
       "file": "commands\\review\\main.js",
-      "totalLines": 555,
+      "totalLines": 574,
       "totalScore": 11,
       "findings": [
         {
@@ -930,35 +2555,89 @@
           "count": 4,
           "severity": "medium",
           "weight": 1,
-          "score": 4
+          "score": 4,
+          "occurrences": [
+            {
+              "line": 274,
+              "column": 37
+            },
+            {
+              "line": 287,
+              "column": 39
+            },
+            {
+              "line": 299,
+              "column": 39
+            },
+            {
+              "line": 312,
+              "column": 43
+            }
+          ]
         },
         {
           "pattern": "Array.forEach in hot path",
           "count": 3,
           "severity": "medium",
           "weight": 1,
-          "score": 3
+          "score": 3,
+          "occurrences": [
+            {
+              "line": 277,
+              "column": 17
+            },
+            {
+              "line": 290,
+              "column": 19
+            },
+            {
+              "line": 302,
+              "column": 19
+            }
+          ]
         },
         {
           "pattern": "Array.filter in hot path",
           "count": 2,
           "severity": "medium",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 534,
+              "column": 39
+            },
+            {
+              "line": 535,
+              "column": 41
+            }
+          ]
         },
         {
           "pattern": "Array.map in hot path",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 467,
+              "column": 30
+            }
+          ]
         },
         {
           "pattern": "Spread operator in loop",
           "count": 1,
           "severity": "low",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 234,
+              "column": 9
+            }
+          ]
         }
       ]
     },
@@ -972,34 +2651,70 @@
           "count": 1,
           "severity": "high",
           "weight": 5,
-          "score": 5
+          "score": 5,
+          "occurrences": [
+            {
+              "line": 12,
+              "column": 24
+            }
+          ]
         },
         {
           "pattern": "Spread operator in loop",
           "count": 4,
           "severity": "low",
           "weight": 1,
-          "score": 4
+          "score": 4,
+          "occurrences": [
+            {
+              "line": 21,
+              "column": 43
+            },
+            {
+              "line": 21,
+              "column": 69
+            },
+            {
+              "line": 23,
+              "column": 41
+            },
+            {
+              "line": 23,
+              "column": 67
+            }
+          ]
         },
         {
           "pattern": "Array.filter in hot path",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 12,
+              "column": 50
+            }
+          ]
         },
         {
           "pattern": "Deep loop (for/while)",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 16,
+              "column": 5
+            }
+          ]
         }
       ]
     },
     {
       "file": "services\\PaymentService.js",
-      "totalLines": 626,
+      "totalLines": 522,
       "totalScore": 11,
       "findings": [
         {
@@ -1007,27 +2722,210 @@
           "count": 3,
           "severity": "medium",
           "weight": 3,
-          "score": 9
+          "score": 9,
+          "occurrences": [
+            {
+              "line": 492,
+              "column": 14
+            },
+            {
+              "line": 496,
+              "column": 14
+            },
+            {
+              "line": 500,
+              "column": 14
+            }
+          ]
         },
         {
           "pattern": "Array.reduce in hot path",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 509,
+              "column": 29
+            }
+          ]
         },
         {
           "pattern": "Spread operator in loop",
           "count": 1,
           "severity": "low",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 509,
+              "column": 52
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "utils\\responseManager.js",
+      "totalLines": 133,
+      "totalScore": 11,
+      "findings": [
+        {
+          "pattern": "Spread operator in loop",
+          "count": 11,
+          "severity": "low",
+          "weight": 1,
+          "score": 11,
+          "occurrences": [
+            {
+              "line": 7,
+              "column": 31
+            },
+            {
+              "line": 11,
+              "column": 46
+            },
+            {
+              "line": 11,
+              "column": 58
+            },
+            {
+              "line": 13,
+              "column": 40
+            },
+            {
+              "line": 13,
+              "column": 107
+            },
+            {
+              "line": 25,
+              "column": 48
+            },
+            {
+              "line": 25,
+              "column": 60
+            },
+            {
+              "line": 43,
+              "column": 44
+            },
+            {
+              "line": 43,
+              "column": 56
+            },
+            {
+              "line": 67,
+              "column": 41
+            },
+            {
+              "line": 67,
+              "column": 53
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "webhook\\server.js",
+      "totalLines": 292,
+      "totalScore": 11,
+      "findings": [
+        {
+          "pattern": "JSON.stringify in hot path",
+          "count": 2,
+          "severity": "low",
+          "weight": 2,
+          "score": 4,
+          "occurrences": [
+            {
+              "line": 102,
+              "column": 15
+            },
+            {
+              "line": 116,
+              "column": 78
+            }
+          ]
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 139,
+              "column": 32
+            },
+            {
+              "line": 172,
+              "column": 34
+            }
+          ]
+        },
+        {
+          "pattern": "Promise constructor",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 270,
+              "column": 12
+            },
+            {
+              "line": 281,
+              "column": 14
+            }
+          ]
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 16,
+              "column": 65
+            }
+          ]
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 16,
+              "column": 86
+            }
+          ]
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 124,
+              "column": 5
+            }
+          ]
         }
       ]
     },
     {
       "file": "commands\\market\\main.js",
-      "totalLines": 343,
+      "totalLines": 370,
       "totalScore": 10,
       "findings": [
         {
@@ -1035,34 +2933,82 @@
           "count": 3,
           "severity": "medium",
           "weight": 1,
-          "score": 3
+          "score": 3,
+          "occurrences": [
+            {
+              "line": 128,
+              "column": 5
+            },
+            {
+              "line": 257,
+              "column": 7
+            },
+            {
+              "line": 292,
+              "column": 7
+            }
+          ]
         },
         {
           "pattern": "Array.slice in loop",
           "count": 3,
           "severity": "low",
           "weight": 1,
-          "score": 3
+          "score": 3,
+          "occurrences": [
+            {
+              "line": 128,
+              "column": 27
+            },
+            {
+              "line": 257,
+              "column": 31
+            },
+            {
+              "line": 292,
+              "column": 31
+            }
+          ]
         },
         {
           "pattern": "Array.map in hot path",
           "count": 2,
           "severity": "medium",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 234,
+              "column": 59
+            },
+            {
+              "line": 270,
+              "column": 88
+            }
+          ]
         },
         {
           "pattern": "Spread operator in loop",
           "count": 2,
           "severity": "low",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 57,
+              "column": 36
+            },
+            {
+              "line": 57,
+              "column": 53
+            }
+          ]
         }
       ]
     },
     {
       "file": "commands\\product\\main.js",
-      "totalLines": 973,
+      "totalLines": 990,
       "totalScore": 10,
       "findings": [
         {
@@ -1070,34 +3016,74 @@
           "count": 2,
           "severity": "low",
           "weight": 2,
-          "score": 4
+          "score": 4,
+          "occurrences": [
+            {
+              "line": 859,
+              "column": 21
+            },
+            {
+              "line": 863,
+              "column": 23
+            }
+          ]
         },
         {
           "pattern": "Array.map in hot path",
           "count": 3,
           "severity": "medium",
           "weight": 1,
-          "score": 3
+          "score": 3,
+          "occurrences": [
+            {
+              "line": 394,
+              "column": 28
+            },
+            {
+              "line": 876,
+              "column": 63
+            },
+            {
+              "line": 966,
+              "column": 30
+            }
+          ]
         },
         {
           "pattern": "Array.slice in loop",
           "count": 2,
           "severity": "low",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 881,
+              "column": 84
+            },
+            {
+              "line": 886,
+              "column": 86
+            }
+          ]
         },
         {
           "pattern": "Array.filter in hot path",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 918,
+              "column": 40
+            }
+          ]
         }
       ]
     },
     {
       "file": "commands\\monitor\\main.js",
-      "totalLines": 308,
+      "totalLines": 309,
       "totalScore": 9,
       "findings": [
         {
@@ -1105,97 +3091,69 @@
           "count": 5,
           "severity": "medium",
           "weight": 1,
-          "score": 5
+          "score": 5,
+          "occurrences": [
+            {
+              "line": 146,
+              "column": 26
+            },
+            {
+              "line": 171,
+              "column": 31
+            },
+            {
+              "line": 236,
+              "column": 54
+            },
+            {
+              "line": 270,
+              "column": 47
+            },
+            {
+              "line": 278,
+              "column": 48
+            }
+          ]
         },
         {
           "pattern": "Array.slice in loop",
           "count": 3,
           "severity": "low",
           "weight": 1,
-          "score": 3
+          "score": 3,
+          "occurrences": [
+            {
+              "line": 165,
+              "column": 24
+            },
+            {
+              "line": 270,
+              "column": 35
+            },
+            {
+              "line": 278,
+              "column": 36
+            }
+          ]
         },
         {
           "pattern": "Deep loop (for/while)",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
-        }
-      ]
-    },
-    {
-      "file": "utils\\embeds.js",
-      "totalLines": 580,
-      "totalScore": 9,
-      "findings": [
-        {
-          "pattern": "Spread operator in loop",
-          "count": 5,
-          "severity": "low",
-          "weight": 1,
-          "score": 5
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 4,
-          "severity": "medium",
-          "weight": 1,
-          "score": 4
-        }
-      ]
-    },
-    {
-      "file": "webhook\\server.js",
-      "totalLines": 257,
-      "totalScore": 9,
-      "findings": [
-        {
-          "pattern": "JSON.stringify in hot path",
-          "count": 1,
-          "severity": "low",
-          "weight": 2,
-          "score": 2
-        },
-        {
-          "pattern": "Spread operator in loop",
-          "count": 2,
-          "severity": "low",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Nested promise (anti-pattern)",
-          "count": 2,
-          "severity": "low",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.filter in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 164,
+              "column": 5
+            }
+          ]
         }
       ]
     },
     {
       "file": "commands\\loyalty\\main.js",
-      "totalLines": 313,
+      "totalLines": 325,
       "totalScore": 8,
       "findings": [
         {
@@ -1203,28 +3161,64 @@
           "count": 3,
           "severity": "medium",
           "weight": 1,
-          "score": 3
+          "score": 3,
+          "occurrences": [
+            {
+              "line": 139,
+              "column": 34
+            },
+            {
+              "line": 237,
+              "column": 30
+            },
+            {
+              "line": 264,
+              "column": 28
+            }
+          ]
         },
         {
           "pattern": "Deep loop (for/while)",
           "count": 2,
           "severity": "medium",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 86,
+              "column": 5
+            },
+            {
+              "line": 123,
+              "column": 5
+            }
+          ]
         },
         {
           "pattern": "JSON.stringify in hot path",
           "count": 1,
           "severity": "low",
           "weight": 2,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 311,
+              "column": 23
+            }
+          ]
         },
         {
           "pattern": "Spread operator in loop",
           "count": 1,
           "severity": "low",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 88,
+              "column": 28
+            }
+          ]
         }
       ]
     },
@@ -1238,34 +3232,66 @@
           "count": 2,
           "severity": "medium",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 268,
+              "column": 26
+            },
+            {
+              "line": 273,
+              "column": 36
+            }
+          ]
         },
         {
           "pattern": "Deep loop (for/while)",
           "count": 2,
           "severity": "medium",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 231,
+              "column": 5
+            },
+            {
+              "line": 248,
+              "column": 5
+            }
+          ]
         },
         {
           "pattern": "JSON.parse in hot path",
           "count": 1,
           "severity": "low",
           "weight": 2,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 149,
+              "column": 32
+            }
+          ]
         },
         {
           "pattern": "JSON.stringify in hot path",
           "count": 1,
           "severity": "low",
           "weight": 2,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 149,
+              "column": 43
+            }
+          ]
         }
       ]
     },
     {
       "file": "commands\\alert\\main.js",
-      "totalLines": 258,
+      "totalLines": 262,
       "totalScore": 7,
       "findings": [
         {
@@ -1273,20 +3299,52 @@
           "count": 5,
           "severity": "medium",
           "weight": 1,
-          "score": 5
+          "score": 5,
+          "occurrences": [
+            {
+              "line": 92,
+              "column": 41
+            },
+            {
+              "line": 101,
+              "column": 61
+            },
+            {
+              "line": 157,
+              "column": 32
+            },
+            {
+              "line": 199,
+              "column": 13
+            },
+            {
+              "line": 211,
+              "column": 13
+            }
+          ]
         },
         {
           "pattern": "Array.slice in loop",
           "count": 2,
           "severity": "low",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 101,
+              "column": 48
+            },
+            {
+              "line": 210,
+              "column": 13
+            }
+          ]
         }
       ]
     },
     {
       "file": "commands\\backup\\main.js",
-      "totalLines": 263,
+      "totalLines": 267,
       "totalScore": 7,
       "findings": [
         {
@@ -1294,20 +3352,176 @@
           "count": 4,
           "severity": "medium",
           "weight": 1,
-          "score": 4
+          "score": 4,
+          "occurrences": [
+            {
+              "line": 154,
+              "column": 30
+            },
+            {
+              "line": 193,
+              "column": 25
+            },
+            {
+              "line": 200,
+              "column": 36
+            },
+            {
+              "line": 207,
+              "column": 38
+            }
+          ]
         },
         {
           "pattern": "Deep object traversal",
           "count": 3,
           "severity": "low",
           "weight": 1,
-          "score": 3
+          "score": 3,
+          "occurrences": [
+            {
+              "line": 177,
+              "column": 38
+            },
+            {
+              "line": 178,
+              "column": 39
+            },
+            {
+              "line": 179,
+              "column": 40
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "core\\safeInteraction.js",
+      "totalLines": 180,
+      "totalScore": 7,
+      "findings": [
+        {
+          "pattern": "Spread operator in loop",
+          "count": 6,
+          "severity": "low",
+          "weight": 1,
+          "score": 6,
+          "occurrences": [
+            {
+              "line": 80,
+              "column": 44
+            },
+            {
+              "line": 85,
+              "column": 40
+            },
+            {
+              "line": 127,
+              "column": 41
+            },
+            {
+              "line": 163,
+              "column": 50
+            },
+            {
+              "line": 167,
+              "column": 50
+            },
+            {
+              "line": 171,
+              "column": 50
+            }
+          ]
+        },
+        {
+          "pattern": "Array.slice in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 27,
+              "column": 98
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "services\\PermissionService.js",
+      "totalLines": 300,
+      "totalScore": 7,
+      "findings": [
+        {
+          "pattern": "Array.map in hot path",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 143,
+              "column": 35
+            },
+            {
+              "line": 283,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 161,
+              "column": 5
+            },
+            {
+              "line": 269,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 143,
+              "column": 48
+            },
+            {
+              "line": 246,
+              "column": 57
+            }
+          ]
+        },
+        {
+          "pattern": "Array.filter in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 282,
+              "column": 7
+            }
+          ]
         }
       ]
     },
     {
       "file": "commands\\coupon\\main.js",
-      "totalLines": 400,
+      "totalLines": 401,
       "totalScore": 6,
       "findings": [
         {
@@ -1315,14 +3529,109 @@
           "count": 5,
           "severity": "medium",
           "weight": 1,
-          "score": 5
+          "score": 5,
+          "occurrences": [
+            {
+              "line": 79,
+              "column": 40
+            },
+            {
+              "line": 195,
+              "column": 36
+            },
+            {
+              "line": 223,
+              "column": 36
+            },
+            {
+              "line": 252,
+              "column": 36
+            },
+            {
+              "line": 276,
+              "column": 30
+            }
+          ]
         },
         {
           "pattern": "Deep loop (for/while)",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 129,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "index.js",
+      "totalLines": 304,
+      "totalScore": 6,
+      "findings": [
+        {
+          "pattern": "Deep loop (for/while)",
+          "count": 2,
+          "severity": "medium",
+          "weight": 1,
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 134,
+              "column": 5
+            },
+            {
+              "line": 279,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "pattern": "Promise constructor",
+          "count": 2,
+          "severity": "low",
+          "weight": 1,
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 136,
+              "column": 13
+            },
+            {
+              "line": 286,
+              "column": 15
+            }
+          ]
+        },
+        {
+          "pattern": "Array.map in hot path",
+          "count": 1,
+          "severity": "medium",
+          "weight": 1,
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 77,
+              "column": 18
+            }
+          ]
+        },
+        {
+          "pattern": "Spread operator in loop",
+          "count": 1,
+          "severity": "low",
+          "weight": 1,
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 77,
+              "column": 9
+            }
+          ]
         }
       ]
     },
@@ -1336,28 +3645,52 @@
           "count": 1,
           "severity": "low",
           "weight": 2,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 37,
+              "column": 25
+            }
+          ]
         },
         {
           "pattern": "JSON.stringify in hot path",
           "count": 1,
           "severity": "low",
           "weight": 2,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 46,
+              "column": 37
+            }
+          ]
         },
         {
           "pattern": "Spread operator in loop",
           "count": 1,
           "severity": "low",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 28,
+              "column": 15
+            }
+          ]
         },
         {
-          "pattern": "Nested promise (anti-pattern)",
+          "pattern": "Promise constructor",
           "count": 1,
           "severity": "low",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 20,
+              "column": 14
+            }
+          ]
         }
       ]
     },
@@ -1371,21 +3704,47 @@
           "count": 3,
           "severity": "medium",
           "weight": 1,
-          "score": 3
+          "score": 3,
+          "occurrences": [
+            {
+              "line": 5,
+              "column": 27
+            },
+            {
+              "line": 6,
+              "column": 22
+            },
+            {
+              "line": 7,
+              "column": 21
+            }
+          ]
         },
         {
           "pattern": "JSON.stringify in hot path",
           "count": 1,
           "severity": "low",
           "weight": 2,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 13,
+              "column": 12
+            }
+          ]
         },
         {
           "pattern": "Spread operator in loop",
           "count": 1,
           "severity": "low",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 9,
+              "column": 21
+            }
+          ]
         }
       ]
     },
@@ -1399,41 +3758,75 @@
           "count": 2,
           "severity": "medium",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 178,
+              "column": 3
+            },
+            {
+              "line": 258,
+              "column": 5
+            }
+          ]
         },
         {
           "pattern": "Array.map in hot path",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 254,
+              "column": 15
+            }
+          ]
         },
         {
           "pattern": "Array.filter in hot path",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 6,
+              "column": 25
+            }
+          ]
         },
         {
           "pattern": "Array.forEach in hot path",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 152,
+              "column": 10
+            }
+          ]
         },
         {
           "pattern": "Spread operator in loop",
           "count": 1,
           "severity": "low",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 145,
+              "column": 21
+            }
+          ]
         }
       ]
     },
     {
       "file": "commands\\service\\main.js",
-      "totalLines": 657,
+      "totalLines": 686,
       "totalScore": 5,
       "findings": [
         {
@@ -1441,20 +3834,40 @@
           "count": 3,
           "severity": "medium",
           "weight": 1,
-          "score": 3
+          "score": 3,
+          "occurrences": [
+            {
+              "line": 350,
+              "column": 31
+            },
+            {
+              "line": 383,
+              "column": 32
+            },
+            {
+              "line": 391,
+              "column": 27
+            }
+          ]
         },
         {
           "pattern": "Object.assign in hot path",
           "count": 1,
           "severity": "low",
           "weight": 2,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 288,
+              "column": 5
+            }
+          ]
         }
       ]
     },
     {
       "file": "commands\\trust\\main.js",
-      "totalLines": 387,
+      "totalLines": 388,
       "totalScore": 5,
       "findings": [
         {
@@ -1462,14 +3875,30 @@
           "count": 1,
           "severity": "medium",
           "weight": 3,
-          "score": 3
+          "score": 3,
+          "occurrences": [
+            {
+              "line": 374,
+              "column": 38
+            }
+          ]
         },
         {
           "pattern": "Array.map in hot path",
           "count": 2,
           "severity": "medium",
           "weight": 1,
-          "score": 2
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 272,
+              "column": 22
+            },
+            {
+              "line": 306,
+              "column": 28
+            }
+          ]
         }
       ]
     },
@@ -1483,41 +3912,35 @@
           "count": 5,
           "severity": "low",
           "weight": 1,
-          "score": 5
-        }
-      ]
-    },
-    {
-      "file": "middleware\\security.js",
-      "totalLines": 272,
-      "totalScore": 5,
-      "findings": [
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "JSON.stringify in hot path",
-          "count": 1,
-          "severity": "low",
-          "weight": 2,
-          "score": 2
-        },
-        {
-          "pattern": "Array.forEach in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
+          "score": 5,
+          "occurrences": [
+            {
+              "line": 13,
+              "column": 35
+            },
+            {
+              "line": 19,
+              "column": 38
+            },
+            {
+              "line": 25,
+              "column": 47
+            },
+            {
+              "line": 31,
+              "column": 40
+            },
+            {
+              "line": 37,
+              "column": 37
+            }
+          ]
         }
       ]
     },
     {
       "file": "services\\AISecurityService.js",
-      "totalLines": 183,
+      "totalLines": 184,
       "totalScore": 5,
       "findings": [
         {
@@ -1525,27 +3948,89 @@
           "count": 3,
           "severity": "medium",
           "weight": 1,
-          "score": 3
+          "score": 3,
+          "occurrences": [
+            {
+              "line": 57,
+              "column": 5
+            },
+            {
+              "line": 60,
+              "column": 5
+            },
+            {
+              "line": 107,
+              "column": 5
+            }
+          ]
         },
         {
           "pattern": "Array.map in hot path",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 125,
+              "column": 36
+            }
+          ]
         },
         {
           "pattern": "Array.slice in loop",
           "count": 1,
           "severity": "low",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 124,
+              "column": 34
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "utils\\embedCore.js",
+      "totalLines": 155,
+      "totalScore": 5,
+      "findings": [
+        {
+          "pattern": "Spread operator in loop",
+          "count": 5,
+          "severity": "low",
+          "weight": 1,
+          "score": 5,
+          "occurrences": [
+            {
+              "line": 24,
+              "column": 110
+            },
+            {
+              "line": 28,
+              "column": 106
+            },
+            {
+              "line": 32,
+              "column": 110
+            },
+            {
+              "line": 36,
+              "column": 104
+            },
+            {
+              "line": 40,
+              "column": 107
+            }
+          ]
         }
       ]
     },
     {
       "file": "commands\\ai\\main.js",
-      "totalLines": 202,
+      "totalLines": 230,
       "totalScore": 4,
       "findings": [
         {
@@ -1553,112 +4038,104 @@
           "count": 1,
           "severity": "medium",
           "weight": 3,
-          "score": 3
+          "score": 3,
+          "occurrences": [
+            {
+              "line": 175,
+              "column": 31
+            }
+          ]
         },
         {
           "pattern": "Array.forEach in hot path",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 217,
+              "column": 16
+            }
+          ]
         }
       ]
     },
     {
-      "file": "cache\\cacheHelper.js",
-      "totalLines": 39,
-      "totalScore": 3,
+      "file": "services\\security\\SecurityService.js",
+      "totalLines": 87,
+      "totalScore": 4,
       "findings": [
         {
-          "pattern": "Spread operator in loop",
-          "count": 3,
-          "severity": "low",
-          "weight": 1,
-          "score": 3
-        }
-      ]
-    },
-    {
-      "file": "commands\\payment\\main.js",
-      "totalLines": 250,
-      "totalScore": 3,
-      "findings": [
-        {
-          "pattern": "Array.map in hot path",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Array.slice in loop",
+          "pattern": "JSON.stringify in hot path",
           "count": 1,
           "severity": "low",
-          "weight": 1,
-          "score": 1
-        }
-      ]
-    },
-    {
-      "file": "commands\\withdraw\\main.js",
-      "totalLines": 265,
-      "totalScore": 3,
-      "findings": [
-        {
-          "pattern": "Array.map in hot path",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
+          "weight": 2,
+          "score": 2,
+          "occurrences": [
+            {
+              "line": 34,
+              "column": 19
+            }
+          ]
         },
         {
-          "pattern": "Array.slice in loop",
+          "pattern": "Array.forEach in hot path",
           "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        }
-      ]
-    },
-    {
-      "file": "services\\HealthService.js",
-      "totalLines": 153,
-      "totalScore": 3,
-      "findings": [
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 2,
           "severity": "medium",
           "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Deep object traversal",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        }
-      ]
-    },
-    {
-      "file": "utils\\PanelManager.js",
-      "totalLines": 90,
-      "totalScore": 3,
-      "findings": [
-        {
-          "pattern": "Spread operator in loop",
-          "count": 2,
-          "severity": "low",
-          "weight": 1,
-          "score": 2
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 37,
+              "column": 34
+            }
+          ]
         },
         {
           "pattern": "Deep loop (for/while)",
           "count": 1,
           "severity": "medium",
           "weight": 1,
-          "score": 1
+          "score": 1,
+          "occurrences": [
+            {
+              "line": 55,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "utils\\embedStore.js",
+      "totalLines": 109,
+      "totalScore": 4,
+      "findings": [
+        {
+          "pattern": "Array.map in hot path",
+          "count": 4,
+          "severity": "medium",
+          "weight": 1,
+          "score": 4,
+          "occurrences": [
+            {
+              "line": 70,
+              "column": 33
+            },
+            {
+              "line": 78,
+              "column": 35
+            },
+            {
+              "line": 86,
+              "column": 30
+            },
+            {
+              "line": 94,
+              "column": 27
+            }
+          ]
         }
       ]
     }
@@ -1667,1626 +4144,162 @@
     {
       "service": "commands",
       "files": 24,
-      "totalScore": 265,
-      "findings": [
-        {
-          "pattern": "Aggregation pipeline (MongoDB)",
-          "count": 16,
-          "severity": "medium",
-          "weight": 3,
-          "score": 48
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 14,
-          "severity": "medium",
-          "weight": 1,
-          "score": 14
-        },
-        {
-          "pattern": "Array.reduce in hot path",
-          "count": 4,
-          "severity": "medium",
-          "weight": 1,
-          "score": 4
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 9,
-          "severity": "medium",
-          "weight": 1,
-          "score": 9
-        },
-        {
-          "pattern": "Aggregation pipeline (MongoDB)",
-          "count": 2,
-          "severity": "medium",
-          "weight": 3,
-          "score": 6
-        },
-        {
-          "pattern": "JSON.stringify in hot path",
-          "count": 1,
-          "severity": "low",
-          "weight": 2,
-          "score": 2
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Spread operator in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 7,
-          "severity": "low",
-          "weight": 1,
-          "score": 7
-        },
-        {
-          "pattern": "Spread operator in loop",
-          "count": 6,
-          "severity": "low",
-          "weight": 1,
-          "score": 6
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 5,
-          "severity": "medium",
-          "weight": 1,
-          "score": 5
-        },
-        {
-          "pattern": "Aggregation pipeline (MongoDB)",
-          "count": 5,
-          "severity": "medium",
-          "weight": 3,
-          "score": 15
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 5,
-          "severity": "medium",
-          "weight": 1,
-          "score": 5
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 4,
-          "severity": "medium",
-          "weight": 1,
-          "score": 4
-        },
-        {
-          "pattern": "Spread operator in loop",
-          "count": 4,
-          "severity": "low",
-          "weight": 1,
-          "score": 4
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 2,
-          "severity": "low",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Aggregation pipeline (MongoDB)",
-          "count": 3,
-          "severity": "medium",
-          "weight": 3,
-          "score": 9
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 3,
-          "severity": "medium",
-          "weight": 1,
-          "score": 3
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Aggregation pipeline (MongoDB)",
-          "count": 3,
-          "severity": "medium",
-          "weight": 3,
-          "score": 9
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 3,
-          "severity": "medium",
-          "weight": 1,
-          "score": 3
-        },
-        {
-          "pattern": "Aggregation pipeline (MongoDB)",
-          "count": 2,
-          "severity": "medium",
-          "weight": 3,
-          "score": 6
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Object.assign in hot path",
-          "count": 1,
-          "severity": "low",
-          "weight": 2,
-          "score": 2
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Deep object traversal",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.reduce in hot path",
-          "count": 4,
-          "severity": "medium",
-          "weight": 1,
-          "score": 4
-        },
-        {
-          "pattern": "Array.forEach in hot path",
-          "count": 3,
-          "severity": "medium",
-          "weight": 1,
-          "score": 3
-        },
-        {
-          "pattern": "Array.filter in hot path",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Spread operator in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 3,
-          "severity": "medium",
-          "weight": 1,
-          "score": 3
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 3,
-          "severity": "low",
-          "weight": 1,
-          "score": 3
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Spread operator in loop",
-          "count": 2,
-          "severity": "low",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "JSON.parse in hot path",
-          "count": 2,
-          "severity": "low",
-          "weight": 2,
-          "score": 4
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 3,
-          "severity": "medium",
-          "weight": 1,
-          "score": 3
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 2,
-          "severity": "low",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Array.filter in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 5,
-          "severity": "medium",
-          "weight": 1,
-          "score": 5
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 3,
-          "severity": "low",
-          "weight": 1,
-          "score": 3
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 3,
-          "severity": "medium",
-          "weight": 1,
-          "score": 3
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "JSON.stringify in hot path",
-          "count": 1,
-          "severity": "low",
-          "weight": 2,
-          "score": 2
-        },
-        {
-          "pattern": "Spread operator in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 5,
-          "severity": "medium",
-          "weight": 1,
-          "score": 5
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 2,
-          "severity": "low",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 4,
-          "severity": "medium",
-          "weight": 1,
-          "score": 4
-        },
-        {
-          "pattern": "Deep object traversal",
-          "count": 3,
-          "severity": "low",
-          "weight": 1,
-          "score": 3
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 5,
-          "severity": "medium",
-          "weight": 1,
-          "score": 5
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 3,
-          "severity": "medium",
-          "weight": 1,
-          "score": 3
-        },
-        {
-          "pattern": "Object.assign in hot path",
-          "count": 1,
-          "severity": "low",
-          "weight": 2,
-          "score": 2
-        },
-        {
-          "pattern": "Aggregation pipeline (MongoDB)",
-          "count": 1,
-          "severity": "medium",
-          "weight": 3,
-          "score": 3
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Aggregation pipeline (MongoDB)",
-          "count": 1,
-          "severity": "medium",
-          "weight": 3,
-          "score": 3
-        },
-        {
-          "pattern": "Array.forEach in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        }
-      ]
-    },
-    {
-      "service": "BackupService",
-      "files": 1,
-      "totalScore": 112,
-      "findings": [
-        {
-          "pattern": "Synchronous fs operation",
-          "count": 16,
-          "severity": "high",
-          "weight": 5,
-          "score": 80
-        },
-        {
-          "pattern": "execFileSync / execSync",
-          "count": 2,
-          "severity": "high",
-          "weight": 5,
-          "score": 10
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 5,
-          "severity": "medium",
-          "weight": 1,
-          "score": 5
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 4,
-          "severity": "medium",
-          "weight": 1,
-          "score": 4
-        },
-        {
-          "pattern": "Array.filter in hot path",
-          "count": 4,
-          "severity": "medium",
-          "weight": 1,
-          "score": 4
-        },
-        {
-          "pattern": "Nested promise (anti-pattern)",
-          "count": 4,
-          "severity": "low",
-          "weight": 1,
-          "score": 4
-        },
-        {
-          "pattern": "JSON.stringify in hot path",
-          "count": 1,
-          "severity": "low",
-          "weight": 2,
-          "score": 2
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 2,
-          "severity": "low",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Array.reduce in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        }
-      ]
+      "totalScore": 267
     },
     {
       "service": "utils",
-      "files": 8,
-      "totalScore": 64,
-      "findings": [
-        {
-          "pattern": "Spread operator in loop",
-          "count": 7,
-          "severity": "low",
-          "weight": 1,
-          "score": 7
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 5,
-          "severity": "medium",
-          "weight": 1,
-          "score": 5
-        },
-        {
-          "pattern": "JSON.parse in hot path",
-          "count": 1,
-          "severity": "low",
-          "weight": 2,
-          "score": 2
-        },
-        {
-          "pattern": "JSON.stringify in hot path",
-          "count": 1,
-          "severity": "low",
-          "weight": 2,
-          "score": 2
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.reduce in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.forEach in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Nested promise (anti-pattern)",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Synchronous fs operation",
-          "count": 2,
-          "severity": "high",
-          "weight": 5,
-          "score": 10
-        },
-        {
-          "pattern": "JSON.stringify in hot path",
-          "count": 2,
-          "severity": "low",
-          "weight": 2,
-          "score": 4
-        },
-        {
-          "pattern": "Spread operator in loop",
-          "count": 2,
-          "severity": "low",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Spread operator in loop",
-          "count": 5,
-          "severity": "low",
-          "weight": 1,
-          "score": 5
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 4,
-          "severity": "medium",
-          "weight": 1,
-          "score": 4
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 3,
-          "severity": "medium",
-          "weight": 1,
-          "score": 3
-        },
-        {
-          "pattern": "JSON.stringify in hot path",
-          "count": 1,
-          "severity": "low",
-          "weight": 2,
-          "score": 2
-        },
-        {
-          "pattern": "Spread operator in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.filter in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.forEach in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Spread operator in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Spread operator in loop",
-          "count": 2,
-          "severity": "low",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Nested promise (anti-pattern)",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        }
-      ]
+      "files": 14,
+      "totalScore": 84
     },
     {
       "service": "MonitorService",
       "files": 1,
-      "totalScore": 50,
-      "findings": [
-        {
-          "pattern": "Spread operator in loop",
-          "count": 19,
-          "severity": "low",
-          "weight": 1,
-          "score": 19
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 7,
-          "severity": "medium",
-          "weight": 1,
-          "score": 7
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 6,
-          "severity": "low",
-          "weight": 1,
-          "score": 6
-        },
-        {
-          "pattern": "Deep object traversal",
-          "count": 6,
-          "severity": "low",
-          "weight": 1,
-          "score": 6
-        },
-        {
-          "pattern": "Aggregation pipeline (MongoDB)",
-          "count": 2,
-          "severity": "medium",
-          "weight": 3,
-          "score": 6
-        },
-        {
-          "pattern": "Array.reduce in hot path",
-          "count": 5,
-          "severity": "medium",
-          "weight": 1,
-          "score": 5
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        }
-      ]
-    },
-    {
-      "service": "AIChatSessionManager",
-      "files": 1,
-      "totalScore": 46,
-      "findings": [
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 17,
-          "severity": "medium",
-          "weight": 1,
-          "score": 17
-        },
-        {
-          "pattern": "Synchronous fs operation",
-          "count": 3,
-          "severity": "high",
-          "weight": 5,
-          "score": 15
-        },
-        {
-          "pattern": "Nested promise (anti-pattern)",
-          "count": 5,
-          "severity": "low",
-          "weight": 1,
-          "score": 5
-        },
-        {
-          "pattern": "JSON.stringify in hot path",
-          "count": 2,
-          "severity": "low",
-          "weight": 2,
-          "score": 4
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 2,
-          "severity": "low",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Deep object traversal",
-          "count": 2,
-          "severity": "low",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Array.forEach in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        }
-      ]
+      "totalScore": 50
     },
     {
       "service": "handlers",
       "files": 2,
-      "totalScore": 45,
-      "findings": [
-        {
-          "pattern": "Synchronous fs operation",
-          "count": 5,
-          "severity": "high",
-          "weight": 5,
-          "score": 25
-        },
-        {
-          "pattern": "Array.filter in hot path",
-          "count": 4,
-          "severity": "medium",
-          "weight": 1,
-          "score": 4
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 3,
-          "severity": "medium",
-          "weight": 1,
-          "score": 3
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Synchronous fs operation",
-          "count": 1,
-          "severity": "high",
-          "weight": 5,
-          "score": 5
-        },
-        {
-          "pattern": "Spread operator in loop",
-          "count": 4,
-          "severity": "low",
-          "weight": 1,
-          "score": 4
-        },
-        {
-          "pattern": "Array.filter in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        }
-      ]
+      "totalScore": 45
+    },
+    {
+      "service": "AIChatExportService",
+      "files": 1,
+      "totalScore": 31
     },
     {
       "service": "AIService",
       "files": 1,
-      "totalScore": 31,
-      "findings": [
-        {
-          "pattern": "Spread operator in loop",
-          "count": 7,
-          "severity": "low",
-          "weight": 1,
-          "score": 7
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 7,
-          "severity": "low",
-          "weight": 1,
-          "score": 7
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 5,
-          "severity": "medium",
-          "weight": 1,
-          "score": 5
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 5,
-          "severity": "medium",
-          "weight": 1,
-          "score": 5
-        },
-        {
-          "pattern": "Array.filter in hot path",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "JSON.stringify in hot path",
-          "count": 1,
-          "severity": "low",
-          "weight": 2,
-          "score": 2
-        },
-        {
-          "pattern": "Array.reduce in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Nested promise (anti-pattern)",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Deep object traversal",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        }
-      ]
-    },
-    {
-      "service": "cache",
-      "files": 3,
-      "totalScore": 25,
-      "findings": [
-        {
-          "pattern": "Spread operator in loop",
-          "count": 8,
-          "severity": "low",
-          "weight": 1,
-          "score": 8
-        },
-        {
-          "pattern": "JSON.parse in hot path",
-          "count": 3,
-          "severity": "low",
-          "weight": 2,
-          "score": 6
-        },
-        {
-          "pattern": "JSON.stringify in hot path",
-          "count": 2,
-          "severity": "low",
-          "weight": 2,
-          "score": 4
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 3,
-          "severity": "medium",
-          "weight": 1,
-          "score": 3
-        },
-        {
-          "pattern": "Spread operator in loop",
-          "count": 3,
-          "severity": "low",
-          "weight": 1,
-          "score": 3
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        }
-      ]
+      "totalScore": 31
     },
     {
       "service": "deploy-commands.js",
       "files": 1,
-      "totalScore": 23,
-      "findings": [
-        {
-          "pattern": "Synchronous fs operation",
-          "count": 3,
-          "severity": "high",
-          "weight": 5,
-          "score": 15
-        },
-        {
-          "pattern": "console.log (blocking)",
-          "count": 4,
-          "severity": "low",
-          "weight": 1,
-          "score": 4
-        },
-        {
-          "pattern": "Array.filter in hot path",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        }
-      ]
+      "totalScore": 24
+    },
+    {
+      "service": "BackupService",
+      "files": 1,
+      "totalScore": 24
     },
     {
       "service": "FraudDetectionService",
       "files": 1,
-      "totalScore": 21,
-      "findings": [
-        {
-          "pattern": "Spread operator in loop",
-          "count": 7,
-          "severity": "low",
-          "weight": 1,
-          "score": 7
-        },
-        {
-          "pattern": "Aggregation pipeline (MongoDB)",
-          "count": 2,
-          "severity": "medium",
-          "weight": 3,
-          "score": 6
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 4,
-          "severity": "medium",
-          "weight": 1,
-          "score": 4
-        },
-        {
-          "pattern": "Array.reduce in hot path",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Array.filter in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.forEach in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        }
-      ]
+      "totalScore": 21
+    },
+    {
+      "service": "AIChatSessionManager",
+      "files": 1,
+      "totalScore": 16
     },
     {
       "service": "AlertService",
       "files": 1,
-      "totalScore": 16,
-      "findings": [
-        {
-          "pattern": "Aggregation pipeline (MongoDB)",
-          "count": 3,
-          "severity": "medium",
-          "weight": 3,
-          "score": 9
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Spread operator in loop",
-          "count": 2,
-          "severity": "low",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.filter in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        }
-      ]
+      "totalScore": 16
     },
     {
       "service": "MemoryService",
       "files": 1,
-      "totalScore": 16,
-      "findings": [
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 6,
-          "severity": "medium",
-          "weight": 1,
-          "score": 6
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 6,
-          "severity": "low",
-          "weight": 1,
-          "score": 6
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Array.reduce in hot path",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        }
-      ]
+      "totalScore": 16
     },
     {
       "service": "CommissionService",
       "files": 1,
-      "totalScore": 15,
-      "findings": [
-        {
-          "pattern": "Aggregation pipeline (MongoDB)",
-          "count": 5,
-          "severity": "medium",
-          "weight": 3,
-          "score": 15
-        }
-      ]
+      "totalScore": 15
     },
     {
       "service": "BalanceService",
       "files": 1,
-      "totalScore": 12,
-      "findings": [
-        {
-          "pattern": "Aggregation pipeline (MongoDB)",
-          "count": 4,
-          "severity": "medium",
-          "weight": 3,
-          "score": 12
-        }
-      ]
+      "totalScore": 12
     },
     {
       "service": "MarketplaceService",
       "files": 1,
-      "totalScore": 12,
-      "findings": [
-        {
-          "pattern": "Array.map in hot path",
-          "count": 6,
-          "severity": "medium",
-          "weight": 1,
-          "score": 6
-        },
-        {
-          "pattern": "Spread operator in loop",
-          "count": 4,
-          "severity": "low",
-          "weight": 1,
-          "score": 4
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        }
-      ]
+      "totalScore": 12
     },
     {
       "service": "PaymentService",
       "files": 1,
-      "totalScore": 11,
-      "findings": [
-        {
-          "pattern": "Aggregation pipeline (MongoDB)",
-          "count": 3,
-          "severity": "medium",
-          "weight": 3,
-          "score": 9
-        },
-        {
-          "pattern": "Array.reduce in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Spread operator in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        }
-      ]
-    },
-    {
-      "service": "middleware",
-      "files": 2,
-      "totalScore": 10,
-      "findings": [
-        {
-          "pattern": "Spread operator in loop",
-          "count": 5,
-          "severity": "low",
-          "weight": 1,
-          "score": 5
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "JSON.stringify in hot path",
-          "count": 1,
-          "severity": "low",
-          "weight": 2,
-          "score": 2
-        },
-        {
-          "pattern": "Array.forEach in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        }
-      ]
+      "totalScore": 11
     },
     {
       "service": "webhook",
       "files": 1,
-      "totalScore": 9,
-      "findings": [
-        {
-          "pattern": "JSON.stringify in hot path",
-          "count": 1,
-          "severity": "low",
-          "weight": 2,
-          "score": 2
-        },
-        {
-          "pattern": "Spread operator in loop",
-          "count": 2,
-          "severity": "low",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Nested promise (anti-pattern)",
-          "count": 2,
-          "severity": "low",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.filter in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        }
-      ]
+      "totalScore": 11
+    },
+    {
+      "service": "cache",
+      "files": 5,
+      "totalScore": 9
     },
     {
       "service": "SettingsService",
       "files": 1,
-      "totalScore": 8,
-      "findings": [
-        {
-          "pattern": "Array.map in hot path",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "JSON.parse in hot path",
-          "count": 1,
-          "severity": "low",
-          "weight": 2,
-          "score": 2
-        },
-        {
-          "pattern": "JSON.stringify in hot path",
-          "count": 1,
-          "severity": "low",
-          "weight": 2,
-          "score": 2
-        }
-      ]
+      "totalScore": 8
     },
     {
-      "service": "ProBotApiService",
+      "service": "core",
       "files": 1,
-      "totalScore": 6,
-      "findings": [
-        {
-          "pattern": "JSON.parse in hot path",
-          "count": 1,
-          "severity": "low",
-          "weight": 2,
-          "score": 2
-        },
-        {
-          "pattern": "JSON.stringify in hot path",
-          "count": 1,
-          "severity": "low",
-          "weight": 2,
-          "score": 2
-        },
-        {
-          "pattern": "Spread operator in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Nested promise (anti-pattern)",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        }
-      ]
+      "totalScore": 7
     },
     {
-      "service": "AISecurityService",
+      "service": "PermissionService",
       "files": 1,
-      "totalScore": 5,
-      "findings": [
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 3,
-          "severity": "medium",
-          "weight": 1,
-          "score": 3
-        },
-        {
-          "pattern": "Array.map in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        }
-      ]
-    },
-    {
-      "service": "HealthService",
-      "files": 1,
-      "totalScore": 3,
-      "findings": [
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 2,
-          "severity": "medium",
-          "weight": 1,
-          "score": 2
-        },
-        {
-          "pattern": "Deep object traversal",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        }
-      ]
-    },
-    {
-      "service": "database",
-      "files": 2,
-      "totalScore": 3,
-      "findings": [
-        {
-          "pattern": "Array.map in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "console.log (blocking)",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        }
-      ]
+      "totalScore": 7
     },
     {
       "service": "index.js",
       "files": 1,
-      "totalScore": 2,
-      "findings": [
-        {
-          "pattern": "Array.map in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Spread operator in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        }
-      ]
+      "totalScore": 6
+    },
+    {
+      "service": "ProBotApiService",
+      "files": 1,
+      "totalScore": 6
+    },
+    {
+      "service": "middleware",
+      "files": 1,
+      "totalScore": 5
+    },
+    {
+      "service": "AISecurityService",
+      "files": 1,
+      "totalScore": 5
+    },
+    {
+      "service": "security",
+      "files": 1,
+      "totalScore": 4
+    },
+    {
+      "service": "events",
+      "files": 2,
+      "totalScore": 4
+    },
+    {
+      "service": "HealthService",
+      "files": 1,
+      "totalScore": 3
+    },
+    {
+      "service": "database",
+      "files": 2,
+      "totalScore": 3
     },
     {
       "service": "ProBotMonitorService",
       "files": 1,
-      "totalScore": 2,
-      "findings": [
-        {
-          "pattern": "Deep loop (for/while)",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        },
-        {
-          "pattern": "Array.slice in loop",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        }
-      ]
+      "totalScore": 2
     },
     {
       "service": "WebhookService",
       "files": 1,
-      "totalScore": 2,
-      "findings": [
-        {
-          "pattern": "JSON.stringify in hot path",
-          "count": 1,
-          "severity": "low",
-          "weight": 2,
-          "score": 2
-        }
-      ]
+      "totalScore": 2
     },
     {
       "service": "config",
       "files": 1,
-      "totalScore": 1,
-      "findings": [
-        {
-          "pattern": "console.log (blocking)",
-          "count": 1,
-          "severity": "low",
-          "weight": 1,
-          "score": 1
-        }
-      ]
-    },
-    {
-      "service": "events",
-      "files": 1,
-      "totalScore": 1,
-      "findings": [
-        {
-          "pattern": "Array.map in hot path",
-          "count": 1,
-          "severity": "medium",
-          "weight": 1,
-          "score": 1
-        }
-      ]
+      "totalScore": 1
     }
   ]
 }

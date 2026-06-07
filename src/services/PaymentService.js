@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const mongoose = require('mongoose');
-const { Payment, Order, User, Store, Transaction, AuditLog } = require('../database/models');
+const { Payment, Order, User, Store, Product, Service, Transaction, AuditLog } = require('../database/models');
 const { logger } = require('../utils/logger');
 const config = require('../config');
 const CommissionService = require('./CommissionService');
@@ -42,12 +42,11 @@ class PaymentService {
     validateAmount(data.amount, 'Payment amount');
     const correlationId = data.correlationId || generateCorrelationId();
 
-    if (data.idempotencyKey) {
-      const existing = await Payment.findOne({ idempotencyKey: data.idempotencyKey }).lean();
-      if (existing) {
-        logger.info('Payment idempotency hit', { idempotencyKey: data.idempotencyKey, paymentId: existing.paymentId });
-        return existing;
-      }
+    const idempotencyKey = data.idempotencyKey || crypto.randomUUID();
+    const existing = await Payment.findOne({ idempotencyKey }).lean();
+    if (existing) {
+      logger.info('Payment idempotency hit', { idempotencyKey, paymentId: existing.paymentId });
+      return existing;
     }
 
     const store = await Store.findById(data.storeId).lean();
@@ -58,7 +57,7 @@ class PaymentService {
 
     const payment = await Payment.create({
       paymentId: this.generatePaymentId(),
-      idempotencyKey: data.idempotencyKey || undefined,
+      idempotencyKey,
       correlationId,
       buyerId: data.buyerId,
       sellerId: store.ownerId,
@@ -181,7 +180,7 @@ class PaymentService {
     }
 
     if (result.orderId) {
-      const order = await Order.findById(result.orderId.lean());
+      const order = await Order.findById(result.orderId);
       if (order && order.status !== 'pending') {
         throw new Error('Order is no longer pending');
       }
@@ -300,8 +299,9 @@ class PaymentService {
   }
 
   async _completePayment(payment) {
+    const { paymentId, sellerId, sellerAmount, commissionAmount, amount, storeId, orderId, itemType, itemId, itemName, commissionRate, buyerId, _id } = payment;
     if (payment.status === 'completed') {
-      logger.info('Payment already completed, skipping', { paymentId: payment.paymentId });
+      logger.info('Payment already completed, skipping', { paymentId });
       return payment;
     }
 
@@ -312,187 +312,83 @@ class PaymentService {
         writeConcern: { w: 'majority' },
       });
 
-      const paymentDoc = await Payment.findById(payment._id).session(session.lean());
+      const paymentDoc = await Payment.findById(_id).session(session).lean();
       if (!paymentDoc || paymentDoc.status === 'completed') {
         await session.abortTransaction();
-        logger.info('Payment already completed in DB, aborting', { paymentId: payment.paymentId });
+        logger.info('Payment already completed in DB, aborting', { paymentId });
         return paymentDoc || payment;
       }
 
-      const seller = await User.findOneAndUpdate(
-        { discordId: payment.sellerId },
-        {
-          $inc: {
-            platformEarnings: payment.sellerAmount,
-            totalEarned: payment.sellerAmount,
-            'stats.totalSales': 1,
-          },
-        },
-        { new: true, session }
-      );
+      const now = new Date();
+
+      const [seller] = await Promise.all([
+        User.findOneAndUpdate(
+          { discordId: sellerId },
+          { $inc: { platformEarnings: sellerAmount, totalEarned: sellerAmount, 'stats.totalSales': 1 } },
+          { new: true, session }
+        ),
+        Store.findByIdAndUpdate(
+          storeId,
+          { $inc: { 'stats.totalSales': 1, 'stats.totalRevenue': amount, 'stats.totalCommission': commissionAmount } },
+          { session }
+        ),
+        orderId
+          ? Order.findByIdAndUpdate(orderId, { $set: { status: 'paid', paymentMethod: 'credits', 'paymentDetails.transactionId': paymentId, 'paymentDetails.walletAmount': amount, 'paymentDetails.paidAt': now } }, { session })
+          : Promise.resolve(),
+        itemType === 'product'
+          ? Product.findByIdAndUpdate(itemId, { $inc: { soldCount: 1 } }, { session })
+          : Service.findByIdAndUpdate(itemId, { $inc: { soldCount: 1 } }, { session }),
+      ]);
       if (!seller) throw new Error('Seller not found');
 
-      const sellerBalanceBefore = (seller.platformEarnings || 0) - payment.sellerAmount;
-
-      const store = await Store.findByIdAndUpdate(
-        payment.storeId,
-        {
-          $inc: {
-            'stats.totalSales': 1,
-            'stats.totalRevenue': payment.amount,
-            'stats.totalCommission': payment.commissionAmount,
-          },
-        },
-        { session }
-      );
-      if (!store) throw new Error('Store not found');
-
-      if (payment.orderId) {
-        await Order.findByIdAndUpdate(
-          payment.orderId,
-          {
-            $set: {
-              status: 'paid',
-              paymentMethod: 'credits',
-              'paymentDetails.transactionId': payment.paymentId,
-              'paymentDetails.walletAmount': payment.amount,
-              'paymentDetails.paidAt': new Date(),
-            },
-          },
-          { session }
-        );
-      }
+      const sellerBalanceBefore = (seller.platformEarnings || 0) - sellerAmount;
 
       await CommissionService.recordCommission({
-        paymentId: payment._id,
-        orderId: payment.orderId,
-        storeId: payment.storeId,
-        sellerId: payment.sellerId,
-        storeType: store.type,
-        itemType: payment.itemType,
-        itemName: payment.itemName,
-        totalAmount: payment.amount,
-        commissionRate: payment.commissionRate,
-        commissionAmount: payment.commissionAmount,
-        sellerAmount: payment.sellerAmount,
-        platformAmount: payment.platformAmount,
-        session,
+        paymentId: _id, orderId, storeId, sellerId, storeType: paymentDoc.storeType || 'free',
+        itemType, itemName, totalAmount: amount, commissionRate, commissionAmount,
+        sellerAmount, platformAmount: commissionAmount, session,
       });
 
-      if (payment.itemType === 'product') {
-        const Product = require('../database/models').Product;
-        const incFields = { soldCount: 1 };
-        if (payment.itemStockDecrement !== false) {
-          await Product.findByIdAndUpdate(
-            payment.itemId,
-            { $inc: incFields },
-            { session }
-          );
-        } else {
-          await Product.findByIdAndUpdate(
-            payment.itemId,
-            { $inc: { soldCount: 1 } },
-            { session }
-          );
-        }
-      } else {
-        const Service = require('../database/models').Service;
-        await Service.findByIdAndUpdate(
-          payment.itemId,
-          { $inc: { soldCount: 1 } },
-          { session }
-        );
-      }
-
-      await Transaction.create([{
-        userId: payment.sellerId,
-        type: 'sale',
-        status: 'completed',
-        amount: payment.sellerAmount,
-        currency: 'credits',
-        balanceBefore: Math.max(0, sellerBalanceBefore),
-        balanceAfter: seller.platformEarnings,
-        description: `ربح من بيع ${payment.itemName} (بعد خصم العمولة)`,
-        reference: { orderId: payment.orderId, storeId: payment.storeId },
-        metadata: { transactionId: payment.paymentId, fee: payment.commissionAmount, netAmount: payment.sellerAmount },
-      }], { session });
-
-      await Transaction.create([{
-        userId: 'platform',
-        type: 'commission',
-        status: 'completed',
-        amount: payment.commissionAmount,
-        currency: 'credits',
-        balanceBefore: 0,
-        balanceAfter: payment.commissionAmount,
-        description: `عمولة من بيع ${payment.itemName} (${Math.round(payment.commissionRate * 100)}%)`,
-        reference: { orderId: payment.orderId, storeId: payment.storeId },
-        metadata: { transactionId: payment.paymentId, fee: payment.commissionAmount },
-      }], { session });
-
-      await Payment.findByIdAndUpdate(payment._id, {
-        $set: {
-          status: 'completed',
-          completedAt: new Date(),
-        },
-        $push: {
-          auditTrail: {
-            action: 'completed',
-            by: 'system',
-            at: new Date(),
-            details: 'تم إكمال الدفعة وإضافة الرصيد',
-          },
-        },
-      }, { session });
-
-      await AuditLog.create([{
-        action: 'product_purchase',
-        userId: payment.buyerId,
-        targetId: payment.paymentId,
-        targetType: 'order',
-        details: {
-          amount: payment.amount,
-          commission: payment.commissionAmount,
-          sellerAmount: payment.sellerAmount,
-          storeId: payment.storeId.toString(),
-          itemName: payment.itemName,
-        },
-      }], { session });
+      await Promise.all([
+        Transaction.create([{
+          userId: sellerId, type: 'sale', status: 'completed', amount: sellerAmount,
+          currency: 'credits', balanceBefore: Math.max(0, sellerBalanceBefore),
+          balanceAfter: seller.platformEarnings,
+          description: `ربح من بيع ${itemName} (بعد خصم العمولة)`,
+          reference: { orderId, storeId },
+          metadata: { transactionId: paymentId, fee: commissionAmount, netAmount: sellerAmount },
+        }], { session }),
+        Transaction.create([{
+          userId: 'platform', type: 'commission', status: 'completed', amount: commissionAmount,
+          currency: 'credits', balanceBefore: 0, balanceAfter: commissionAmount,
+          description: `عمولة من بيع ${itemName} (${Math.round(commissionRate * 100)}%)`,
+          reference: { orderId, storeId },
+          metadata: { transactionId: paymentId, fee: commissionAmount },
+        }], { session }),
+        Payment.findByIdAndUpdate(_id, {
+          $set: { status: 'completed', completedAt: now },
+          $push: { auditTrail: { action: 'completed', by: 'system', at: now, details: 'تم إكمال الدفعة وإضافة الرصيد' } },
+        }, { session }),
+        AuditLog.create([{
+          action: 'product_purchase', userId: buyerId, targetId: paymentId, targetType: 'order',
+          details: { amount, commission: commissionAmount, sellerAmount, storeId: storeId.toString(), itemName },
+        }], { session }),
+      ]);
 
       await session.commitTransaction();
 
-      logger.info('Payment completed', {
-        paymentId: payment.paymentId,
-        sellerId: payment.sellerId,
-        amount: payment.amount,
-        commission: payment.commissionAmount,
-        sellerGets: payment.sellerAmount,
-      });
-
+      logger.info('Payment completed', { paymentId, sellerId, amount, commission: commissionAmount, sellerGets: sellerAmount });
       MonitorService.trackPayment('completed');
 
-      await auditService.log('payment_completed', payment.buyerId, {
-        targetId: payment.paymentId,
-        targetType: 'payment',
-        details: {
-          paymentId: payment.paymentId,
-          buyerId: payment.buyerId,
-          sellerId: payment.sellerId,
-          amount: payment.amount,
-          commission: payment.commissionAmount,
-          netAmount: payment.sellerAmount,
-          orderId: payment.orderId,
-          probotTransactionId: payment.probotTransactionId,
-          timestamp: new Date(),
-          status: 'completed',
-          paymentMethod: 'probot_credits',
-        },
+      await auditService.log('payment_completed', buyerId, {
+        targetId: paymentId, targetType: 'payment',
+        details: { paymentId, buyerId, sellerId, amount, commission: commissionAmount, netAmount: sellerAmount, orderId, probotTransactionId: payment.probotTransactionId, timestamp: now, status: 'completed', paymentMethod: 'probot_credits' },
       });
 
       return payment;
     } catch (error) {
       await session.abortTransaction();
-      logger.error('Payment completion failed', { paymentId: payment.paymentId, error: error.message });
+      logger.error('Payment completion failed', { paymentId, error: error.message });
       throw error;
     } finally {
       session.endSession();

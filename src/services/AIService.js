@@ -20,7 +20,47 @@ class AIService {
     this.usageStats = { totalRequests: 0, totalTokens: 0, errors: 0 };
     this.rateLimiter = new Map();
     this.dailyUsage = new Map();
-    this.responseCache = new Map();
+    this._injectPatterns = [
+      /ignore\s*(all|above|previous)\s*(instructions|directions|prompts?)/gi,
+      /disregard\s*(all|above|previous)\s*(instructions|directions|prompts?)/gi,
+      /forget\s*(your|all|everything)/gi,
+      /you\s+are\s+(now|not\s+required|free\s+to)/gi,
+      /system\s+prompt\s+override/i,
+      /new\s+instructions:/gi,
+      /from\s+now\s+on,\s*you\s+are/i,
+      /i\s+want\s+you\s+to\s+act\s+as/i,
+      /you\s+have\s+been\s+reset/i,
+      /this\s+is\s+a\s+system\s+message/i,
+      /you\s+must\s+ignore\s+(all\s+)?(previous|above|prior)\s+(instructions|rules|guidelines)/gi,
+      /respond\s+as\s+(if\s+you\s+are|though\s+you\s+are)\s+/gi,
+      /do\s+not\s+follow\s+(your\s+)?(instructions|training|guidelines)/gi,
+      /output\s+(raw|unfiltered|uncensored)/gi,
+      /reveal\s+(your\s+)?(system\s+)?prompt/gi,
+      /show\s+(your\s+)?(system\s+)?(prompt|instructions)/gi,
+      /print\s+(your\s+)?(system\s+)?prompt/gi,
+      /bypass\s+(your\s+)?(safety|filter|restrictions)/gi,
+      /jailbreak/i,
+      /\/\/ignore/i,
+    ];
+
+    this._thinkingPatterns = [
+      /<think>[\s\S]*?<\/think>/gi,
+      /<thinking>[\s\S]*?<\/thinking>/gi,
+      /<reasoning>[\s\S]*?<\/reasoning>/gi,
+      /<thought>[\s\S]*?<\/thought>/gi,
+      /<chain_of_thought>[\s\S]*?<\/chain_of_thought>/gi,
+      /<cot>[\s\S]*?<\/cot>/gi,
+      /<scratchpad>[\s\S]*?<\/scratchpad>/gi,
+      /\[thinking\][\s\S]*?\[\/thinking\]/gi,
+      /\[think\][\s\S]*?\[\/think\]/gi,
+      /\[reasoning\][\s\S]*?\[\/reasoning\]/gi,
+      /```(?:think(?:ing)?|reason(?:ing)?|thought|chain.?of.?thought|cot|scratchpad)[\s\S]*?```/gi,
+      /\*\*(?:Thinking|Reasoning|Thought|Chain of Thought|Internal)\*\*[\s\S]*?(?=\n\n|\n\*\*|$)/gi,
+      /(?:Thinking|Reasoning|Thought|Chain of Thought|Internal):\s*[\s\S]*?(?=\n\n|\n[A-Z]|\*\*|$)/gi,
+      /^I'll\s+(?:think|reason|work).*$/gim,
+      /^(?:Let me|Let's)\s+(?:think|reason|work|break).*$/gim,
+    ];
+
     this._rateLimiterCleanup = setInterval(() => { try { this._cleanupRateLimiter(); } catch (err) { logger.error('Unhandled error in services/AIService.js', { error: err?.message }) } }, 300000);
     this._dailyUsageCleanup = setInterval(() => { try { this._cleanupDailyUsage(); } catch (err) { logger.error('Unhandled error in services/AIService.js', { error: err?.message }) } }, 3600000);
   }
@@ -125,30 +165,7 @@ class AIService {
     let cleaned = text
       .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\u200B-\u200F\u2028-\u202F\uFEFF]/g, '');
 
-    const injectPatterns = [
-      /ignore\s*(all|above|previous)\s*(instructions|directions|prompts?)/gi,
-      /disregard\s*(all|above|previous)\s*(instructions|directions|prompts?)/gi,
-      /forget\s*(your|all|everything)/gi,
-      /you\s+are\s+(now|not\s+required|free\s+to)/gi,
-      /system\s+prompt\s+override/i,
-      /new\s+instructions:/gi,
-      /from\s+now\s+on,\s*you\s+are/i,
-      /i\s+want\s+you\s+to\s+act\s+as/i,
-      /you\s+have\s+been\s+reset/i,
-      /this\s+is\s+a\s+system\s+message/i,
-      /you\s+must\s+ignore\s+(all\s+)?(previous|above|prior)\s+(instructions|rules|guidelines)/gi,
-      /respond\s+as\s+(if\s+you\s+are|though\s+you\s+are)\s+/gi,
-      /do\s+not\s+follow\s+(your\s+)?(instructions|training|guidelines)/gi,
-      /output\s+(raw|unfiltered|uncensored)/gi,
-      /reveal\s+(your\s+)?(system\s+)?prompt/gi,
-      /show\s+(your\s+)?(system\s+)?(prompt|instructions)/gi,
-      /print\s+(your\s+)?(system\s+)?prompt/gi,
-      /bypass\s+(your\s+)?(safety|filter|restrictions)/gi,
-      /jailbreak/i,
-      /\/\/ignore/i,
-    ];
-
-    for (const pattern of injectPatterns) {
+    for (const pattern of this._injectPatterns) {
       cleaned = cleaned.replace(pattern, '[removed]');
     }
 
@@ -166,25 +183,7 @@ class AIService {
     if (typeof text !== 'string') return '';
     let cleaned = text;
 
-    const patterns = [
-      /<think>[\s\S]*?<\/think>/gi,
-      /<thinking>[\s\S]*?<\/thinking>/gi,
-      /<reasoning>[\s\S]*?<\/reasoning>/gi,
-      /<thought>[\s\S]*?<\/thought>/gi,
-      /<chain_of_thought>[\s\S]*?<\/chain_of_thought>/gi,
-      /<cot>[\s\S]*?<\/cot>/gi,
-      /<scratchpad>[\s\S]*?<\/scratchpad>/gi,
-      /\[thinking\][\s\S]*?\[\/thinking\]/gi,
-      /\[think\][\s\S]*?\[\/think\]/gi,
-      /\[reasoning\][\s\S]*?\[\/reasoning\]/gi,
-      /```(?:think(?:ing)?|reason(?:ing)?|thought|chain.?of.?thought|cot|scratchpad)[\s\S]*?```/gi,
-      /\*\*(?:Thinking|Reasoning|Thought|Chain of Thought|Internal)\*\*[\s\S]*?(?=\n\n|\n\*\*|$)/gi,
-      /(?:Thinking|Reasoning|Thought|Chain of Thought|Internal):\s*[\s\S]*?(?=\n\n|\n[A-Z]|\*\*|$)/gi,
-      /^I'll\s+(?:think|reason|work).*$/gim,
-      /^(?:Let me|Let's)\s+(?:think|reason|work|break).*$/gim,
-    ];
-
-    for (const pattern of patterns) {
+    for (const pattern of this._thinkingPatterns) {
       cleaned = cleaned.replace(pattern, '');
     }
 
@@ -298,14 +297,6 @@ class AIService {
 
         if (lastUserMsg && options.type !== 'stream') {
           QueryCache.setAIResponse(lastUserMsg, result).catch(() => {});
-        }
-
-        if (lastUserMsg) {
-          this.responseCache.set(lastUserMsg, result);
-          if (this.responseCache.size > 500) {
-            const keyToDelete = this.responseCache.keys().next().value;
-            this.responseCache.delete(keyToDelete);
-          }
         }
 
         return result;
@@ -694,7 +685,6 @@ Return the most relevant entries with relevance scores.`;
     return {
       ...this.usageStats,
       rateLimiterSize: this.rateLimiter.size,
-      responseCacheSize: this.responseCache.size,
       blockedUsers: aiSecurityStats.blockedUsers,
       memory: this.memory.getCacheStats(),
     };
@@ -707,7 +697,6 @@ Return the most relevant entries with relevance scores.`;
     if (this._dailyUsageCleanup) {
       clearInterval(this._dailyUsageCleanup);
     }
-    this.responseCache.clear();
     this.rateLimiter.clear();
     this.dailyUsage.clear();
     this.memory.destroy();

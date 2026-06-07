@@ -162,12 +162,17 @@ module.exports = {
     modal.addComponents(
       new ActionRowBuilder().addComponents(ratingInput),
       new ActionRowBuilder().addComponents(titleInput),
-      new ActionRowBuilder().addComponents(commentInput),
-      new ActionRowBuilder().addComponents(prosInput),
-      new ActionRowBuilder().addComponents(consInput)
-    );
+new ActionRowBuilder().addComponents(commentInput),
+    new ActionRowBuilder().addComponents(prosInput),
+    new ActionRowBuilder().addComponents(consInput)
+  );
 
-    await interaction.showModal(modal).catch(() => {});
+  await interaction.showModal(modal).catch((err) => {
+    logger.error('showModal failed', { error: err?.message, customId: modal.data?.custom_id });
+    if (!interaction.deferred && !interaction.replied) {
+      interaction.reply({ content: '❌ فشل في فتح النموذج. يرجى المحاولة مرة أخرى.', ephemeral: true }).catch(() => {});
+    }
+  });
   },
 
   async handleModalSubmit(interaction, client) {
@@ -242,7 +247,7 @@ module.exports = {
 
       await this.updateRatings(order, review);
 
-      const buyer = await User.findOne({ discordId: interaction.user.id }).lean();
+      const buyer = await User.findOne({ discordId: interaction.user.id });
       if (buyer) {
         buyer.loyaltyPoints += 5;
         buyer.stats.totalReviews++;
@@ -263,7 +268,7 @@ module.exports = {
   async updateRatings(order, review) {
     const { Store, Product, Service } = require('../../database/models');
 
-    const store = await Store.findById(order.storeId.lean());
+    const store = await Store.findById(order.storeId);
     if (store) {
       const allReviews = await Review.find({ storeId: store._id, isHidden: false }).lean();
       const totalRating = allReviews.reduce((sum, r) => sum + r.rating, 0);
@@ -276,7 +281,7 @@ module.exports = {
     }
 
     if (order.type === 'product') {
-      const product = await Product.findById(order.itemId.lean());
+      const product = await Product.findById(order.itemId);
       if (product) {
         const allReviews = await Review.find({ itemId: product._id, type: 'product', isHidden: false }).lean();
         const totalRating = allReviews.reduce((sum, r) => sum + r.rating, 0);
@@ -288,7 +293,7 @@ module.exports = {
         await product.save();
       }
     } else {
-      const service = await Service.findById(order.itemId.lean());
+      const service = await Service.findById(order.itemId);
       if (service) {
         const allReviews = await Review.find({ itemId: service._id, type: 'service', isHidden: false }).lean();
         const totalRating = allReviews.reduce((sum, r) => sum + r.rating, 0);
@@ -355,13 +360,18 @@ module.exports = {
       .setMaxLength(2000)
       .setValue(review.comment);
 
-    modal.addComponents(
+modal.addComponents(
       new ActionRowBuilder().addComponents(ratingInput),
       new ActionRowBuilder().addComponents(titleInput),
       new ActionRowBuilder().addComponents(commentInput)
     );
 
-    await interaction.showModal(modal).catch(() => {});
+    await interaction.showModal(modal).catch((err) => {
+      logger.error('showModal failed', { error: err?.message, customId: modal.data?.custom_id });
+      if (!interaction.deferred && !interaction.replied) {
+        interaction.reply({ content: '❌ فشل في فتح النموذج. يرجى المحاولة مرة أخرى.', ephemeral: true }).catch(() => {});
+      }
+    });
   },
 
   async handleDelete(interaction, client) {
@@ -397,7 +407,7 @@ module.exports = {
 
     await Review.findByIdAndDelete(reviewId);
 
-    const order = await Order.findById(review.orderId.lean());
+    const order = await Order.findById(review.orderId);
     if (order) {
       order.review = undefined;
       await order.save();
@@ -473,7 +483,7 @@ module.exports = {
     const reviewId = interaction.options.getString('review_id');
     const comment = interaction.options.getString('comment');
 
-    const review = await Review.findById(reviewId).populate('storeId'.lean());
+    const review = await Review.findById(reviewId).populate('storeId');
 
     if (!review) {
       return interaction.editReply({ content: '❌ التقييم غير موجود.' });
@@ -501,7 +511,7 @@ module.exports = {
     const voteType = interaction.options.getString('vote');
     const voteValue = voteType === 'helpful' ? 1 : -1;
 
-    const review = await Review.findById(reviewId.lean());
+    const review = await Review.findById(reviewId);
     if (!review) {
       return interaction.editReply({ content: '❌ التقييم غير موجود.' });
     }
@@ -536,7 +546,7 @@ module.exports = {
     const reviewId = interaction.options.getString('review_id');
     const reason = interaction.options.getString('reason');
 
-    const review = await Review.findById(reviewId.lean());
+    const review = await Review.findById(reviewId);
     if (!review) {
       return interaction.editReply({ content: '❌ التقييم غير موجود.' });
     }

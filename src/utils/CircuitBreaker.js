@@ -25,19 +25,20 @@ class CircuitBreaker {
       }
     }
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), this.timeout);
+    let result;
     try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), this.timeout);
-
-      const result = await fn(controller.signal);
-      clearTimeout(timeoutId);
-      this.onSuccess();
-      return result;
+      result = await fn(controller.signal);
     } catch (error) {
+      clearTimeout(timeoutId);
       this.onFailure();
       if (fallback) return fallback();
       throw error;
     }
+    clearTimeout(timeoutId);
+    this.onSuccess();
+    return result;
   }
 
   onSuccess() {
@@ -54,6 +55,13 @@ class CircuitBreaker {
 
   onFailure() {
     this.failureCount++;
+    if (this.state === 'HALF_OPEN') {
+      this.successCount = 0;
+      this.state = 'OPEN';
+      this.nextAttempt = Date.now() + this.resetTimeout;
+      logger.warn('CircuitBreaker ' + this.name + ': OPEN (failure in HALF_OPEN)');
+      return;
+    }
     if (this.failureCount >= this.failureThreshold) {
       this.state = 'OPEN';
       this.nextAttempt = Date.now() + this.resetTimeout;
@@ -62,7 +70,7 @@ class CircuitBreaker {
   }
 
   getState() {
-    return { name: this.name, state: this.state, failureCount: this.failureCount };
+    return { name: this.name, state: this.state, failureCount: this.failureCount, successCount: this.successCount };
   }
 }
 

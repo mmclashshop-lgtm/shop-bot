@@ -156,10 +156,10 @@ module.exports = {
     return interaction.editReply({ embeds: [embed] });
   },
   async handlePending(interaction, client) {
-    if (!interaction.memberPermissions.has('Administrator')) {
-      return interaction.reply({ content: '🚫 هذا الأمر للمشرفين فقط.', ephemeral: true });
-    }
     await interaction.deferReply({ ephemeral: true });
+    if (!interaction.memberPermissions.has('Administrator')) {
+      return interaction.editReply({ content: '🚫 هذا الأمر للمشرفين فقط.' });
+    }
     const pending = await PaymentService.getPendingVerification();
     if (pending.length === 0) return interaction.editReply({ content: '✅ لا توجد دفعات بانتظار التأكيد.' });
     const embed = new EmbedBuilder()
@@ -176,10 +176,10 @@ module.exports = {
     return interaction.editReply({ embeds: [embed] });
   },
   async handleConfirm(interaction, client) {
-    if (!interaction.memberPermissions.has('Administrator')) {
-      return interaction.reply({ content: '🚫 هذا الأمر للمشرفين فقط.', ephemeral: true });
-    }
     await interaction.deferReply({ ephemeral: true });
+    if (!interaction.memberPermissions.has('Administrator')) {
+      return interaction.editReply({ content: '🚫 هذا الأمر للمشرفين فقط.' });
+    }
     const paymentId = interaction.options.getString('payment_id');
     try {
       const payment = await PaymentService.confirmPayment(paymentId, interaction.user.id);

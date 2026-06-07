@@ -109,7 +109,6 @@ module.exports = {
   async handleSelectMenu(interaction, client, action) {
     if (action === 'create_chat_category') {
       const type = interaction.values[0];
-      await interaction.deferUpdate();
       try {
         const channel = await client.aiChatSessionManager.getOrCreateChannel(interaction.user, interaction.guild);
         const { AIChat } = require('../../database/models');
@@ -128,12 +127,10 @@ module.exports = {
 
     if (action === 'export_format') {
       const format = interaction.values[0];
-      await interaction.deferUpdate();
       return client.aiChatSessionManager._handleExport(interaction, interaction.channel, format);
     }
 
     logger.warn('AI select menu not implemented', { action, customId: interaction.customId });
-    await interaction.deferUpdate().catch(() => {});
     await interaction.editReply({ content: '❌ هذه القائمة غير مدعومة.', components: [] }).catch(() => {});
   },
 

@@ -242,5 +242,6 @@ npm run lint      # فحص الكود
 npm test          # تشغيل الاختبارات
 npm run deploy    # نشر الأوامر على Discord
 npm start         # تشغيل البوت
-npm run dev       # تشغيل مع auto-reload
+npm        # تشغيل مع auto-reload
+npm        # تشغيل مع auto-reload
 ```

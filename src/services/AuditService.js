@@ -24,7 +24,7 @@ class AuditService {
   }
 
   async getLogs(query = {}, limit = 50, skip = 0) {
-    return AuditLog.find(query.lean())
+    return AuditLog.find(query)
       .sort({ createdAt: -1 })
       .limit(limit)
       .skip(skip)

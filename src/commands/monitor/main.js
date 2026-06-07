@@ -34,8 +34,9 @@ module.exports = {
     ),
 
   async execute(interaction) {
+    await interaction.deferReply({ ephemeral: true });
     if (!interaction.memberPermissions.has('Administrator')) {
-      return interaction.reply({ content: '🚫 لوحة المراقبة للمشرفين فقط.', ephemeral: true });
+      return interaction.editReply({ content: '🚫 لوحة المراقبة للمشرفين فقط.' });
     }
 
     const subcommand = interaction.options.getSubcommand();

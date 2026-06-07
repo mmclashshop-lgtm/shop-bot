@@ -15,90 +15,125 @@
 const path = require('path');
 const fs = require('fs');
 
-process.chdir(path.resolve(__dirname, '..'));
-
 const SRC_DIR = path.join(__dirname, '..', 'src');
-const EXCLUDED = ['node_modules', '.git', 'coverage', 'reports', 'data'];
+const EXCLUDED = new Set(['node_modules', '.git', 'coverage', 'reports', 'data', 'dist', 'build']);
 
 function getAllFiles(dir) {
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
-  const files = [];
-  for (const entry of entries) {
-    if (EXCLUDED.includes(entry.name)) continue;
-    const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      files.push(...getAllFiles(full));
-    } else if (entry.name.endsWith('.js')) {
-      files.push(full);
+  try {
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    const files = [];
+    for (const entry of entries) {
+      if (EXCLUDED.has(entry.name)) continue;
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        files.push(...getAllFiles(full));
+      } else if (entry.name.endsWith('.js')) {
+        files.push(full);
+      }
     }
+    return files;
+  } catch (err) {
+    console.error(`  \u26A0 Error reading directory ${dir}: ${err.message}`);
+    return [];
   }
-  return files;
 }
 
-function analyzeFile(filePath, allFiles, requireMap) {
-  const content = fs.readFileSync(filePath, 'utf8');
+function getEntryPoints() {
+  // Return paths relative to SRC_DIR
+  try {
+    const pkgPath = path.join(__dirname, '..', 'package.json');
+    const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+    if (pkg.main) {
+      const absEntry = path.resolve(path.join(__dirname, '..'), pkg.main);
+      const entry = path.relative(SRC_DIR, absEntry).replace(/\\/g, '/');
+      return [entry];
+    }
+  } catch {}
+  return ['index.js'];
+}
+
+function analyzeFile(filePath, allRelativePaths) {
+  let content;
+  try {
+    content = fs.readFileSync(filePath, 'utf8');
+  } catch (err) {
+    console.error(`  \u26A0 Error reading ${filePath}: ${err.message}`);
+    return null;
+  }
   const lines = content.split('\n');
-  const relative = path.relative(SRC_DIR, filePath);
-  const fileName = path.basename(filePath, '.js');
+  const relative = path.relative(SRC_DIR, filePath).replace(/\\/g, '/');
 
-  // All require() calls
+  // All require() calls with line numbers
   const requires = [];
-  const requireRegex = /require\s*\(\s*['"](\.\/|\.\.\/)([^'"]+)['"]\s*\)/g;
+  const requireLineRegex = /require\s*\(\s*['"](\.\/|\.\.\/)([^'"]+)['"]\s*\)/g;
   let m;
-  while ((m = requireRegex.exec(content)) !== null) {
-    requires.push(m[2]);
+  while ((m = requireLineRegex.exec(content)) !== null) {
+    const lineNum = content.substring(0, m.index).split('\n').length;
+    requires.push({ path: m[2], line: lineNum });
   }
 
-  // Find module.exports
+  // Unused require variables (with line numbers)
+  const requireVarsUnused = [];
+  const varRegex = /(?:const|let|var)\s+(?:(\w+)|{([^}]+)})\s*=\s*require\(/g;
+  let vm;
+  while ((vm = varRegex.exec(content)) !== null) {
+    const varNames = vm[1] ? [vm[1]] : (vm[2] ? vm[2].split(',').map(s => s.trim()).filter(Boolean) : []);
+    for (const varName of varNames) {
+      if (!varName) continue;
+      const afterIdx = vm.index + vm[0].length;
+      const restOfFile = content.substring(afterIdx);
+      const refRegex = new RegExp(`\\b${varName}\\b`, 'g');
+      let refCount = 0;
+      while (refRegex.exec(restOfFile) !== null) refCount++;
+      if (refCount === 0) {
+        const lineNum = content.substring(0, vm.index).split('\n').length;
+        requireVarsUnused.push({ name: varName, line: lineNum });
+      }
+    }
+  }
+
+  // Detect exports
   const exports = [];
-  const exportRegex = /(?:module\.exports|exports\.)\s*=\s*\{?([^;]+)/g;
-  let ex;
-  while ((ex = exportRegex.exec(content)) !== null) {
-    const val = ex[1].trim();
-    // Extract keys from object literal
-    const keys = val.match(/(\w+)\s*:/g);
+  const namedExportRegex = /(?:module\.exports|exports)\s*\.\s*(\w+)\s*=/g;
+  while ((m = namedExportRegex.exec(content)) !== null) {
+    exports.push(m[1]);
+  }
+  const objExportRegex = /module\.exports\s*=\s*\{([^}]*)\}/g;
+  while ((m = objExportRegex.exec(content)) !== null) {
+    const keys = m[1].match(/(\w+)\s*(?::|,|\s*})/g);
     if (keys) {
-      for (const k of keys) exports.push(k.replace(':', '').trim());
-    } else if (val.startsWith('{') || val.startsWith('[')) {
-      exports.push('...');
-    } else {
-      exports.push(val.split(/\s+/)[0]);
+      for (const k of keys) exports.push(k.replace(/[:,\s{}]/g, '').trim());
     }
   }
-
-  // Single export
   const singleExport = content.match(/module\.exports\s*=\s*(\w+)/);
-  if (singleExport) exports.push(singleExport[1]);
+  if (singleExport && !exports.includes(singleExport[1])) exports.push(singleExport[1]);
 
-  // Detect empty catch blocks
-  const emptyCatches = (content.match(/\bcatch\s*\{?\s*\}?\s*$/gm) || []).length +
-    (content.match(/\bcatch\s*\{[^}]*\}\s*$/gm) || []).filter(c => !c.includes('//') && !c.includes('logger')).length;
-
-  // Detect commented-out code (lines starting with // that look like code)
-  let commentedCode = 0;
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (trimmed.startsWith('//') &&
-        (trimmed.includes('function') || trimmed.includes('=>') ||
-         trimmed.includes('require') || trimmed.includes('const ') ||
-         trimmed.includes('let ') || trimmed.includes('var ') ||
-         trimmed.includes('async') || trimmed.includes('class '))) {
-      commentedCode++;
+  // Empty catch blocks with line numbers
+  const emptyCatchLines = [];
+  const catchRegex = /catch\s*(?:\([^)]*\))?\s*\{([^}]*)\}/gs;
+  while ((m = catchRegex.exec(content)) !== null) {
+    const body = m[1].trim();
+    if (!body || /^\s*\/\/\s*(noop|ignore|silently|skip|pass|nothing)/i.test(body)) {
+      const lineNum = content.substring(0, m.index).split('\n').length;
+      emptyCatchLines.push(lineNum);
     }
   }
 
-  // Detect unused require (variable declared via require but never referenced again)
-  const requireVars = [];
-  const varRegex = /(?:const|let|var)\s+(\w+)\s*=\s*require\(/g;
-  while ((m = varRegex.exec(content)) !== null) {
-    const varName = m[1];
-    // Check if varName is used after the require
-    const afterIdx = content.indexOf(m[0]) + m[0].length;
-    const restOfFile = content.substring(afterIdx);
-    const refRegex = new RegExp(`\\b${varName}\\b`, 'g');
-    let refCount = 0;
-    while (refRegex.exec(restOfFile) !== null) refCount++;
-    if (refCount === 0) requireVars.push(varName);
+  // Commented-out code with line numbers
+  const commentedCodeLines = [];
+  const codePatterns = [
+    /\bfunction\b/, /\b=>\b/, /\brequire\b/, /\b(const|let|var)\s+\w/,
+    /\basync\b/, /\bclass\b/, /\bif\s*\(/, /\breturn\b/, /\bimport\b/,
+    /\bexport\b/, /\bconsole\.\b/,
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const trimmed = lines[i].trim();
+    if (trimmed.startsWith('//')) {
+      const codePart = trimmed.replace(/^\/\/\s*/, '');
+      if (codePatterns.some(p => p.test(codePart))) {
+        commentedCodeLines.push(i + 1);
+      }
+    }
   }
 
   return {
@@ -106,32 +141,45 @@ function analyzeFile(filePath, allFiles, requireMap) {
     totalLines: lines.length,
     exports: [...new Set(exports)],
     requires,
-    requireVarsUnused: requireVars,
-    emptyCatches,
-    commentedCode,
+    requireVarsUnused,
+    emptyCatches: emptyCatchLines,
+    commentedCode: commentedCodeLines,
     fileSize: content.length,
   };
 }
 
 function runDeadCodeAudit() {
   console.log('');
-  console.log('█'.repeat(70));
+  console.log('\u2588'.repeat(70));
   console.log('  DEAD CODE AUDIT');
-  console.log('█'.repeat(70));
+  console.log('\u2588'.repeat(70));
 
   const allFiles = getAllFiles(SRC_DIR);
+  if (allFiles.length === 0) {
+    console.error('  \u26A0 No JavaScript files found in src/');
+    return;
+  }
   console.log(`\n  Scanning ${allFiles.length} JavaScript files...\n`);
 
-  // Build require map: what files are required by whom
-  const requireMap = {};  // requiredFile -> [requirerFile]
+  const allRelativePaths = new Set(allFiles.map(f => path.relative(SRC_DIR, f).replace(/\\/g, '/')));
+
+  // Build require map
+  const requireMap = {};
   for (const f of allFiles) {
-    const relative = path.relative(SRC_DIR, f);
-    const content = fs.readFileSync(f, 'utf8');
+    const relative = path.relative(SRC_DIR, f).replace(/\\/g, '/');
+    let content;
+    try {
+      content = fs.readFileSync(f, 'utf8');
+    } catch { continue; }
     const requireRegex = /require\s*\(\s*['"](\.\/|\.\.\/)([^'"]+)['"]\s*\)/g;
     let m;
     while ((m = requireRegex.exec(content)) !== null) {
-      const reqPath = path.normalize(path.join(path.dirname(f), m[1] + m[2])).replace(/\\/g, '/');
-      const reqRelative = path.relative(SRC_DIR, reqPath).replace(/\\/g, '/');
+      const resolved = path.normalize(path.join(path.dirname(f), m[1] + m[2])).replace(/\\/g, '/');
+      let reqRelative = path.relative(SRC_DIR, resolved).replace(/\\/g, '/');
+      if (!allRelativePaths.has(reqRelative)) {
+        const withJs = reqRelative + '.js';
+        if (allRelativePaths.has(withJs)) reqRelative = withJs;
+      }
       if (!reqRelative.startsWith('..')) {
         if (!requireMap[reqRelative]) requireMap[reqRelative] = [];
         requireMap[reqRelative].push(relative);
@@ -140,88 +188,115 @@ function runDeadCodeAudit() {
   }
 
   // Analyze each file
-  const results = allFiles.map(f => analyzeFile(f, allFiles, requireMap));
+  const results = allFiles.map(f => analyzeFile(f, allRelativePaths)).filter(Boolean);
 
-  // Find unused files (files never required by any other file)
-  const entryPoints = ['index.js'];
+  const entryPoints = getEntryPoints();
+
+  // Unused files
   const unusedFiles = [];
   for (const r of results) {
     if (entryPoints.includes(r.file)) continue;
     if (r.file.includes('node_modules')) continue;
     const reqs = requireMap[r.file];
     if (!reqs || reqs.length === 0) {
-      // Check if it's a command file (auto-loaded by deploy-commands)
       if (!r.file.startsWith('commands') && !r.file.startsWith('events')) {
         unusedFiles.push(r.file);
       }
     }
   }
 
-  console.log('── Unused Files (Potential Dead Code) ──\n');
+  // Output: Unused Files
+  console.log('\u2500\u2500 Unused Files (Potential Dead Code) \u2500\u2500\n');
   if (unusedFiles.length === 0) {
-    console.log('  ✅ No unused files detected (all files are referenced)');
+    console.log('  \u2705 No unused files detected (all files are referenced)');
   } else {
     for (const f of unusedFiles) {
-      console.log(`  📭 ${f}`);
+      console.log(`  \uD83D\uDCED ${f}`);
     }
   }
 
-  console.log('\n── Unused Require Imports ──\n');
-  const unusedRequires = results.filter(r => r.requireVarsUnused.length > 0);
-  if (unusedRequires.length === 0) {
-    console.log('  ✅ No unused require() imports detected');
+  // Output: Unused Require Imports
+  console.log('\n\u2500\u2500 Unused Require Imports \u2500\u2500\n');
+  const unusedReqFiles = results.filter(r => r.requireVarsUnused.length > 0);
+  if (unusedReqFiles.length === 0) {
+    console.log('  \u2705 No unused require() imports detected');
   } else {
-    for (const r of unusedRequires) {
-      console.log(`  🟠 ${r.file}: unused imports — ${r.requireVarsUnused.join(', ')}`);
+    for (const r of unusedReqFiles) {
+      const details = r.requireVarsUnused.map(v => `${v.name} (line ${v.line})`).join(', ');
+      console.log(`  \uD83D\uDFE0 ${r.file}: ${details}`);
     }
   }
 
-  console.log('\n── Empty Catch Blocks ──\n');
-  const emptyCatches = results.filter(r => r.emptyCatches > 0);
-  if (emptyCatches.length === 0) {
-    console.log('  ✅ No empty catch blocks');
+  // Output: Empty Catch Blocks
+  console.log('\n\u2500\u2500 Empty Catch Blocks \u2500\u2500\n');
+  const emptyCatchFiles = results.filter(r => r.emptyCatches.length > 0);
+  if (emptyCatchFiles.length === 0) {
+    console.log('  \u2705 No empty catch blocks');
   } else {
     let total = 0;
-    for (const r of emptyCatches) {
-      console.log(`  🟠 ${r.file}: ${r.emptyCatches} empty catch(es)`);
-      total += r.emptyCatches;
+    for (const r of emptyCatchFiles) {
+      console.log(`  \uD83D\uDFE0 ${r.file}: lines ${r.emptyCatches.join(', ')}`);
+      total += r.emptyCatches.length;
     }
     console.log(`  Total: ${total} empty catch blocks`);
   }
 
-  console.log('\n── Commented-Out Code ──\n');
-  const commentedFiles = results.filter(r => r.commentedCode > 0);
+  // Output: Commented-Out Code
+  console.log('\n\u2500\u2500 Commented-Out Code \u2500\u2500\n');
+  const commentedFiles = results.filter(r => r.commentedCode.length > 0);
   if (commentedFiles.length === 0) {
-    console.log('  ✅ No commented-out code');
+    console.log('  \u2705 No commented-out code');
   } else {
     let total = 0;
-    for (const r of commentedFiles.sort((a, b) => b.commentedCode - a.commentedCode).slice(0, 10)) {
-      console.log(`  ⚪ ${r.file}: ${r.commentedCode} commented lines`);
-      total += r.commentedCode;
+    for (const r of commentedFiles.sort((a, b) => b.commentedCode.length - a.commentedCode.length).slice(0, 10)) {
+      const lineRange = r.commentedCode.length > 5
+        ? `${r.commentedCode[0]}-${r.commentedCode[r.commentedCode.length - 1]} (${r.commentedCode.length} lines)`
+        : `lines ${r.commentedCode.join(', ')}`;
+      console.log(`  \u26AA ${r.file}: ${lineRange}`);
+      total += r.commentedCode.length;
     }
     console.log(`  Total: ${total} commented-out code lines`);
   }
 
   // Save report
   const reportDir = path.join(__dirname, '..', 'reports');
-  if (!fs.existsSync(reportDir)) fs.mkdirSync(reportDir, { recursive: true });
-  const outPath = path.join(reportDir, 'dead-code-audit.json');
-  const report = {
-    timestamp: new Date().toISOString(),
-    totalFiles: allFiles.length,
-    unusedFiles,
-    unusedRequires: unusedRequires.map(r => ({ file: r.file, imports: r.requireVarsUnused })),
-    emptyCatches: emptyCatches.map(r => ({ file: r.file, count: r.emptyCatches })),
-    topCommentedCode: commentedFiles.sort((a, b) => b.commentedCode - a.commentedCode).slice(0, 20).map(r => ({ file: r.file, lines: r.commentedCode })),
-  };
-  fs.writeFileSync(outPath, JSON.stringify(report, null, 2));
-  console.log(`\n  Full report saved to: ${outPath}`);
+  try {
+    if (!fs.existsSync(reportDir)) fs.mkdirSync(reportDir, { recursive: true });
+    const outPath = path.join(reportDir, 'dead-code-audit.json');
+    const report = {
+      timestamp: new Date().toISOString(),
+      totalFiles: allFiles.length,
+      unusedFiles,
+      unusedRequires: unusedReqFiles.map(r => ({
+        file: r.file,
+        imports: r.requireVarsUnused.map(v => ({ name: v.name, line: v.line }))
+      })),
+      emptyCatches: emptyCatchFiles.map(r => ({ file: r.file, lines: r.emptyCatches })),
+      topCommentedCode: commentedFiles.sort((a, b) => b.commentedCode.length - a.commentedCode.length).slice(0, 20).map(r => ({
+        file: r.file,
+        lineCount: r.commentedCode.length,
+        lines: r.commentedCode
+      })),
+    };
+    fs.writeFileSync(outPath, JSON.stringify(report, null, 2));
+    console.log(`\n  Full report saved to: ${outPath}`);
+  } catch (err) {
+    console.error(`  \u26A0 Failed to save report: ${err.message}`);
+  }
   console.log('');
 
-  return report;
+  return {
+    totalFiles: allFiles.length,
+    unusedFiles,
+    unusedRequires: unusedReqFiles.map(r => ({ file: r.file, imports: r.requireVarsUnused })),
+    emptyCatches: emptyCatchFiles.map(r => ({ file: r.file, lines: r.emptyCatches })),
+    commentedCode: commentedFiles.map(r => ({ file: r.file, lineCount: r.commentedCode.length })),
+  };
 }
 
 if (require.main === module) {
+  const dir = path.resolve(__dirname, '..');
+  process.chdir(dir);
   runDeadCodeAudit();
 }
 

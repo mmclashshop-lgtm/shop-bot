@@ -46,8 +46,9 @@ module.exports = {
     ),
 
   async execute(interaction) {
+    await interaction.deferReply({ ephemeral: true });
     if (!interaction.memberPermissions.has('Administrator')) {
-      return interaction.reply({ content: '🚫 نظام النسخ الاحتياطي للمشرفين فقط.', ephemeral: true });
+      return interaction.editReply({ content: '🚫 نظام النسخ الاحتياطي للمشرفين فقط.' });
     }
 
     const subcommand = interaction.options.getSubcommand();

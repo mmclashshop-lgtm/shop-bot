@@ -83,7 +83,7 @@ module.exports = {
     session.startTransaction();
 
     try {
-      const store = await Store.findById(storeId).session(session.lean());
+      const store = await Store.findById(storeId).session(session).lean();
       if (!store) {
         await session.abortTransaction();
         return interaction.editReply({ content: '❌ المتجر غير موجود.' });
@@ -193,7 +193,7 @@ module.exports = {
     session.startTransaction();
 
     try {
-      const store = await Store.findById(storeId).session(session.lean());
+      const store = await Store.findById(storeId).session(session).lean();
       if (!store) {
         await session.abortTransaction();
         return interaction.editReply({ content: '❌ المتجر غير موجود.' });
@@ -202,7 +202,7 @@ module.exports = {
       store.type = 'free';
       await store.save({ session });
 
-      const seller = await User.findOne({ discordId: store.ownerId }).session(session.lean());
+      const seller = await User.findOne({ discordId: store.ownerId }).session(session).lean();
       if (seller) {
         seller.trustLevel = 'none';
         seller.trustBadge = null;

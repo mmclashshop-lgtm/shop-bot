@@ -14,16 +14,26 @@
 const path = require('path');
 const fs = require('fs');
 
-process.chdir(path.resolve(__dirname, '..'));
+// Only change CWD when running as main module to avoid side effects
+// on consumers that import the exported functions.
+if (require.main === module) {
+  process.chdir(path.resolve(__dirname, '..'));
+}
 
 const SRC_DIR = path.join(__dirname, '..', 'src');
-const EXCLUDED = ['node_modules', '.git', 'coverage', 'reports', 'data'];
+const EXCLUDED = new Set(['node_modules']);
 
 function getAllFiles(dir) {
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  let entries;
+  try {
+    entries = fs.readdirSync(dir, { withFileTypes: true });
+  } catch {
+    return [];
+  }
+
   const files = [];
   for (const entry of entries) {
-    if (EXCLUDED.includes(entry.name)) continue;
+    if (EXCLUDED.has(entry.name)) continue;
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       files.push(...getAllFiles(full));
@@ -48,14 +58,31 @@ const HOT_PATTERNS = [
   { name: 'Array.slice in loop',             regex: /\.slice\(/g,         severity: 'low',    weight: 1 },
   { name: 'Synchronous fs operation',        regex: /fs\.(readFileSync|writeFileSync|existsSync|statSync|mkdirSync|unlinkSync|readdirSync)/g, severity: 'high', weight: 5 },
   { name: 'execFileSync / execSync',         regex: /exec(File)?Sync/g,   severity: 'high', weight: 5 },
-  { name: 'Nested promise (anti-pattern)',   regex: /new\s+Promise\(/g,   severity: 'low',    weight: 1 },
+  { name: 'Promise constructor',             regex: /new\s+Promise\(/g,   severity: 'low',    weight: 1 },
   { name: 'console.log (blocking)',          regex: /console\.(log|error|warn)/g, severity: 'low', weight: 1 },
   { name: 'Deep object traversal',           regex: /\w+\.\w+\.\w+\.\w+\.\w+/g, severity: 'low', weight: 1 },
   { name: 'Aggregation pipeline (MongoDB)',  regex: /\.aggregate\(/g,     severity: 'medium', weight: 3 },
 ];
 
+function findLinesForContent(lines, content, matchIndex) {
+  let charCount = 0;
+  for (let lineIdx = 0; lineIdx < lines.length; lineIdx++) {
+    charCount += lines[lineIdx].length + 1;
+    if (charCount > matchIndex) {
+      return lineIdx + 1;
+    }
+  }
+  return lines.length;
+}
+
 function analyzeFile(filePath) {
-  const content = fs.readFileSync(filePath, 'utf8');
+  let content;
+  try {
+    content = fs.readFileSync(filePath, 'utf8');
+  } catch {
+    return null;
+  }
+
   const lines = content.split('\n');
   const findings = [];
   let totalScore = 0;
@@ -63,17 +90,24 @@ function analyzeFile(filePath) {
   const relative = path.relative(SRC_DIR, filePath);
 
   for (const pattern of HOT_PATTERNS) {
-    const matches = content.match(pattern.regex);
-    if (matches) {
-      const count = matches.length;
-      const score = count * pattern.weight;
+    const matches = content.matchAll(pattern.regex);
+    const occurrences = [];
+    for (const m of matches) {
+      occurrences.push({
+        line: findLinesForContent(lines, content, m.index),
+        column: m.index - content.lastIndexOf('\n', m.index - 1),
+      });
+    }
+    if (occurrences.length > 0) {
+      const score = occurrences.length * pattern.weight;
       totalScore += score;
       findings.push({
         pattern: pattern.name,
-        count,
+        count: occurrences.length,
         severity: pattern.severity,
         weight: pattern.weight,
         score,
+        occurrences,
       });
     }
   }
@@ -95,7 +129,7 @@ function runCPUProfile() {
   const allFiles = getAllFiles(SRC_DIR);
   console.log(`\n  Scanning ${allFiles.length} JavaScript files...\n`);
 
-  const results = allFiles.map(analyzeFile).filter(r => r.totalScore > 0);
+  const results = allFiles.map(analyzeFile).filter(r => r !== null && r.totalScore > 0);
   results.sort((a, b) => b.totalScore - a.totalScore);
 
   const TOP_N = 20;
@@ -103,12 +137,15 @@ function runCPUProfile() {
   console.log(`── Top ${TOP_N} CPU Hotspots ──\n`);
   for (let i = 0; i < Math.min(TOP_N, results.length); i++) {
     const r = results[i];
-    const severityEmoji = r.findings.some(f => f.severity === 'high') ? '🔴' :
-                          r.findings.some(f => f.severity === 'medium') ? '🟠' : '🟡';
+    const severityEmoji = r.totalScore >= 30 ? '🔴' :
+                          r.totalScore >= 10 ? '🟠' : '🟡';
     console.log(`${severityEmoji}  #${i + 1}: ${r.file}`);
     console.log(`     Score: ${r.totalScore} | Lines: ${r.totalLines} | Hotspots: ${r.findings.length}`);
     for (const f of r.findings.slice(0, 5)) {
-      console.log(`     ${f.severity === 'high' ? '🔴' : f.severity === 'medium' ? '🟠' : '🟡'} ${f.pattern}: ${f.count}x (score: ${f.score})`);
+      const sevEmoji = f.severity === 'high' ? '🔴' : f.severity === 'medium' ? '🟠' : '🟡';
+      const firstLines = f.occurrences.slice(0, 3).map(o => `L${o.line}`).join(', ');
+      const more = f.occurrences.length > 3 ? ` +${f.occurrences.length - 3} more` : '';
+      console.log(`     ${sevEmoji} ${f.pattern}: ${f.count}x (score: ${f.score}) — ${firstLines}${more}`);
     }
     console.log('');
   }
@@ -118,10 +155,9 @@ function runCPUProfile() {
   for (const r of results) {
     const parts = r.file.split(path.sep);
     const service = parts[0] === 'services' ? parts[1].replace('.js', '') : parts[0];
-    if (!serviceResults[service]) serviceResults[service] = { files: 0, totalScore: 0, findings: [] };
+    if (!serviceResults[service]) serviceResults[service] = { files: 0, totalScore: 0 };
     serviceResults[service].files++;
     serviceResults[service].totalScore += r.totalScore;
-    serviceResults[service].findings.push(...r.findings);
   }
 
   console.log('── Service-Level Hotspot Summary ──\n');
@@ -133,7 +169,7 @@ function runCPUProfile() {
 
   // Save report
   const reportDir = path.join(__dirname, '..', 'reports');
-  if (!fs.existsSync(reportDir)) fs.mkdirSync(reportDir, { recursive: true });
+  fs.mkdirSync(reportDir, { recursive: true });
   const outPath = path.join(reportDir, 'cpu-profile.json');
   const report = {
     timestamp: new Date().toISOString(),

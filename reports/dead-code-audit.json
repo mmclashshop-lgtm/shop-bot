@@ -1,174 +1,370 @@
 {
-  "timestamp": "2026-06-06T09:22:32.569Z",
-  "totalFiles": 95,
+  "timestamp": "2026-06-07T10:11:38.247Z",
+  "totalFiles": 119,
   "unusedFiles": [
-    "cache\\cacheHelper.js",
-    "cache\\CacheService.js",
-    "cache\\QueryCache.js",
-    "cache\\RateLimiter.js",
-    "config\\index.js",
-    "database\\indexes.js",
-    "database\\models\\AIChat.js",
-    "database\\models\\AlertLog.js",
-    "database\\models\\AuditLog.js",
-    "database\\models\\BackupLog.js",
-    "database\\models\\Commission.js",
-    "database\\models\\Coupon.js",
-    "database\\models\\FraudAlert.js",
-    "database\\models\\index.js",
-    "database\\models\\LoyaltyReward.js",
-    "database\\models\\MarketplaceSettings.js",
-    "database\\models\\Order.js",
-    "database\\models\\Payment.js",
-    "database\\models\\PendingAction.js",
-    "database\\models\\Product.js",
-    "database\\models\\Review.js",
-    "database\\models\\ServerSettings.js",
-    "database\\models\\Service.js",
-    "database\\models\\SettingsHistory.js",
-    "database\\models\\Store.js",
-    "database\\models\\Ticket.js",
-    "database\\models\\Transaction.js",
-    "database\\models\\User.js",
-    "database\\models\\Withdrawal.js",
+    "cache/index.js",
+    "config/index.js",
+    "core/safeInteraction.js",
+    "database/indexes.js",
+    "database/models/index.js",
     "deploy-commands.js",
-    "handlers\\commandHandler.js",
-    "handlers\\eventHandler.js",
-    "interactions\\embeds\\aiEmbeds.js",
-    "middleware\\mongoMonitor.js",
-    "middleware\\security.js",
-    "services\\AIChatSessionManager.js",
-    "services\\AISecurityService.js",
-    "services\\AIService.js",
-    "services\\AlertService.js",
-    "services\\AuditService.js",
-    "services\\BackupService.js",
-    "services\\BalanceService.js",
-    "services\\CommissionService.js",
-    "services\\FraudDetectionService.js",
-    "services\\HealthService.js",
-    "services\\MarketplaceService.js",
-    "services\\MemoryService.js",
-    "services\\MonitorService.js",
-    "services\\PaymentService.js",
-    "services\\ProBotApiService.js",
-    "services\\ProBotMonitorService.js",
-    "services\\SettingsService.js",
-    "services\\WebhookService.js",
-    "utils\\CircuitBreaker.js",
-    "utils\\embeds.js",
-    "utils\\errors.js",
-    "utils\\export.js",
-    "utils\\helpers.js",
-    "utils\\logger.js",
-    "utils\\pagination.js",
-    "utils\\PanelManager.js",
-    "utils\\Timeout.js",
-    "utils\\validation.js",
-    "webhook\\server.js"
+    "interactions/embeds/aiEmbeds.js",
+    "services/PermissionService.js",
+    "services/security/index.js",
+    "utils/customIdParser.js",
+    "utils/locks.js",
+    "utils/responseManager.js",
+    "utils/safeReply.js",
+    "utils/safeRun.js"
   ],
-  "unusedRequires": [],
-  "emptyCatches": [
+  "unusedRequires": [
     {
-      "file": "cache\\CacheService.js",
-      "count": 2
+      "file": "commands/admin/main.js",
+      "imports": [
+        {
+          "name": "Review",
+          "line": 6
+        }
+      ]
     },
     {
-      "file": "cache\\RateLimiter.js",
-      "count": 2
+      "file": "commands/alert/main.js",
+      "imports": [
+        {
+          "name": "EmbedBuilderUtil",
+          "line": 4
+        }
+      ]
     },
     {
-      "file": "commands\\admin\\main.js",
-      "count": 2
+      "file": "commands/coupon/main.js",
+      "imports": [
+        {
+          "name": "ButtonBuilder",
+          "line": 1
+        },
+        {
+          "name": "ButtonStyle",
+          "line": 1
+        },
+        {
+          "name": "ActionRowBuilder",
+          "line": 1
+        },
+        {
+          "name": "ModalBuilder",
+          "line": 1
+        },
+        {
+          "name": "TextInputBuilder",
+          "line": 1
+        },
+        {
+          "name": "TextInputStyle",
+          "line": 1
+        },
+        {
+          "name": "EmbedBuilderUtil",
+          "line": 3
+        }
+      ]
     },
     {
-      "file": "commands\\owner\\main.js",
-      "count": 1
+      "file": "commands/dashboard/main.js",
+      "imports": [
+        {
+          "name": "StringSelectMenuBuilder",
+          "line": 1
+        }
+      ]
     },
     {
-      "file": "commands\\payment\\main.js",
-      "count": 2
+      "file": "commands/loyalty/main.js",
+      "imports": [
+        {
+          "name": "ButtonBuilder",
+          "line": 1
+        },
+        {
+          "name": "ButtonStyle",
+          "line": 1
+        },
+        {
+          "name": "EmbedBuilderUtil",
+          "line": 4
+        }
+      ]
     },
     {
-      "file": "commands\\product\\main.js",
-      "count": 1
+      "file": "commands/market/main.js",
+      "imports": [
+        {
+          "name": "ButtonBuilder",
+          "line": 1
+        },
+        {
+          "name": "formatNumber",
+          "line": 4
+        },
+        {
+          "name": "calculateCommission",
+          "line": 4
+        }
+      ]
     },
     {
-      "file": "commands\\service\\main.js",
-      "count": 2
+      "file": "commands/marketplace/main.js",
+      "imports": [
+        {
+          "name": "ButtonBuilder",
+          "line": 1
+        },
+        {
+          "name": "ButtonStyle",
+          "line": 1
+        },
+        {
+          "name": "ActionRowBuilder",
+          "line": 1
+        },
+        {
+          "name": "StringSelectMenuBuilder",
+          "line": 1
+        },
+        {
+          "name": "StringSelectMenuOptionBuilder",
+          "line": 1
+        },
+        {
+          "name": "formatNumber",
+          "line": 4
+        }
+      ]
     },
     {
-      "file": "commands\\ticket\\main.js",
-      "count": 1
+      "file": "commands/monitor/main.js",
+      "imports": [
+        {
+          "name": "EmbedBuilderUtil",
+          "line": 3
+        }
+      ]
     },
     {
-      "file": "commands\\wallet\\main.js",
-      "count": 4
+      "file": "commands/owner/main.js",
+      "imports": [
+        {
+          "name": "ButtonBuilder",
+          "line": 1
+        },
+        {
+          "name": "ButtonStyle",
+          "line": 1
+        }
+      ]
     },
     {
-      "file": "commands\\withdraw\\main.js",
-      "count": 4
+      "file": "commands/payment/main.js",
+      "imports": [
+        {
+          "name": "ModalBuilder",
+          "line": 1
+        },
+        {
+          "name": "TextInputBuilder",
+          "line": 1
+        },
+        {
+          "name": "TextInputStyle",
+          "line": 1
+        },
+        {
+          "name": "Payment",
+          "line": 2
+        },
+        {
+          "name": "Store",
+          "line": 2
+        },
+        {
+          "name": "User",
+          "line": 2
+        },
+        {
+          "name": "formatNumber",
+          "line": 4
+        }
+      ]
     },
     {
-      "file": "events\\interactionCreate.js",
-      "count": 1
+      "file": "commands/product/main.js",
+      "imports": [
+        {
+          "name": "StringSelectMenuBuilder",
+          "line": 1
+        },
+        {
+          "name": "AttachmentBuilder",
+          "line": 1
+        },
+        {
+          "name": "Review",
+          "line": 3
+        },
+        {
+          "name": "validateProductCreate",
+          "line": 6
+        }
+      ]
     },
     {
-      "file": "handlers\\commandHandler.js",
-      "count": 2
+      "file": "commands/profile/main.js",
+      "imports": [
+        {
+          "name": "ButtonBuilder",
+          "line": 1
+        }
+      ]
     },
     {
-      "file": "index.js",
-      "count": 1
+      "file": "commands/review/main.js",
+      "imports": [
+        {
+          "name": "ButtonBuilder",
+          "line": 1
+        },
+        {
+          "name": "ButtonStyle",
+          "line": 1
+        },
+        {
+          "name": "StringSelectMenuBuilder",
+          "line": 1
+        },
+        {
+          "name": "EmbedBuilderUtil",
+          "line": 3
+        },
+        {
+          "name": "formatCurrency",
+          "line": 5
+        }
+      ]
     },
     {
-      "file": "middleware\\security.js",
-      "count": 1
+      "file": "commands/search/main.js",
+      "imports": [
+        {
+          "name": "EmbedBuilderUtil",
+          "line": 3
+        }
+      ]
     },
     {
-      "file": "services\\AIChatSessionManager.js",
-      "count": 14
+      "file": "commands/store/create.js",
+      "imports": [
+        {
+          "name": "PermissionFlagsBits",
+          "line": 2
+        },
+        {
+          "name": "generateReferralCode",
+          "line": 6
+        }
+      ]
     },
     {
-      "file": "services\\AISecurityService.js",
-      "count": 2
+      "file": "commands/tax/main.js",
+      "imports": [
+        {
+          "name": "ButtonBuilder",
+          "line": 1
+        },
+        {
+          "name": "ButtonStyle",
+          "line": 1
+        },
+        {
+          "name": "ActionRowBuilder",
+          "line": 1
+        },
+        {
+          "name": "ModalBuilder",
+          "line": 1
+        },
+        {
+          "name": "TextInputBuilder",
+          "line": 1
+        },
+        {
+          "name": "TextInputStyle",
+          "line": 1
+        },
+        {
+          "name": "EmbedBuilderUtil",
+          "line": 3
+        }
+      ]
     },
     {
-      "file": "services\\AlertService.js",
-      "count": 1
+      "file": "commands/ticket/main.js",
+      "imports": [
+        {
+          "name": "ButtonBuilder",
+          "line": 1
+        }
+      ]
     },
     {
-      "file": "services\\BackupService.js",
-      "count": 7
+      "file": "commands/trust/main.js",
+      "imports": [
+        {
+          "name": "ButtonBuilder",
+          "line": 1
+        },
+        {
+          "name": "ButtonStyle",
+          "line": 1
+        },
+        {
+          "name": "ActionRowBuilder",
+          "line": 1
+        },
+        {
+          "name": "EmbedBuilderUtil",
+          "line": 3
+        },
+        {
+          "name": "formatNumber",
+          "line": 4
+        }
+      ]
     },
     {
-      "file": "services\\FraudDetectionService.js",
-      "count": 5
-    },
-    {
-      "file": "services\\MemoryService.js",
-      "count": 3
-    },
-    {
-      "file": "services\\MonitorService.js",
-      "count": 5
-    },
-    {
-      "file": "services\\ProBotApiService.js",
-      "count": 2
-    },
-    {
-      "file": "utils\\PanelManager.js",
-      "count": 1
-    },
-    {
-      "file": "utils\\Timeout.js",
-      "count": 1
-    },
-    {
-      "file": "webhook\\server.js",
-      "count": 5
+      "file": "services/security/AntiSpamService.js",
+      "imports": [
+        {
+          "name": "withTimeout",
+          "line": 3
+        }
+      ]
     }
   ],
-  "topCommentedCode": []
+  "emptyCatches": [
+    {
+      "file": "services/MemoryService.js",
+      "lines": [
+        200
+      ]
+    }
+  ],
+  "topCommentedCode": [
+    {
+      "file": "index.js",
+      "lineCount": 1,
+      "lines": [
+        96
+      ]
+    }
+  ]
 }

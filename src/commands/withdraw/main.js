@@ -188,10 +188,10 @@ module.exports = {
     return interaction.editReply({ embeds: [embed] });
   },
   async handlePending(interaction, client) {
-    if (!interaction.memberPermissions.has('Administrator')) {
-      return interaction.reply({ content: '🚫 هذا الأمر للمشرفين فقط.', ephemeral: true });
-    }
     await interaction.deferReply({ ephemeral: true });
+    if (!interaction.memberPermissions.has('Administrator')) {
+      return interaction.editReply({ content: '🚫 هذا الأمر للمشرفين فقط.' });
+    }
     const pending = await BalanceService.getPendingWithdrawals();
     if (pending.length === 0) return interaction.editReply({ content: '✅ لا توجد طلبات سحب معلقة.' });
     const embed = new EmbedBuilder()
@@ -207,10 +207,10 @@ module.exports = {
     return interaction.editReply({ embeds: [embed] });
   },
   async handleApprove(interaction, client) {
-    if (!interaction.memberPermissions.has('Administrator')) {
-      return interaction.reply({ content: '🚫 هذا الأمر للمشرفين فقط.', ephemeral: true });
-    }
     await interaction.deferReply({ ephemeral: true });
+    if (!interaction.memberPermissions.has('Administrator')) {
+      return interaction.editReply({ content: '🚫 هذا الأمر للمشرفين فقط.' });
+    }
     const withdrawalId = interaction.options.getString('withdrawal_id');
     try {
       const withdrawal = await BalanceService.approveWithdrawal(withdrawalId, interaction.user.id);
@@ -229,10 +229,10 @@ module.exports = {
     }
   },
   async handleReject(interaction, client) {
-    if (!interaction.memberPermissions.has('Administrator')) {
-      return interaction.reply({ content: '🚫 هذا الأمر للمشرفين فقط.', ephemeral: true });
-    }
     await interaction.deferReply({ ephemeral: true });
+    if (!interaction.memberPermissions.has('Administrator')) {
+      return interaction.editReply({ content: '🚫 هذا الأمر للمشرفين فقط.' });
+    }
     const withdrawalId = interaction.options.getString('withdrawal_id');
     const reason = interaction.options.getString('reason');
     try {

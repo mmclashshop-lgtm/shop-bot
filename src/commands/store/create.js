@@ -128,7 +128,12 @@ module.exports = {
       new ActionRowBuilder().addComponents(bannerInput)
     );
 
-    await interaction.showModal(modal).catch(() => {});
+    await interaction.showModal(modal).catch((err) => {
+      logger.error('showModal failed', { error: err?.message, customId: modal.data?.custom_id });
+      if (!interaction.deferred && !interaction.replied) {
+        interaction.reply({ content: '❌ فشل في فتح النموذج. يرجى المحاولة مرة أخرى.', ephemeral: true }).catch(() => {});
+      }
+    });
   },
 
   async handleModalSubmit(interaction, client) {
@@ -165,7 +170,7 @@ module.exports = {
       let user;
 
       try {
-        user = await User.findOne({ discordId: interaction.user.id }).session(session.lean());
+        user = await User.findOne({ discordId: interaction.user.id }).session(session).lean();
         if (user.balance < creationFee) {
           await session.abortTransaction();
           return interaction.editReply({
@@ -367,7 +372,7 @@ module.exports = {
     await interaction.deferReply({ ephemeral: true });
 
     const storeId = interaction.options.getString('store_id');
-    const store = await Store.findById(storeId.lean());
+    const store = await Store.findById(storeId);
 
     if (!store) {
       return interaction.editReply({ content: '❌ المتجر غير موجود.' });

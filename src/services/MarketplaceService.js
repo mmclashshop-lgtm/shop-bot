@@ -154,27 +154,22 @@ class MarketplaceService {
   }
 
   async getTopRated(settings) {
-    const stores = await Store.find({
-      isActive: true,
-      isSuspended: false,
-      'rating.count': { $gte: 5 },
-    }).lean()
-      .sort({ 'rating.average': -1, 'rating.count': -1 })
-      .limit(settings.marketplace.maxTopRated)
-      .lean();
-
-    const products = await Product.find({
-      isActive: true,
-      'rating.count': { $gte: 3 },
-    }).lean()
-      .sort({ 'rating.average': -1, 'rating.count': -1 })
-      .limit(settings.marketplace.maxTopRated)
-      .populate('storeId', 'name')
-      .lean();
+    const max = settings.marketplace.maxTopRated;
+    const [stores, products] = await Promise.all([
+      Store.find({ isActive: true, isSuspended: false, 'rating.count': { $gte: 5 } })
+        .sort({ 'rating.average': -1, 'rating.count': -1 })
+        .limit(max)
+        .lean(),
+      Product.find({ isActive: true, 'rating.count': { $gte: 3 } })
+        .sort({ 'rating.average': -1, 'rating.count': -1 })
+        .limit(max)
+        .populate('storeId', 'name')
+        .lean(),
+    ]);
 
     return [...stores.map(s => ({ ...s, type: 'store' })), ...products.map(p => ({ ...p, type: 'product' }))]
       .sort((a, b) => b.rating.average - a.rating.average || b.rating.count - a.rating.count)
-      .slice(0, settings.marketplace.maxTopRated);
+      .slice(0, max);
   }
 
   createMarketplaceComponents() {

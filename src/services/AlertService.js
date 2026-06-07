@@ -424,7 +424,7 @@ class AlertService {
 
   async getAlertHistory(type = null, limit = 50) {
     const query = type ? { category: type } : {};
-    return AlertLog.find(query.lean())
+    return AlertLog.find(query)
       .sort({ createdAt: -1 })
       .limit(limit)
       .lean();

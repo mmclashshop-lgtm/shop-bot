@@ -70,6 +70,7 @@ module.exports = {
     ),
 
   async execute(interaction, client) {
+    await interaction.deferReply({ ephemeral: true });
     const subcommand = interaction.options.getSubcommand();
 
     if (['create', 'edit', 'delete'].includes(subcommand)) {
@@ -80,7 +81,7 @@ module.exports = {
         if (subcommand === 'create') {
           const storeId = interaction.options.getString('store_id');
           if (!storeId || !userStoreIds.includes(storeId)) {
-            return interaction.reply({ content: '🚫 غير مصرح: يمكنك إنشاء كوبونات لمتاجرك فقط.', ephemeral: true });
+            return interaction.editReply({ content: '🚫 غير مصرح: يمكنك إنشاء كوبونات لمتاجرك فقط.' });
           }
         }
       }

@@ -1,107 +1,124 @@
 /**
  * Priority 1 Auto-Remediation Script
- * Fixes: missing .lean(), empty catch blocks, unbounded Maps, timer leaks
+ * Fixes: missing .lean(), empty catch blocks
  * Safe to run multiple times — idempotent
  */
 const fs = require('fs');
 const path = require('path');
 
-const SRC = path.resolve(process.cwd(), 'src');
-const logger = { info: () => {}, warn: () => {}, error: () => {} };
+const SRC = path.resolve(__dirname, '..', 'src');
+const REPORTS_DIR = path.resolve(__dirname, '..', 'reports');
 
-try { const l = require('../src/utils/logger'); if (l && l.logger) Object.assign(logger, l.logger); } catch {}
+let fileLogger = { info: console.log, warn: console.warn, error: console.error };
+try {
+  const l = require(path.join(SRC, 'utils', 'logger'));
+  if (l && l.logger) fileLogger = l.logger;
+} catch (err) {
+  console.error('Logger not available, using console fallback:', err.message);
+}
 
-// ── Stats ──
+const MONGOOSE_MODELS = new Set([
+  'Store', 'Product', 'Service', 'User', 'Order', 'Payment', 'Transaction',
+  'Review', 'Coupon', 'Ticket', 'AIChat', 'Withdrawal', 'FraudAlert', 'PendingAction',
+  'LoyaltyReward', 'BackupLog', 'AlertLog', 'AuditLog', 'Commission',
+  'MarketplaceSettings', 'ServerSettings', 'SettingsHistory', 'ServerLog',
+]);
+
+const MODEL_PATTERN = /[A-Z]\w+\.(find|findOne|findById)\s*\(/;
+
 const stats = {
   leanAdded: 0,
   emptyCatchFixed: 0,
   mapsBounded: 0,
-  mapsWriteOnlyRemoved: 0,
-  timersManaged: 0,
-  listenersDeduplicated: 0,
   filesModified: new Set(),
 };
 
-// ── 1. Fix missing .lean() ──
-function fixLean(content, filePath) {
-  // Match .find(, .findOne(, .findById( not followed by .lean() before ; or next chain
-  // Skip if already has .lean() or .session() (session queries sometimes need docs)
-  let modified = false;
-  const patterns = [
-    // .find(…) without .lean() — add .lean() at end of chain
-    /(\.\b(find|findOne|findById)\s*\([^)]*\)\s*(?:\.[a-zA-Z]+\s*\([^)]*\)\s*)*?)(?!\s*\.lean\b)(\s*;|\s*\n)/g,
-  ];
+function isMongooseModelLine(trimmed) {
+  for (const m of MONGOOSE_MODELS) {
+    if (trimmed.includes(m + '.')) return true;
+  }
+  return MODEL_PATTERN.test(trimmed);
+}
 
-  // More precise: find .find(…).xxx().yyy() patterns missing .lean()
+function findClosingParenIndex(line) {
+  const idx = line.lastIndexOf(')');
+  return idx > 0 ? idx : -1;
+}
+
+function addLeanBeforeClosing(line) {
+  const idx = findClosingParenIndex(line);
+  if (idx < 0) return line;
+  return line.substring(0, idx) + '.lean()' + line.substring(idx);
+}
+
+function fixLean(content, filePath) {
   const lines = content.split('\n');
   const newLines = [];
+  let modified = false;
+  let openParens = 0;
   let inQuery = false;
-  let queryStart = -1;
+  let queryStartLine = -1;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const trimmed = line.trim();
 
-    // Skip lines that already have .lean()
-    if (trimmed.includes('.lean()')) {
+    if (trimmed.includes('.lean()') || trimmed.includes('.session(')) {
+      newLines.push(line);
+      if (inQuery && trimmed.includes('.lean()')) inQuery = false;
+      continue;
+    }
+
+    const queryMatch = trimmed.match(MODEL_PATTERN);
+    if (queryMatch && !inQuery) {
+      const openCount = (trimmed.match(/\(/g) || []).length;
+      const closeCount = (trimmed.match(/\)/g) || []).length;
+      openParens = openCount - closeCount;
+
+      if (openParens <= 0) {
+        if (!trimmed.includes('.lean()') && !trimmed.includes('.session(') && isMongooseModelLine(trimmed)) {
+          const fixed = addLeanBeforeClosing(line);
+          if (fixed !== line) {
+            newLines.push(fixed);
+            stats.leanAdded++;
+            modified = true;
+            continue;
+          }
+        }
+        newLines.push(line);
+        continue;
+      }
+
+      inQuery = true;
+      queryStartLine = i;
+      openParens = openCount - closeCount;
       newLines.push(line);
       continue;
     }
 
-    // Detect model.xxx( pattern
-    const queryMatch = trimmed.match(/\b(\w+)\.(find|findOne|findById)\s*\(/);
-    if (queryMatch) {
-      const modelName = queryMatch[1];
-      // Skip if it's not a mongoose model (heuristic)
-      if (/^[A-Z]/.test(modelName) || ['Store','Product','Service','User','Order','Payment','Transaction',
-        'Review','Coupon','Ticket','AIChat','Withdrawal','FraudAlert','PendingAction','LoyaltyReward',
-        'BackupLog','AlertLog','AuditLog','Commission','MarketplaceSettings','ServerSettings',
-        'SettingsHistory','ServerLog'].some(m => trimmed.includes(m + '.') || trimmed.includes(m + '.'))) {
-        
-        // Check if this is a simple query (single line) or multi-line
-        if (trimmed.endsWith(');') || trimmed.endsWith(';')) {
-          // Single line: add .lean() before );
-          const idx = line.lastIndexOf(')');
-          if (idx > 0 && !line.includes('.lean()')) {
-            const before = line.substring(0, idx);
-            const after = line.substring(idx);
-            newLines.push(before + '.lean()' + after);
-            stats.leanAdded++;
-            modified = true;
-            continue;
-          }
-        } else if (trimmed.endsWith('(') || trimmed.endsWith(',') || trimmed.endsWith('{') || queryMatch.index > 0) {
-          // Multi-line query — track it
-          inQuery = true;
-          queryStart = i;
-        }
-      }
-    }
+    if (inQuery) {
+      const openCount = (trimmed.match(/\(/g) || []).length;
+      const closeCount = (trimmed.match(/\)/g) || []).length;
+      openParens += openCount - closeCount;
 
-    // Close multi-line query
-    if (inQuery && (trimmed.endsWith(');') || trimmed.endsWith(';') || trimmed.endsWith(')') && !trimmed.includes('('))) {
-      inQuery = false;
-      // Check if this close line can get .lean()
-      if (trimmed.endsWith(');') || trimmed.endsWith(';')) {
-        let foundPopulate = false;
-        let foundSession = false;
-        let foundLean = false;
-        for (let j = queryStart; j <= i; j++) {
-          const l = lines[j];
-          if (l.includes('.lean()')) foundLean = true;
-          if (l.includes('.session(')) foundSession = true;
-          if (l.includes('.populate(')) foundPopulate = true;
+      if (openParens <= 0) {
+        inQuery = false;
+        let hasLean = false;
+        let hasSession = false;
+        for (let j = queryStartLine; j <= i; j++) {
+          const lc = lines[j];
+          if (lc.includes('.lean()')) hasLean = true;
+          if (lc.includes('.session(')) hasSession = true;
         }
-        if (!foundLean && !foundSession) {
-          const idx = line.lastIndexOf(')');
-          if (idx > 0) {
-            newLines[newLines.length - 1] = line.substring(0, idx) + '.lean()' + line.substring(idx);
-            stats.leanAdded++;
-            modified = true;
-            continue;
-          }
+        if (!hasLean && !hasSession) {
+          newLines.push(addLeanBeforeClosing(line));
+          stats.leanAdded++;
+          modified = true;
+          continue;
         }
       }
+      newLines.push(line);
+      continue;
     }
 
     newLines.push(line);
@@ -114,91 +131,80 @@ function fixLean(content, filePath) {
   return content;
 }
 
-// ── 2. Fix empty catch blocks ──
-function fixEmptyCatches(content, filePath) {
-  const emptyCatchRegex = /catch\s*\{[^}]*\}/g;
-  const catches = content.match(emptyCatchRegex);
-  if (!catches) return content;
+function findEmptyCatches(content, filePath) {
+  if (content.indexOf('catch {') === -1 && content.indexOf('catch{') === -1) return content;
 
-  let modified = false;
-  let result = content;
-  for (const match of catches) {
-    // Check if truly empty (whitespace only)
-    const body = match.replace(/^catch\s*\{\s*/, '').replace(/\s*\}$/, '');
-    if (body.length === 0 || /^\s*$/.test(body)) {
-      const replacement = `catch (err) { logger && logger.error ? logger.error('Unhandled error', { error: err.message, file: '${path.relative(SRC, filePath).replace(/\\/g, '/')}' }) : console.error(err) }`;
-      result = result.replace(match, replacement);
-      stats.emptyCatchFixed++;
-      modified = true;
-    }
-  }
-
-  if (modified) {
-    stats.filesModified.add(filePath);
-  }
-  return result;
-}
-
-// ── 3. Fix unbounded Maps in constructors ──
-function fixUnboundedMaps(content, filePath) {
-  const mapDeclRegex = /this\._?(\w+)\s*=\s*new\s+Map\(\)/g;
+  const result = [];
+  let lastIndex = 0;
+  const regex = /catch\s*\{[^}]*\}/g;
   let match;
-  let modified = false;
 
-  while ((match = mapDeclRegex.exec(content)) !== null) {
-    const mapName = match[1];
-    const fullMatch = match[0];
-    const lineStart = content.lastIndexOf('\n', match.index) + 1;
-    const lineEnd = content.indexOf('\n', match.index);
-    const line = content.substring(lineStart, lineEnd < 0 ? content.length : lineEnd);
-
-    // Check if this constructor/init already has cleanup
-    const classPos = content.lastIndexOf('class ', match.index);
-    const constructorPrefix = content.substring(classPos > 0 ? classPos : 0, match.index);
-
-    // Only fix Maps in constructors or initialize() methods
-    if (!constructorPrefix.includes('constructor(') && !constructorPrefix.includes('initialize(')) {
-      continue;
+  while ((match = regex.exec(content)) !== null) {
+    const catchBlock = match[0];
+    const body = catchBlock.replace(/^catch\s*\{\s*/, '').replace(/\s*\}$/, '');
+    if (body.length === 0 || /^\s*$/.test(body)) {
+      const fileRelPath = path.relative(SRC, filePath).replace(/\\/g, '/');
+      const replacement = `catch (err) { fileLogger.error('Unhandled error in ${fileRelPath}', { error: err && err.message ? err.message : err }) }`;
+      result.push(content.substring(lastIndex, match.index));
+      result.push(replacement);
+      lastIndex = regex.lastIndex;
+      stats.emptyCatchFixed++;
+      stats.filesModified.add(filePath);
     }
-
-    // Skip if it already has cleanup or is a WeakMap
-    if (content.includes('_cleanup') && content.includes(mapName)) continue;
-    if (content.includes('destroy') && content.includes(mapName)) continue;
-    if (content.includes('stop()') && content.includes(mapName)) continue;
-
-    // Add cleanup method comment reference
-    stats.mapsBounded++;
-    modified = true;
   }
-  return content;
+
+  if (result.length === 0) return content;
+  result.push(content.substring(lastIndex));
+  return result.join('');
 }
 
-// ── Main processor ──
 function processFile(filePath) {
   try {
     let content = fs.readFileSync(filePath, 'utf-8');
     const original = content;
 
     content = fixLean(content, filePath);
-    content = fixEmptyCatches(content, filePath);
+    content = findEmptyCatches(content, filePath);
 
     if (content !== original) {
       fs.writeFileSync(filePath, content, 'utf-8');
     }
   } catch (err) {
-    logger.error('Error processing file', { file: filePath, error: err.message });
+    fileLogger.error('Error processing file', { file: filePath, error: err.message });
   }
 }
 
 function walkDir(dir) {
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  let entries;
+  try {
+    entries = fs.readdirSync(dir, { withFileTypes: true });
+  } catch (err) {
+    fileLogger.error('Cannot read directory', { dir, error: err.message });
+    return;
+  }
+
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
-    if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+    if (entry.name.startsWith('.') || entry.name === 'node_modules') continue;
+    if (entry.isDirectory()) {
       walkDir(fullPath);
     } else if (entry.isFile() && entry.name.endsWith('.js')) {
       processFile(fullPath);
     }
+  }
+}
+
+function saveStats() {
+  try {
+    if (!fs.existsSync(REPORTS_DIR)) {
+      fs.mkdirSync(REPORTS_DIR, { recursive: true });
+    }
+    fs.writeFileSync(
+      path.join(REPORTS_DIR, 'remediation-stats.json'),
+      JSON.stringify({ ...stats, filesModified: [...stats.filesModified] }, null, 2)
+    );
+  } catch (err) {
+    fileLogger.error('Failed to save stats', { error: err.message });
   }
 }
 
@@ -209,12 +215,6 @@ console.log(`\n=== Remediation Complete ===`);
 console.log(`Files modified: ${stats.filesModified.size}`);
 console.log(`.lean() added: ${stats.leanAdded}`);
 console.log(`Empty catches fixed: ${stats.emptyCatchFixed}`);
-console.log(`Maps identified for bounding: ${stats.mapsBounded}`);
 
-// Save stats for report
-fs.writeFileSync(
-  path.join(process.cwd(), 'reports', 'remediation-stats.json'),
-  JSON.stringify({ ...stats, filesModified: [...stats.filesModified] }, null, 2)
-);
-
+saveStats();
 console.log('\nStats saved to reports/remediation-stats.json');

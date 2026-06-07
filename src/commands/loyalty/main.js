@@ -6,6 +6,7 @@ const { formatNumber } = require('../../utils/helpers');
 const config = require('../../config');
 const { logger } = require('../../utils/logger');
 const fraudDetection = require('../../services/FraudDetectionService');
+const { withTimeout, TimeoutError } = require('../../utils/Timeout');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -274,7 +275,19 @@ module.exports = {
       mockInteraction.deferred = true;
       mockInteraction.deferReply = () => Promise.resolve();
       mockInteraction.editReply = interaction.editReply.bind(interaction);
-      return this.handleClaim(mockInteraction, client);
+      try {
+        const { promise } = withTimeout(
+          this.handleClaim(mockInteraction, client),
+          15000,
+          'loyalty_claim'
+        );
+        return await promise;
+      } catch (error) {
+        if (error instanceof TimeoutError) {
+          return interaction.editReply({ content: '⏱️ انتهت مهلة استبدال المكافأة. يرجى المحاولة مرة أخرى.' });
+        }
+        throw error;
+      }
     }
   },
 

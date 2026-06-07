@@ -193,7 +193,12 @@ module.exports = {
       new ActionRowBuilder().addComponents(deliveryContentInput)
     );
 
-    await interaction.showModal(modal);
+    await interaction.showModal(modal).catch((err) => {
+      logger.error('showModal failed', { error: err?.message, customId: modal.data?.custom_id });
+      if (!interaction.deferred && !interaction.replied) {
+        interaction.reply({ content: '❌ فشل في فتح النموذج. يرجى المحاولة مرة أخرى.', ephemeral: true }).catch(() => {});
+      }
+    });
   },
 
   async handleModalSubmit(interaction, client) {
@@ -212,7 +217,7 @@ module.exports = {
 
     try {
       const storeId = interaction.customId.replace('product_add_modal_', '');
-      const store = await Store.findById(storeId.lean());
+      const store = await Store.findById(storeId);
 
       if (!store || store.ownerId !== interaction.user.id) {
         return interaction.editReply({ content: '❌ غير مصرح.' });
@@ -460,7 +465,7 @@ module.exports = {
     session.startTransaction();
 
     try {
-      const product = await Product.findById(productId).session(session.lean());
+      const product = await Product.findById(productId).session(session).lean();
 
       if (!product) {
         await session.abortTransaction();
@@ -480,7 +485,7 @@ module.exports = {
         return interaction.editReply({ content: `❌ الكمية المطلوبة (${quantity}) غير متوفرة. المخزون المتبقي: ${product.stock}.` });
       }
 
-      const store = await Store.findById(product.storeId).session(session.lean());
+      const store = await Store.findById(product.storeId).session(session).lean();
 
       if (!store || !store.isActive || store.isSuspended) {
         await session.abortTransaction();
@@ -488,7 +493,7 @@ module.exports = {
         return interaction.editReply({ content: '❌ المتجر غير نشط.' });
       }
 
-      const buyer = await User.findOne({ discordId: interaction.user.id }).session(session.lean());
+      const buyer = await User.findOne({ discordId: interaction.user.id }).session(session);
 
       if (!buyer) {
         await session.abortTransaction();
@@ -496,7 +501,7 @@ module.exports = {
         return interaction.editReply({ content: '❌ حساب المستخدم غير موجود. أنشئ حساباً أولاً.' });
       }
 
-      const seller = await User.findOne({ discordId: store.ownerId }).session(session.lean());
+      const seller = await User.findOne({ discordId: store.ownerId }).session(session);
 
       if (!seller) {
         await session.abortTransaction();
@@ -516,19 +521,21 @@ module.exports = {
       let couponUsed = null;
 
       if (couponCode) {
-        const coupon = await Coupon.findOne({
-          code: couponCode.toUpperCase(),
-          storeId: product.storeId,
-          isActive: true,
-          $or: [
-            { 'usageLimit.total': 0 },
-            { $expr: { $lt: ['$usageCount.total', '$usageLimit.total'] } },
-          ],
-          $and: [
-            { startsAt: { $lte: new Date() } },
-            { endsAt: { $gte: new Date() } },
-          ],
-        }).session(session.lean());
+        const coupon = await Coupon.findOneAndUpdate(
+          {
+            code: couponCode.toUpperCase(),
+            storeId: product.storeId,
+            isActive: true,
+            $or: [
+              { 'usageLimit.total': 0 },
+              { $expr: { $lt: ['$usageCount.total', '$usageLimit.total'] } },
+            ],
+            startsAt: { $lte: new Date() },
+            endsAt: { $gte: new Date() },
+          },
+          { $inc: { 'usageCount.total': 1 } },
+          { new: true, session }
+        );
 
         if (!coupon) {
           await session.abortTransaction();
@@ -545,15 +552,11 @@ module.exports = {
           discountAmount = Math.min(coupon.value, product.price);
           unitPrice = product.price - discountAmount;
         }
-
-        await Coupon.findByIdAndUpdate(coupon._id, {
-          $inc: { 'usageCount.total': 1 }
-        }, { session });
       }
 
       const totalPrice = unitPrice * quantity;
 
-      const settings = await MarketplaceSettings.findOne().session(session.lean());
+      const settings = await MarketplaceSettings.findOne().session(session).lean();
       const commissionRate = store.commissionRate || config.commissions?.free || 0.05;
       const commission = calculateCommission(totalPrice, commissionRate);
       const sellerAmount = totalPrice - commission;
@@ -903,7 +906,7 @@ module.exports = {
         return interaction.editReply({ content: '❌ المنتج غير موجود.', embeds: [], components: [] });
       }
 
-      const store = await Store.findById(product.storeId.lean());
+      const store = await Store.findById(product.storeId);
 
       if (!store || store.ownerId !== interaction.user.id) {
         return interaction.editReply({ content: '🚫 غير مصرح.', embeds: [], components: [] });

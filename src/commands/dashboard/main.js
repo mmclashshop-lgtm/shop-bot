@@ -99,11 +99,10 @@ module.exports = {
   },
 
   async handleOverview(interaction, client) {
-    if (!interaction.memberPermissions.has('Administrator')) {
-      return interaction.reply({ content: '🚫 هذه اللوحة للمشرفين فقط.', ephemeral: true });
-    }
-
     await interaction.deferReply({ ephemeral: true });
+    if (!interaction.memberPermissions.has('Administrator')) {
+      return interaction.editReply({ content: '🚫 هذه اللوحة للمشرفين فقط.' });
+    }
 
     const isAdmin = true;
 
@@ -365,11 +364,10 @@ module.exports = {
   },
 
   async handleFinancial(interaction, client) {
-    if (!interaction.memberPermissions.has('Administrator')) {
-      return interaction.reply({ content: '🚫 التقرير المالي للمشرفين فقط.', ephemeral: true });
-    }
-
     await interaction.deferReply({ ephemeral: true });
+    if (!interaction.memberPermissions.has('Administrator')) {
+      return interaction.editReply({ content: '🚫 التقرير المالي للمشرفين فقط.' });
+    }
 
     const period = interaction.options.getString('period') || 'month';
     const now = new Date();
@@ -437,11 +435,10 @@ module.exports = {
   },
 
   async handleRevenueReport(interaction, client) {
-    if (!interaction.memberPermissions.has('Administrator')) {
-      return interaction.reply({ content: '🚫 تقرير الإيرادات للمشرفين فقط.', ephemeral: true });
-    }
-
     await interaction.deferReply({ ephemeral: true });
+    if (!interaction.memberPermissions.has('Administrator')) {
+      return interaction.editReply({ content: '🚫 تقرير الإيرادات للمشرفين فقط.' });
+    }
 
     const period = interaction.options.getString('period') || 'month';
     const now = new Date();
@@ -601,11 +598,10 @@ module.exports = {
   },
 
   async handleExport(interaction, client) {
-    if (!interaction.memberPermissions.has('Administrator')) {
-      return interaction.reply({ content: '🚫 هذا الأمر للمشرفين فقط.', ephemeral: true });
-    }
-
     await interaction.deferReply({ ephemeral: true });
+    if (!interaction.memberPermissions.has('Administrator')) {
+      return interaction.editReply({ content: '🚫 هذا الأمر للمشرفين فقط.' });
+    }
 
     const type = interaction.options.getString('type');
     const format = interaction.options.getString('format');

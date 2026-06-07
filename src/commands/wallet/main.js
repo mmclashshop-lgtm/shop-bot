@@ -171,7 +171,12 @@ module.exports = {
 
     modal.addComponents(new ActionRowBuilder().addComponents(detailsInput));
 
-    await interaction.showModal(modal).catch(() => {});
+    await interaction.showModal(modal).catch((err) => {
+      logger.error('showModal failed', { error: err?.message, customId: modal.data?.custom_id });
+      if (!interaction.deferred && !interaction.replied) {
+        interaction.reply({ content: '❌ فشل في فتح النموذج. يرجى المحاولة مرة أخرى.', ephemeral: true }).catch(() => {});
+      }
+    });
   },
 
   async handleWithdraw(interaction, client) {
@@ -403,7 +408,12 @@ module.exports = {
         new ActionRowBuilder().addComponents(methodInput)
       );
 
-      return interaction.showModal(modal).catch(() => {});
+      return interaction.showModal(modal).catch((err) => {
+        logger.error('showModal failed', { error: err?.message, customId: modal.data?.custom_id });
+        if (!interaction.deferred && !interaction.replied) {
+          interaction.reply({ content: '❌ فشل في فتح النموذج. يرجى المحاولة مرة أخرى.', ephemeral: true }).catch(() => {});
+        }
+      });
     }
 
     if (action === 'withdraw') {
@@ -441,7 +451,12 @@ module.exports = {
         new ActionRowBuilder().addComponents(detailsInput)
       );
 
-      return interaction.showModal(modal).catch(() => {});
+      return interaction.showModal(modal).catch((err) => {
+        logger.error('showModal failed', { error: err?.message, customId: modal.data?.custom_id });
+        if (!interaction.deferred && !interaction.replied) {
+          interaction.reply({ content: '❌ فشل في فتح النموذج. يرجى المحاولة مرة أخرى.', ephemeral: true }).catch(() => {});
+        }
+      });
     }
 
     if (action === 'pay') {
@@ -479,7 +494,12 @@ module.exports = {
         new ActionRowBuilder().addComponents(noteInput)
       );
 
-      return interaction.showModal(modal).catch(() => {});
+      return interaction.showModal(modal).catch((err) => {
+        logger.error('showModal failed', { error: err?.message, customId: modal.data?.custom_id });
+        if (!interaction.deferred && !interaction.replied) {
+          interaction.reply({ content: '❌ فشل في فتح النموذج. يرجى المحاولة مرة أخرى.', ephemeral: true }).catch(() => {});
+        }
+      });
     }
 
     if (action === 'history') {
@@ -593,12 +613,6 @@ module.exports = {
       });
 
       try {
-        const receiver = await User.findOne({ discordId: targetUserId }).session(session.lean());
-        if (!receiver) {
-          await session.abortTransaction();
-          return interaction.editReply({ content: '❌ المستخدم غير موجود.' });
-        }
-
         const sender = await User.findOneAndUpdate(
           { discordId: interaction.user.id, balance: { $gte: amount } },
           { $inc: { balance: -amount } },
@@ -609,8 +623,15 @@ module.exports = {
           return interaction.editReply({ content: '❌ رصيد غير كافٍ.' });
         }
 
-        receiver.balance += amount;
-        await receiver.save({ session });
+        const receiver = await User.findOneAndUpdate(
+          { discordId: targetUserId },
+          { $inc: { balance: amount } },
+          { new: true, session }
+        );
+        if (!receiver) {
+          await session.abortTransaction();
+          return interaction.editReply({ content: '❌ المستخدم غير موجود.' });
+        }
 
         await Transaction.create([{
           userId: interaction.user.id,
@@ -726,7 +747,12 @@ module.exports = {
 
       modal.addComponents(new ActionRowBuilder().addComponents(detailsInput));
 
-      return interaction.showModal(modal).catch(() => {});
+      return interaction.showModal(modal).catch((err) => {
+        logger.error('showModal failed', { error: err?.message, customId: modal.data?.custom_id });
+        if (!interaction.deferred && !interaction.replied) {
+          interaction.reply({ content: '❌ فشل في فتح النموذج. يرجى المحاولة مرة أخرى.', ephemeral: true }).catch(() => {});
+        }
+      });
     }
 
     if (interaction.customId === 'wallet_withdraw_amount') {
@@ -784,5 +810,13 @@ module.exports = {
 
       return this.handlePay(mockInteraction, client);
     }
+
+    try {
+      if (interaction.deferred || interaction.replied) {
+        await interaction.editReply({ content: '❌ خطأ: النموذج غير معروف', components: [] }).catch(() => {});
+      } else {
+        await interaction.reply({ content: '❌ خطأ: النموذج غير معروف', flags: MessageFlags.Ephemeral }).catch(() => {});
+      }
+    } catch (e) { /* ignore */ }
   },
 };

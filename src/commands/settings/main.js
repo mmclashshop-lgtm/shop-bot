@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, MessageFlags } = require('discord.js');
 const SettingsService = require('../../services/SettingsService');
 const { logger } = require('../../utils/logger');
+const { withTimeout, TimeoutError } = require('../../utils/Timeout');
 
 const SECTIONS = SettingsService.getSections();
 const SECTION_EMOJIS = {
@@ -74,8 +75,9 @@ module.exports = {
     ),
 
   async execute(interaction) {
+    await interaction.deferReply({ ephemeral: true });
     if (!interaction.memberPermissions.has('Administrator')) {
-      return interaction.reply({ content: '🚫 لوحة الإعدادات للمشرفين فقط.', ephemeral: true });
+      return interaction.editReply({ content: '🚫 لوحة الإعدادات للمشرفين فقط.' });
     }
 
     const sub = interaction.options.getSubcommand();
@@ -422,7 +424,19 @@ module.exports = {
 
     if (interaction.customId === 'settings_view_section') {
       const section = interaction.values[0];
-      return this._renderSection(interaction, interaction.guildId, section);
+      try {
+        const { promise } = withTimeout(
+          this._renderSection(interaction, interaction.guildId, section),
+          10000,
+          'settings_select'
+        );
+        return await promise;
+      } catch (error) {
+        if (error instanceof TimeoutError) {
+          return interaction.editReply({ content: '⏱️ انتهت مهلة تحميل الإعدادات. يرجى المحاولة مرة أخرى.' });
+        }
+        throw error;
+      }
     }
   },
 

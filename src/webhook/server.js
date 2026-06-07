@@ -14,6 +14,9 @@ const WEBHOOK_RATE_LIMIT = new RateLimiterMemory({
 
 const REPLAY_WINDOW_MS = 300000;
 const ALLOWED_IPS = (config.webhook.allowedIps || '').split(',').map(ip => ip.trim()).filter(Boolean);
+if (ALLOWED_IPS.length === 0) {
+  logger.warn('WEBHOOK_ALLOWED_IPS not configured - webhook endpoint exposed to all IPs');
+}
 
 class WebhookServer {
   constructor() {
@@ -78,12 +81,28 @@ class WebhookServer {
   _validateWebhookSecret(req) {
     const configSecret = config.webhook.secret;
     if (!configSecret) {
-      logger.warn('Webhook secret not configured, skipping validation');
-      return true;
+      logger.error('Webhook secret NOT configured - rejecting all webhooks (fail closed)');
+      return false;
     }
     const provided = req.headers['x-webhook-secret'];
     if (!provided) return false;
     return this._constantTimeEqual(provided, configSecret);
+  }
+
+  _verifyHmac(req) {
+    const configSecret = config.webhook.secret;
+    if (!configSecret) {
+      logger.error('Webhook HMAC: secret not configured');
+      return false;
+    }
+    const signature = req.headers['x-signature'];
+    if (!signature) return false;
+    const expected = crypto
+      .createHmac('sha256', configSecret)
+      .update(JSON.stringify(req.body))
+      .digest('hex');
+    if (Buffer.byteLength(signature, 'utf8') !== Buffer.byteLength(expected, 'utf8')) return false;
+    return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
   }
 
   _validateReplay(req) {
@@ -134,6 +153,11 @@ class WebhookServer {
           return res.status(401).json({ status: 'error', message: 'Invalid webhook secret' });
         }
 
+        if (!this._verifyHmac(req)) {
+          logger.warn('Webhook HMAC verification failed', { ip, path: req.path });
+          return res.status(401).json({ status: 'error', message: 'Invalid HMAC signature' });
+        }
+
         if (!this._validateReplay(req)) {
           logger.warn('Webhook replay validation failed', { ip, path: req.path });
           return res.status(400).json({ status: 'error', message: 'Invalid or expired request signature' });
@@ -163,6 +187,11 @@ class WebhookServer {
 
         if (!this._validateWebhookSecret(req)) {
           return res.status(401).json({ status: 'error', message: 'Invalid webhook secret' });
+        }
+
+        if (!this._verifyHmac(req)) {
+          logger.warn('Webhook HMAC verification failed', { ip, path: req.path });
+          return res.status(401).json({ status: 'error', message: 'Invalid HMAC signature' });
         }
 
         if (!this._validateReplay(req)) {
@@ -204,6 +233,11 @@ class WebhookServer {
 
         if (!this._validateWebhookSecret(req)) {
           return res.status(401).json({ status: 'error', message: 'Invalid webhook secret' });
+        }
+
+        if (!this._verifyHmac(req)) {
+          logger.warn('Webhook HMAC verification failed', { ip, path: req.path });
+          return res.status(401).json({ status: 'error', message: 'Invalid HMAC signature' });
         }
 
         if (!this._validateReplay(req)) {

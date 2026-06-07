@@ -148,9 +148,15 @@ class BackupService {
     let storageUsed = 0;
     let storageTotal = 0;
     try {
-      const { stdout } = await execAsync('df -B1 . 2>/dev/null | tail -1', { encoding: 'utf8', timeout: 5000 });
+      const { stdout } = await new Promise((resolve, reject) => {
+        execFile('df', ['-B1', '.'], { timeout: 5000, maxBuffer: 1024 * 1024 }, (err, stdout) => {
+          if (err) return reject(err);
+          resolve({ stdout });
+        });
+      });
       if (stdout) {
-        const parts = stdout.trim().split(/\s+/);
+        const lines = stdout.trim().split('\n');
+        const parts = lines[lines.length - 1]?.trim().split(/\s+/) || [];
         storageUsed = parseInt(parts[2], 10) || 0;
         storageTotal = parseInt(parts[1], 10) || 1;
       }
@@ -411,34 +417,32 @@ class BackupService {
     try {
       let entries;
       try { entries = await fsp.readdir(dir); } catch { return; }
-      const files = entries
-        .filter(f => f.endsWith('.gz'))
-        .map(f => ({ name: f, path: path.join(dir, f), mtime: Date.now() }));
+      const gzFiles = entries.filter(f => f.endsWith('.gz'));
 
-      // Get mtimes in parallel
-      await Promise.all(files.map(async (f) => {
-        try {
-          const stat = await fsp.stat(f.path);
-          f.mtime = stat.mtime;
-        } catch {}
-      }));
+      const files = (await Promise.all(
+        gzFiles.map(async (name) => {
+          const filePath = path.join(dir, name);
+          try {
+            const stat = await fsp.stat(filePath);
+            return { name, path: filePath, mtime: stat.mtime };
+          } catch { return null; }
+        })
+      )).filter(Boolean);
 
       files.sort((a, b) => b.mtime - a.mtime);
-
       if (files.length <= cfg.retention) return;
 
       const toDelete = files.slice(cfg.retention);
-      for (const file of toDelete) {
+      await Promise.all(toDelete.map(async (file) => {
         try {
           await fsp.unlink(file.path);
-          const metaFile = file.path + '.meta.json';
-          await fsp.unlink(metaFile).catch(() => {});
+          await fsp.unlink(file.path + '.meta.json').catch(() => {});
           BackupLog.deleteOne({ fileName: file.name }).catch(() => {});
           logger.info('Retention: deleted old backup', { type, file: file.name });
         } catch (err) {
           logger.warn('Retention: failed to delete', { file: file.name, error: err.message });
         }
-      }
+      }));
     } catch (err) {
       logger.error('Retention enforcement failed', { type, error: err.message });
     }
@@ -504,7 +508,7 @@ class BackupService {
   _computeMd5(filePath) {
     return new Promise((resolve, reject) => {
       const hash = crypto.createHash('md5');
-      const stream = fs.createReadStream(filePath);
+      const stream = fs.createReadStream(filePath, { highWaterMark: 256 * 1024 });
       stream.on('data', chunk => hash.update(chunk));
       stream.on('end', () => resolve(hash.digest('hex')));
       stream.on('error', reject);

@@ -152,7 +152,7 @@ module.exports = {
     const storeId = interaction.options.getString('store_id');
     const days = interaction.options.getInteger('days') || 7;
 
-    const store = await Store.findById(storeId.lean());
+    const store = await Store.findById(storeId);
     if (!store) {
       return interaction.editReply({ content: '❌ المتجر غير موجود.' });
     }
@@ -171,7 +171,7 @@ module.exports = {
 
     const storeId = interaction.options.getString('store_id');
 
-    const store = await Store.findById(storeId.lean());
+    const store = await Store.findById(storeId);
     if (!store) {
       return interaction.editReply({ content: '❌ المتجر غير موجود.' });
     }
@@ -192,7 +192,7 @@ module.exports = {
     const level = interaction.options.getInteger('level') || 1;
     const days = interaction.options.getInteger('days') || 7;
 
-    const store = await Store.findById(storeId.lean());
+    const store = await Store.findById(storeId);
     if (!store) {
       return interaction.editReply({ content: '❌ المتجر غير موجود.' });
     }

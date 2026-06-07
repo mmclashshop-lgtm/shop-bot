@@ -218,7 +218,7 @@ class SettingsService {
   async getHistory(guildId, section = null, limit = 50) {
     const query = { guildId };
     if (section) query.section = section;
-    return SettingsHistory.find(query.lean())
+    return SettingsHistory.find(query)
       .sort({ createdAt: -1 })
       .limit(limit)
       .lean();

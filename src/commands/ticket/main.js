@@ -91,7 +91,12 @@ module.exports = {
     const desc = new TextInputBuilder()
       .setCustomId('description').setLabel('الوصف').setStyle(TextInputStyle.Paragraph).setMaxLength(2000).setRequired(true);
     modal.addComponents(new ActionRowBuilder().addComponents(subject), new ActionRowBuilder().addComponents(desc));
-    try { await interaction.showModal(modal); } catch (err) { logger.error('Unhandled error in commands/ticket/main.js', { error: err?.message }) }
+    await interaction.showModal(modal).catch((err) => {
+      logger.error('showModal failed', { error: err?.message, customId: modal.data?.custom_id });
+      if (!interaction.deferred && !interaction.replied) {
+        interaction.reply({ content: '❌ فشل في فتح النموذج. يرجى المحاولة مرة أخرى.', ephemeral: true }).catch(() => {});
+      }
+    });
   },
 
   async handleModalSubmit(interaction, client, action) {

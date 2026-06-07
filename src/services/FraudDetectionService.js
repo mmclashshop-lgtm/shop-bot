@@ -293,7 +293,12 @@ class FraudDetectionService {
     const details = {};
     let description = '';
 
-    const recentTxns = await this._getRecentTransactions(userId, 1);
+    const [recentTxns, pendingPays, user] = await Promise.all([
+      this._getRecentTransactions(userId, 1),
+      PendingAction.find({ userId, type: 'pay', createdAt: { $gte: new Date(Date.now() - 300000) } }).lean(),
+      User.findOne({ discordId: userId }).lean(),
+    ]);
+
     if (recentTxns >= 5) {
       riskScore += 25;
       details.rapidTransfer = true;
@@ -312,13 +317,7 @@ class FraudDetectionService {
       description = (description ? description + ' | ' : '') + 'مبلغ تحويل كبير';
     }
 
-    const pendingPays = await PendingAction.find({
-      userId,
-      type: 'pay',
-      createdAt: { $gte: new Date(Date.now() - 300000) },
-    }).lean();
     const totalPendingAmount = pendingPays.reduce((sum, p) => sum + (p.amount || 0), 0);
-    const user = await User.findOne({ discordId: userId }).lean();
     if (user && totalPendingAmount + amount > user.balance) {
       riskScore += 35;
       details.doubleSpendAttempt = true;
@@ -410,7 +409,13 @@ class FraudDetectionService {
     let riskScore = 0;
     const details = {};
 
-    const user = await User.findOne({ discordId: userId }).lean();
+    const Payment = require('../database/models').Payment;
+    const [user, existingPayment, recentVerifications] = await Promise.all([
+      User.findOne({ discordId: userId }).lean(),
+      Payment.findOne({ probotTransactionId: transactionId }).lean().catch(() => null),
+      this._getRecentActivity(userId, 'payment_verify', 10),
+    ]);
+
     if (user) {
       const failedPayments = await Transaction.countDocuments({
         userId,
@@ -428,14 +433,11 @@ class FraudDetectionService {
       }
     }
 
-    const Payment = require('../database/models').Payment;
-    const existingPayment = await Payment.findOne({ probotTransactionId: transactionId }).lean().catch(() => null);
     if (existingPayment && existingPayment.buyerId !== userId) {
       riskScore += 35;
       details.reusedTransactionId = true;
     }
 
-    const recentVerifications = await this._getRecentActivity(userId, 'payment_verify', 10);
     if (recentVerifications >= 3) {
       riskScore += 20;
       details.rapidVerificationAttempts = true;
